@@ -1,165 +1,52 @@
 <!DOCTYPE html>
 <html lang="ru">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>FUNDOZA Music CRM</title>
+    <title>FUNDOZA CRM</title>
 
-    <link rel="stylesheet" href="assets/css/style.css">
+    <link rel="stylesheet" href="assets/css/app.css">
 </head>
 
 <body>
 
-<div class="app">
+<div class="crm">
 
-    <!-- Sidebar -->
     <aside class="sidebar">
 
-        <div class="logo">
-            🎵 FUNDOZA CRM
-        </div>
-
+        <h2>🎵 FUNDOZA CRM</h2>
 
         <nav>
-
-            <a class="active">🏠 Dashboard</a>
-            <a>🎵 Releases</a>
-            <a>👤 Artists</a>
-            <a>📻 Radio</a>
-            <a>🎧 Playlists</a>
-            <a>📺 YouTube</a>
-            <a>📱 Promotion</a>
-            <a>📊 Analytics</a>
-            <a>📅 Calendar</a>
-            <a>✅ Tasks</a>
-            <a>⚙ Settings</a>
-
+            <button data-page="dashboard">Dashboard</button>
+            <button data-page="contacts">Contacts</button>
+            <button data-page="releases">Releases</button>
+            <button data-page="campaigns">Campaigns</button>
         </nav>
-
 
     </aside>
 
 
+    <main class="content">
 
-    <!-- Main -->
-
-    <main class="main">
-
-
-        <header class="header">
-
-            <input 
-            type="text" 
-            placeholder="Поиск..."
-            >
-
-            <button>
-                + Добавить релиз
-            </button>
-
-        </header>
-
-
-
-        <section class="content">
-
-
-            <h1>
-                Dashboard
-            </h1>
-
-
-            <div class="cards">
-
-
-                <div class="card">
-
-                    <span>
-                    🎵 Релизы
-                    </span>
-
-                    <strong>
-                    0
-                    </strong>
-
-                </div>
-
-
-
-                <div class="card">
-
-                    <span>
-                    👤 Артисты
-                    </span>
-
-                    <strong>
-                    0
-                    </strong>
-
-                </div>
-
-
-
-                <div class="card">
-
-                    <span>
-                    📻 Радио
-                    </span>
-
-                    <strong>
-                    0
-                    </strong>
-
-                </div>
-
-
-
-                <div class="card">
-
-                    <span>
-                    🎧 Плейлисты
-                    </span>
-
-                    <strong>
-                    0
-                    </strong>
-
-                </div>
-
-
-            </div>
-
-
-
-            <div class="panel">
-
-                <h2>
-                    Последние действия
-                </h2>
-
-                <p>
-                    Пока данных нет
-                </p>
-
-            </div>
-
-
-
-        </section>
-
+        <div id="app">
+            Загрузка...
+        </div>
 
     </main>
-
 
 </div>
 
 
-
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+<script src="assets/js/config.js"></script>
 <script src="assets/js/supabase.js"></script>
-<script src="assets/js/contacts.js"></script>
+<script src="assets/js/router.js"></script>
+<script src="modules/contacts/contacts.js"></script>
 <script src="assets/js/app.js"></script>
+
 
 </body>
 </html>
