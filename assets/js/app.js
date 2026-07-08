@@ -1,1 +1,5 @@
-console.log("FUNDOZA CRM started");
+$(function(){
+
+    Router.load("dashboard");
+
+});
