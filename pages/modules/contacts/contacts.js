@@ -1,60 +1,84 @@
 async function loadContacts(){
 
 
-    const {
-        data,
-        error
-    } = await db
-        .from("contacts")
-        .select("*")
-        .order("created_at",{ascending:false});
+const {data,error}=await db
+.from("contacts")
+.select("*")
+.order("created_at",{ascending:false});
 
 
-    if(error){
+if(error){
 
-        console.error(error);
-        return;
+console.error(error);
+return;
 
-    }
-
-
-
-    let html="";
+}
 
 
-    data.forEach(contact=>{
+let rows="";
 
 
-        html += `
-
-        <tr>
-
-        <td>${contact.name}</td>
-
-        <td>${contact.type ?? ""}</td>
-
-        <td>${contact.platform ?? ""}</td>
-
-        <td>${contact.email ?? ""}</td>
-
-        <td>${contact.country ?? ""}</td>
-
-        <td>${contact.status}</td>
-
-        </tr>
-
-        `;
+data.forEach(c=>{
 
 
-    });
+rows += `
+
+<tr>
+
+<td>${c.name}</td>
+
+<td>${c.type ?? ""}</td>
+
+<td>${c.platform ?? ""}</td>
+
+<td>${c.email ?? ""}</td>
+
+<td>${c.country ?? ""}</td>
+
+<td>${c.status}</td>
+
+<td>
+
+<button onclick="deleteContact(${c.id})">
+🗑
+</button>
+
+</td>
+
+</tr>
+
+`;
 
 
+});
 
-    document.querySelector("#contactsTable").innerHTML = html;
+
+document.querySelector(
+"#contactsTable tbody"
+).innerHTML=rows;
 
 
 }
 
 
 
-window.loadContacts = loadContacts;
+async function deleteContact(id){
+
+
+if(!confirm("Удалить контакт?"))
+return;
+
+
+await db
+.from("contacts")
+.delete()
+.eq("id",id);
+
+
+loadContacts();
+
+
+}
+
+
+window.loadContacts=loadContacts;
