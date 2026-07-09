@@ -1,24 +1,100 @@
 <body>
+<!-- DataTables -->
+<link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css">
+<script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
+<script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
 
-<div class="crm">
+<!-- Supabase -->
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
-    <aside class="sidebar">
-
-        <h2>FUNDOZA CRM</h2>
-
-        <button id="menuContacts">Contacts</button>
-
-        <button id="menuReleases">Releases</button>
-
-        <button id="menuCampaigns">Campaigns</button>
-
-    </aside>
+<!-- Font Awesome -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
 
-    <main id="app">
-
-    </main>
-
+<!-- index.html -->
+<div class="container-fluid">
+    <div class="row">
+        <!-- Левая колонка: таблица -->
+        <div class="col-md-8">
+            <div class="card">
+                <div class="card-header">
+                    <h5><i class="fas fa-music"></i> Библиотека треков</h5>
+                </div>
+                <div class="card-body">
+                    <div class="mb-3">
+                        <input type="file" id="fileInput" multiple accept=".mp3,.flac,.wav" style="display:none;">
+                        <button class="btn btn-primary" onclick="$('#fileInput').click()">
+                            <i class="fas fa-upload"></i> Загрузить
+                        </button>
+                        <button class="btn btn-danger" onclick="deleteSelectedTracks()">
+                            <i class="fas fa-trash"></i> Удалить выбранные
+                        </button>
+                    </div>
+                    
+                    <table id="tracksTable" class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th><input type="checkbox" id="selectAll"></th>
+                                <th>Название</th>
+                                <th>Длительность</th>
+                                <th>Теги</th>
+                                <th>Действия</th>
+                            </tr>
+                        </thead>
+                    </table>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Правая колонка: рассылка -->
+        <div class="col-md-4">
+            <div class="card">
+                <div class="card-header">
+                    <h5><i class="fas fa-paper-plane"></i> Рассылка</h5>
+                </div>
+                <div class="card-body">
+                    <div class="mb-3">
+                        <label>Плейлист</label>
+                        <select id="playlistSelect" class="form-control">
+                            <option value="">Выберите плейлист</option>
+                        </select>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label>Группа получателей</label>
+                        <select id="groupSelect" class="form-control">
+                            <option value="">Выберите группу</option>
+                        </select>
+                    </div>
+                    
+                    <div class="alert alert-info">
+                        <i class="fas fa-check-circle"></i>
+                        Выбрано треков: <strong id="selectedCount">0</strong>
+                    </div>
+                    
+                    <button class="btn btn-success w-100" onclick="sendMailing()">
+                        <i class="fas fa-broadcast"></i> Запустить рассылку
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
+
+<!-- Toast-уведомления -->
+<div id="toast" style="position:fixed;bottom:20px;right:20px;background:#333;color:#fff;padding:12px 24px;border-radius:8px;display:none;z-index:9999;"></div>
+
+<script>
+function showToast(message) {
+    const toast = document.getElementById('toast');
+    toast.textContent = message;
+    toast.style.display = 'block';
+    clearTimeout(window.toastTimeout);
+    window.toastTimeout = setTimeout(() => {
+        toast.style.display = 'none';
+    }, 3000);
+}
+</script>
+
 
 </body>
