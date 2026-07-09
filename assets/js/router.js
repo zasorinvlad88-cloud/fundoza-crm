@@ -1,25 +1,13 @@
-async function loadPage(page){
+async function loadPage(page) {
 
-
-    const response = await fetch(
-        `pages/${page}.html`
-    );
-
+    const response = await fetch(`pages/${page}.html`);
 
     const html = await response.text();
 
+    $("#app").html(html);
 
-    document.querySelector("#app").innerHTML = html;
-
-
-    if(page==="contacts"){
-
-        loadContacts();
-
+    if (page === "contacts") {
+        initContacts();
     }
 
-
 }
-
-
-window.loadPage = loadPage;
