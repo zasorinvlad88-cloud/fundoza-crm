@@ -1,61 +1,24 @@
-<!DOCTYPE html>
-<html lang="ru">
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-    <title>FUNDOZA CRM</title>
-
-    <link rel="stylesheet" href="assets/css/app.css">
-    <link rel="stylesheet" href="https://cdn.datatables.net/2.3.2/css/dataTables.dataTables.min.css">
-
-</head>
-
 <body>
 
 <div class="crm">
 
     <aside class="sidebar">
 
-        <h2>🎵 FUNDOZA CRM</h2>
+        <h2>FUNDOZA CRM</h2>
 
-        <nav>
-            <button data-page="dashboard">Dashboard</button>
-            <button data-page="contacts">Contacts</button>
-            <button data-page="releases">Releases</button>
-            <button data-page="campaigns">Campaigns</button>
-            
-        </nav>
+        <button id="menuContacts">Contacts</button>
+
+        <button id="menuReleases">Releases</button>
+
+        <button id="menuCampaigns">Campaigns</button>
 
     </aside>
 
 
-    <main class="content">
-
-        <div id="app">
-            Загрузка...
-        </div>
+    <main id="app">
 
     </main>
 
 </div>
 
-<!-- jQuery -->
-<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
-
-<!-- DataTables -->
-<script src="https://cdn.datatables.net/2.3.2/js/dataTables.min.js"></script>
-
-<!-- Supabase -->
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-
-<!-- CRM -->
-<script src="assets/js/config.js"></script>
-<script src="assets/js/supabase.js"></script>
-<script src="assets/js/router.js"></script>
-<script src="modules/contacts/contacts.js"></script>
-<script src="assets/js/app.js"></script>
-
 </body>
-</html>
