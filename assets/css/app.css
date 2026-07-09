@@ -58,3 +58,72 @@ padding:10px;
 border-bottom:1px solid #334155;
 
 }
+
+.sidebar{
+
+width:240px;
+background:#0f172a;
+color:white;
+
+}
+
+.logo{
+
+padding:25px;
+font-size:24px;
+font-weight:bold;
+
+}
+
+.menu{
+
+list-style:none;
+margin:0;
+padding:0;
+
+}
+
+.menu li{
+
+padding:15px 25px;
+cursor:pointer;
+
+}
+
+.menu li:hover{
+
+background:#1e293b;
+
+}
+
+.toolbar{
+    margin-bottom:20px;
+}
+
+.modal{
+    position:fixed;
+    inset:0;
+    background:rgba(0,0,0,.5);
+    display:flex;
+    justify-content:center;
+    align-items:center;
+}
+
+.hidden{
+    display:none;
+}
+
+.modal-window{
+    background:#fff;
+    color:#222;
+    width:500px;
+    padding:25px;
+    border-radius:10px;
+}
+
+.modal-window input{
+    width:100%;
+    margin:8px 0;
+    padding:10px;
+    box-sizing:border-box;
+}
