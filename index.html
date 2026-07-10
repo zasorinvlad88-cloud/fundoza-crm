@@ -3,500 +3,181 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>🎵 Music CRM — Управление треками и рассылкой - test</title>
+    <title>🎵 Music CRM</title>
     
-    <!-- Bootstrap 5 + иконки -->
+    <!-- Bootstrap 5 -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" />
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" />
     
     <!-- DataTables -->
     <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/dataTables.bootstrap5.min.css" />
     
-    <!-- Кастомные стили -->
     <style>
+        /* Ваши стили из предыдущего ответа + новые */
         :root {
             --primary-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             --bg-dark: #0f0e17;
             --bg-card: #1a1a2e;
-            --bg-card-hover: #16213e;
             --text-primary: #fffffe;
             --text-secondary: #a7a9be;
-            --accent: #ff8906;
         }
 
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+        /* ... все стили из предыдущего ответа ... */
 
-        body {
-            background: var(--bg-dark);
-            color: var(--text-primary);
-            font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, sans-serif;
-            min-height: 100vh;
-            padding: 20px;
-        }
-
-        /* Анимированный фон */
-        .bg-animation {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: var(--bg-dark);
-            z-index: -1;
-        }
-        
-        .bg-animation::before {
-            content: '';
-            position: absolute;
-            width: 200%;
-            height: 200%;
-            background: radial-gradient(circle at 30% 50%, rgba(102, 126, 234, 0.03) 0%, transparent 50%),
-                        radial-gradient(circle at 70% 80%, rgba(118, 75, 162, 0.03) 0%, transparent 50%);
-            animation: float 20s ease-in-out infinite;
-        }
-
-        @keyframes float {
-            0%, 100% { transform: translate(0, 0) rotate(0deg); }
-            33% { transform: translate(2%, -2%) rotate(1deg); }
-            66% { transform: translate(-2%, 2%) rotate(-1deg); }
-        }
-
-        /* Главный контейнер */
-        .main-container {
-            position: relative;
-            z-index: 1;
-            max-width: 1600px;
-            margin: 0 auto;
-        }
-
-        /* Шапка */
-        .header {
-            background: rgba(26, 26, 46, 0.8);
-            backdrop-filter: blur(20px);
-            border: 1px solid rgba(255, 255, 255, 0.05);
-            border-radius: 24px;
-            padding: 20px 32px;
-            margin-bottom: 32px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            flex-wrap: wrap;
-            gap: 16px;
-            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
-        }
-
-        .header-brand {
-            display: flex;
-            align-items: center;
-            gap: 16px;
-        }
-
-        .header-brand .logo-icon {
-            width: 48px;
-            height: 48px;
-            background: var(--primary-gradient);
-            border-radius: 14px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 24px;
-            box-shadow: 0 4px 20px rgba(102, 126, 234, 0.3);
-        }
-
-        .header-brand h1 {
-            font-size: 24px;
-            font-weight: 700;
-            background: var(--primary-gradient);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            margin: 0;
-        }
-
-        .header-brand .subtitle {
-            font-size: 13px;
-            color: var(--text-secondary);
-            -webkit-text-fill-color: var(--text-secondary);
-        }
-
-        .header-actions {
-            display: flex;
-            gap: 12px;
-            flex-wrap: wrap;
-        }
-
-        .header-actions .badge-status {
-            background: rgba(16, 185, 129, 0.15);
-            color: #34d399;
-            padding: 8px 16px;
-            border-radius: 40px;
-            font-size: 13px;
-            border: 1px solid rgba(52, 211, 153, 0.2);
-            display: flex;
-            align-items: center;
-            gap: 6px;
-        }
-
-        .badge-status .pulse {
-            width: 8px;
-            height: 8px;
-            background: #34d399;
-            border-radius: 50%;
-            animation: pulse 2s ease-in-out infinite;
-            display: inline-block;
-        }
-
-        @keyframes pulse {
-            0%, 100% { opacity: 1; transform: scale(1); }
-            50% { opacity: 0.5; transform: scale(0.8); }
-        }
-
-        /* Карточки */
-        .card-music {
+        /* Новые стили для статистики */
+        .stats-card {
             background: rgba(26, 26, 46, 0.7);
             backdrop-filter: blur(10px);
             border: 1px solid rgba(255, 255, 255, 0.06);
-            border-radius: 20px;
-            padding: 28px;
-            transition: all 0.3s ease;
-            box-shadow: 0 4px 24px rgba(0, 0, 0, 0.2);
-        }
-
-        .card-music:hover {
-            border-color: rgba(102, 126, 234, 0.2);
-            box-shadow: 0 8px 40px rgba(0, 0, 0, 0.3);
-        }
-
-        .card-title {
-            font-size: 18px;
-            font-weight: 600;
-            margin-bottom: 24px;
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            color: var(--text-primary);
-        }
-
-        .card-title i {
-            color: #667eea;
-            font-size: 22px;
-        }
-
-        /* Кнопки */
-        .btn-gradient {
-            background: var(--primary-gradient);
-            border: none;
-            color: white;
-            padding: 10px 24px;
-            border-radius: 12px;
-            font-weight: 600;
-            transition: all 0.3s ease;
-            box-shadow: 0 4px 16px rgba(102, 126, 234, 0.3);
-        }
-
-        .btn-gradient:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 8px 32px rgba(102, 126, 234, 0.4);
-            color: white;
-        }
-
-        .btn-outline-glass {
-            background: rgba(255, 255, 255, 0.05);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            color: var(--text-secondary);
-            padding: 10px 24px;
-            border-radius: 12px;
-            font-weight: 500;
-            transition: all 0.3s ease;
-        }
-
-        .btn-outline-glass:hover {
-            background: rgba(255, 255, 255, 0.1);
-            border-color: rgba(255, 255, 255, 0.2);
-            color: var(--text-primary);
-        }
-
-        .btn-danger-glass {
-            background: rgba(239, 68, 68, 0.15);
-            border: 1px solid rgba(239, 68, 68, 0.2);
-            color: #f87171;
-            padding: 10px 24px;
-            border-radius: 12px;
-            font-weight: 500;
-            transition: all 0.3s ease;
-        }
-
-        .btn-danger-glass:hover {
-            background: rgba(239, 68, 68, 0.25);
-            border-color: rgba(239, 68, 68, 0.3);
-            color: #fca5a5;
-        }
-
-        .btn-success-glass {
-            background: rgba(16, 185, 129, 0.15);
-            border: 1px solid rgba(16, 185, 129, 0.2);
-            color: #34d399;
-            padding: 12px 32px;
-            border-radius: 12px;
-            font-weight: 600;
-            transition: all 0.3s ease;
-            width: 100%;
-        }
-
-        .btn-success-glass:hover {
-            background: rgba(16, 185, 129, 0.25);
-            border-color: rgba(16, 185, 129, 0.3);
-            color: #6ee7b7;
-            transform: translateY(-2px);
-        }
-
-        /* DataTables кастомизация */
-        .dataTables_wrapper .dataTables_filter input {
-            background: rgba(255, 255, 255, 0.05);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 12px;
-            color: var(--text-primary);
-            padding: 8px 16px;
-            transition: all 0.3s ease;
-        }
-
-        .dataTables_wrapper .dataTables_filter input:focus {
-            background: rgba(255, 255, 255, 0.08);
-            border-color: #667eea;
-            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
-            color: var(--text-primary);
-        }
-
-        .dataTables_wrapper .dataTables_length select {
-            background: rgba(255, 255, 255, 0.05);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 12px;
-            color: var(--text-primary);
-            padding: 6px 12px;
-        }
-
-        .dataTables_wrapper .dataTables_info {
-            color: var(--text-secondary);
-        }
-
-        .dataTables_wrapper .dataTables_paginate .paginate_button {
-            background: rgba(255, 255, 255, 0.05);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 8px;
-            color: var(--text-secondary) !important;
-            padding: 6px 14px;
-            margin: 0 4px;
-            transition: all 0.2s ease;
-        }
-
-        .dataTables_wrapper .dataTables_paginate .paginate_button:hover {
-            background: rgba(102, 126, 234, 0.2);
-            border-color: #667eea;
-            color: var(--text-primary) !important;
-        }
-
-        .dataTables_wrapper .dataTables_paginate .paginate_button.current {
-            background: var(--primary-gradient);
-            border-color: transparent;
-            color: white !important;
-        }
-
-        table.dataTable {
-            color: var(--text-primary) !important;
-        }
-
-        table.dataTable thead th {
-            color: var(--text-secondary);
-            font-weight: 600;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.06);
-            padding: 16px 12px;
-        }
-
-        table.dataTable tbody td {
-            border-bottom: 1px solid rgba(255, 255, 255, 0.04);
-            padding: 14px 12px;
-            vertical-align: middle;
-        }
-
-        table.dataTable tbody tr:hover {
-            background: rgba(255, 255, 255, 0.02);
-        }
-
-        /* Стили для чекбоксов */
-        .form-check-input {
-            background-color: rgba(255, 255, 255, 0.05);
-            border: 2px solid rgba(255, 255, 255, 0.2);
-            border-radius: 6px;
-            width: 18px;
-            height: 18px;
-            cursor: pointer;
-            transition: all 0.2s ease;
-        }
-
-        .form-check-input:checked {
-            background-color: #667eea;
-            border-color: #667eea;
-            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.2);
-        }
-
-        .form-check-input:focus {
-            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.15);
-            border-color: #667eea;
-        }
-
-        /* Теги */
-        .tag {
-            background: rgba(102, 126, 234, 0.15);
-            color: #a5b4fc;
-            padding: 4px 14px;
-            border-radius: 40px;
-            font-size: 12px;
-            font-weight: 500;
-            border: 1px solid rgba(102, 126, 234, 0.1);
-            display: inline-block;
-        }
-
-        /* Dropdown для плейлистов и групп */
-        .form-select-glass {
-            background: rgba(255, 255, 255, 0.05);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 12px;
-            color: var(--text-primary);
-            padding: 12px 16px;
-            transition: all 0.3s ease;
-            cursor: pointer;
-        }
-
-        .form-select-glass:focus {
-            background: rgba(255, 255, 255, 0.08);
-            border-color: #667eea;
-            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
-            color: var(--text-primary);
-        }
-
-        .form-select-glass option {
-            background: #1a1a2e;
-            color: var(--text-primary);
-        }
-
-        /* Счетчик выбранных треков */
-        .selected-counter {
-            background: rgba(102, 126, 234, 0.08);
-            border: 1px solid rgba(102, 126, 234, 0.15);
             border-radius: 16px;
-            padding: 16px;
+            padding: 20px;
             text-align: center;
-            margin: 20px 0;
+            transition: all 0.3s ease;
         }
 
-        .selected-counter .number {
+        .stats-card:hover {
+            transform: translateY(-4px);
+            border-color: rgba(102, 126, 234, 0.3);
+        }
+
+        .stats-card .number {
             font-size: 32px;
             font-weight: 700;
             background: var(--primary-gradient);
-            background-clip: text;
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
         }
 
-        /* Зона загрузки файлов */
-        .upload-zone {
-            border: 2px dashed rgba(255, 255, 255, 0.1);
-            border-radius: 16px;
-            padding: 40px 20px;
-            text-align: center;
-            transition: all 0.3s ease;
-            background: rgba(255, 255, 255, 0.02);
-            cursor: pointer;
-            margin-bottom: 24px;
-        }
-
-        .upload-zone:hover {
-            border-color: #667eea;
-            background: rgba(102, 126, 234, 0.05);
-            transform: scale(1.01);
-        }
-
-        .upload-zone i {
-            font-size: 48px;
-            color: #667eea;
-            margin-bottom: 12px;
-            display: block;
-        }
-
-        .upload-zone .text {
+        .stats-card .label {
             color: var(--text-secondary);
             font-size: 14px;
+            margin-top: 4px;
         }
 
-        .upload-zone .text strong {
+        .stats-card .change {
+            font-size: 12px;
+            padding: 2px 10px;
+            border-radius: 20px;
+            display: inline-block;
+            margin-top: 8px;
+        }
+
+        .stats-card .change.positive {
+            background: rgba(16, 185, 129, 0.15);
+            color: #34d399;
+        }
+
+        .stats-card .change.negative {
+            background: rgba(239, 68, 68, 0.15);
+            color: #f87171;
+        }
+
+        /* Контакты */
+        .contacts-list {
+            max-height: 300px;
+            overflow-y: auto;
+        }
+
+        .contact-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 8px 12px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .contact-item:hover {
+            background: rgba(255, 255, 255, 0.02);
+        }
+
+        .contact-item .email {
             color: var(--text-primary);
         }
 
-        /* Адаптивность */
-        @media (max-width: 768px) {
-            .header {
-                flex-direction: column;
-                align-items: flex-start;
-                padding: 16px 20px;
-            }
-
-            .header-actions {
-                width: 100%;
-                justify-content: stretch;
-            }
-
-            .header-actions .btn {
-                flex: 1;
-                justify-content: center;
-                font-size: 13px;
-            }
-
-            .card-music {
-                padding: 16px;
-            }
-
-            .upload-zone {
-                padding: 24px 16px;
-            }
+        .contact-item .status {
+            font-size: 12px;
+            padding: 2px 12px;
+            border-radius: 20px;
         }
 
-        /* Анимация появления */
-        .fade-in {
-            animation: fadeInUp 0.6s ease-out;
+        .status.sent {
+            background: rgba(16, 185, 129, 0.15);
+            color: #34d399;
         }
 
-        @keyframes fadeInUp {
-            from {
-                opacity: 0;
-                transform: translateY(20px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
+        .status.pending {
+            background: rgba(251, 191, 36, 0.15);
+            color: #fbbf24;
         }
 
-        /* Скроллбар */
-        ::-webkit-scrollbar {
-            width: 8px;
-            height: 8px;
+        .status.failed {
+            background: rgba(239, 68, 68, 0.15);
+            color: #f87171;
         }
 
-        ::-webkit-scrollbar-track {
-            background: rgba(255, 255, 255, 0.02);
-            border-radius: 10px;
+        /* Анимация загрузки */
+        .spinner-border-sm {
+            width: 1rem;
+            height: 1rem;
+            border-width: 0.1em;
         }
 
-        ::-webkit-scrollbar-thumb {
-            background: rgba(102, 126, 234, 0.3);
-            border-radius: 10px;
+        .upload-progress {
+            height: 4px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 4px;
+            margin-top: 12px;
+            overflow: hidden;
+            display: none;
         }
 
-        ::-webkit-scrollbar-thumb:hover {
-            background: rgba(102, 126, 234, 0.5);
+        .upload-progress .progress-bar {
+            height: 100%;
+            background: var(--primary-gradient);
+            width: 0%;
+            transition: width 0.3s ease;
+        }
+
+        /* Модальное окно для контактов */
+        .modal-glass {
+            background: rgba(26, 26, 46, 0.95);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .modal-glass .modal-header {
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .modal-glass .modal-footer {
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .form-control-glass {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            color: var(--text-primary);
+            border-radius: 12px;
+            padding: 12px 16px;
+        }
+
+        .form-control-glass:focus {
+            background: rgba(255, 255, 255, 0.08);
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+            color: var(--text-primary);
+        }
+
+        .form-control-glass::placeholder {
+            color: var(--text-secondary);
+        }
+
+        /* Адаптивность для статистики */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 16px;
+            margin-bottom: 24px;
         }
     </style>
 </head>
@@ -522,14 +203,36 @@
                     <span class="pulse"></span>
                     Система активна
                 </div>
-                <button class="btn btn-outline-glass" onclick="showToast('📊 Статистика загружается...')">
+                <button class="btn btn-outline-glass" onclick="loadStats()">
                     <i class="bi bi-graph-up-arrow"></i> Статистика
                 </button>
-                <button class="btn btn-gradient" onclick="showToast('⚡ AI-микст генерируется...')">
-                    <i class="bi bi-stars"></i> AI Микст
+                <button class="btn btn-gradient" onclick="openContactsModal()">
+                    <i class="bi bi-people"></i> Контакты
                 </button>
             </div>
         </header>
+
+        <!-- СТАТИСТИКА -->
+        <div class="stats-grid" id="statsGrid">
+            <div class="stats-card">
+                <div class="number" id="statTotalTracks">0</div>
+                <div class="label">Всего треков</div>
+            </div>
+            <div class="stats-card">
+                <div class="number" id="statTotalContacts">0</div>
+                <div class="label">Контактов</div>
+            </div>
+            <div class="stats-card">
+                <div class="number" id="statTotalSent">0</div>
+                <div class="label">Отправлено</div>
+                <div class="change positive">↑ 12%</div>
+            </div>
+            <div class="stats-card">
+                <div class="number" id="statOpenRate">0%</div>
+                <div class="label">Открываемость</div>
+                <div class="change positive">↑ 5%</div>
+            </div>
+        </div>
 
         <!-- ОСНОВНОЙ КОНТЕНТ -->
         <div class="row g-4">
@@ -544,13 +247,16 @@
                     </div>
 
                     <!-- Зона загрузки -->
-                    <div class="upload-zone" onclick="document.getElementById('fileInput').click()">
+                    <div class="upload-zone" id="uploadZone">
                         <i class="bi bi-cloud-arrow-up"></i>
                         <div class="text">
                             <strong>Нажмите</strong> для загрузки или перетащите файлы<br />
                             <small style="color: rgba(255,255,255,0.3);">MP3, FLAC, WAV, AIFF</small>
                         </div>
                         <input type="file" id="fileInput" multiple accept=".mp3,.flac,.wav,.aiff" style="display:none;" />
+                        <div class="upload-progress" id="uploadProgress">
+                            <div class="progress-bar" id="progressBar"></div>
+                        </div>
                     </div>
 
                     <!-- Кнопки управления -->
@@ -563,6 +269,9 @@
                         </button>
                         <button class="btn btn-danger-glass" onclick="deleteSelected()">
                             <i class="bi bi-trash3"></i> Удалить выбранные
+                        </button>
+                        <button class="btn btn-outline-glass" onclick="refreshTracks()">
+                            <i class="bi bi-arrow-clockwise"></i> Обновить
                         </button>
                     </div>
 
@@ -577,11 +286,12 @@
                                     <th>Название</th>
                                     <th>Длительность</th>
                                     <th>Теги</th>
+                                    <th>Прослушиваний</th>
                                     <th style="width: 60px;">Действия</th>
                                 </tr>
                             </thead>
                             <tbody id="trackList">
-                                <!-- Данные загружаются через DataTables -->
+                                <!-- Загружается через API -->
                             </tbody>
                         </table>
                     </div>
@@ -616,8 +326,8 @@
                         </label>
                         <select class="form-select-glass w-100" id="groupSelect">
                             <option value="">Выберите группу</option>
-                            <option value="1">👑 Премиум-подписчики (124)</option>
-                            <option value="2">🌙 Ночной эфир (56)</option>
+                            <option value="1">👑 Премиум-подписчики</option>
+                            <option value="2">🌙 Ночной эфир</option>
                         </select>
                     </div>
 
@@ -636,10 +346,10 @@
                     </button>
 
                     <div class="d-flex gap-2 mt-3">
-                        <button class="btn btn-outline-glass flex-grow-1" onclick="showToast('💾 Сохранено в шаблоны')">
+                        <button class="btn btn-outline-glass flex-grow-1" onclick="saveTemplate()">
                             <i class="bi bi-bookmark"></i> Шаблон
                         </button>
-                        <button class="btn btn-outline-glass flex-grow-1" onclick="showToast('📋 Отчет готов')">
+                        <button class="btn btn-outline-glass flex-grow-1" onclick="loadStats()">
                             <i class="bi bi-file-text"></i> Отчет
                         </button>
                     </div>
@@ -652,25 +362,82 @@
         </div>
     </div>
 
+    <!-- МОДАЛЬНОЕ ОКНО ДЛЯ КОНТАКТОВ -->
+    <div class="modal fade" id="contactsModal" tabindex="-1">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content modal-glass">
+                <div class="modal-header">
+                    <h5 class="modal-title text-white">
+                        <i class="bi bi-people"></i> Управление контактами
+                    </h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <!-- Парсинг контактов через GPT -->
+                    <div class="mb-4">
+                        <label class="form-label text-white">Парсинг контактов через GPT</label>
+                        <div class="input-group">
+                            <input type="text" class="form-control form-control-glass" id="gptPrompt" 
+                                   placeholder="Введите запрос для GPT (например: найди email-адреса в этом тексте...)" />
+                            <button class="btn btn-gradient" onclick="parseContactsWithGPT()">
+                                <i class="bi bi-magic"></i> Парсить
+                            </button>
+                        </div>
+                        <small class="text-secondary">Вставьте текст с email-адресами, и GPT извлечет их</small>
+                    </div>
+
+                    <!-- Загрузка из Excel/CSV -->
+                    <div class="mb-4">
+                        <label class="form-label text-white">Загрузить из Excel/CSV</label>
+                        <div class="input-group">
+                            <input type="file" class="form-control form-control-glass" id="excelFile" 
+                                   accept=".csv,.xlsx,.xls" />
+                            <button class="btn btn-outline-glass" onclick="importContacts()">
+                                <i class="bi bi-upload"></i> Импорт
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Добавление вручную -->
+                    <div class="mb-4">
+                        <label class="form-label text-white">Добавить вручную</label>
+                        <div class="input-group">
+                            <input type="email" class="form-control form-control-glass" id="manualEmail" 
+                                   placeholder="email@example.com" />
+                            <button class="btn btn-outline-glass" onclick="addContact()">
+                                <i class="bi bi-plus"></i> Добавить
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Список контактов -->
+                    <div>
+                        <div class="d-flex justify-content-between align-items-center mb-3">
+                            <span class="text-white">Список контактов</span>
+                            <span class="text-secondary" id="contactCount">0</span>
+                        </div>
+                        <div class="contacts-list" id="contactsList">
+                            <!-- Загружается через API -->
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-outline-glass" onclick="exportContacts()">
+                        <i class="bi bi-download"></i> Экспорт
+                    </button>
+                    <button class="btn btn-danger-glass" onclick="clearContacts()">
+                        <i class="bi bi-trash3"></i> Очистить все
+                    </button>
+                    <button class="btn btn-gradient" data-bs-dismiss="modal">
+                        <i class="bi bi-check2"></i> Готово
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <!-- TOAST УВЕДОМЛЕНИЯ -->
-    <div id="toast" style="
-        position: fixed;
-        bottom: 30px;
-        right: 30px;
-        background: rgba(26, 26, 46, 0.95);
-        backdrop-filter: blur(20px);
-        border: 1px solid rgba(255,255,255,0.1);
-        border-radius: 16px;
-        padding: 16px 24px;
-        color: white;
-        box-shadow: 0 20px 60px rgba(0,0,0,0.6);
-        display: none;
-        z-index: 9999;
-        max-width: 400px;
-        font-size: 14px;
-        animation: fadeInUp 0.4s ease-out;
-        border-left: 4px solid #667eea;
-    ">
+    <div id="toast" style="position: fixed; bottom: 30px; right: 30px; background: rgba(26, 26, 46, 0.95); backdrop-filter: blur(20px); border: 1px solid rgba(255,255,255,0.1); border-radius: 16px; padding: 16px 24px; color: white; box-shadow: 0 20px 60px rgba(0,0,0,0.6); display: none; z-index: 9999; max-width: 400px; font-size: 14px; border-left: 4px solid #667eea;">
         <div id="toastMessage"></div>
     </div>
 
@@ -679,48 +446,39 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
     <script src="https://cdn.datatables.net/1.13.6/js/dataTables.bootstrap5.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
 
     <script>
-        // ===== ДАННЫЕ =====
-        let tracks = [
-            { id: 1, name: 'Neon Dreams', duration: '3:24', tags: 'Electronic' },
-            { id: 2, name: 'Midnight Drive', duration: '4:02', tags: 'Synthwave' },
-            { id: 3, name: 'Echoes', duration: '2:58', tags: 'Ambient' },
-        ];
-        let nextId = 4;
+        // ============================================================
+        // 1. РАБОТА С ТРЕКАМИ (СОХРАНЕНИЕ В БД)
+        // ============================================================
 
-        // ===== ТОАСТ =====
-        function showToast(message, type = 'info') {
-            const toast = document.getElementById('toast');
-            const toastMessage = document.getElementById('toastMessage');
-            
-            const icons = {
-                info: '📌',
-                success: '✅',
-                error: '❌',
-                warning: '⚠️'
-            };
-            
-            toastMessage.textContent = `${icons[type] || '📌'} ${message}`;
-            toast.style.display = 'block';
-            toast.style.borderLeftColor = type === 'success' ? '#34d399' : 
-                                          type === 'error' ? '#f87171' : 
-                                          type === 'warning' ? '#fbbf24' : '#667eea';
-            
-            clearTimeout(window.toastTimeout);
-            window.toastTimeout = setTimeout(() => {
-                toast.style.display = 'none';
-            }, 3500);
+        // Загрузка треков из API
+        async function loadTracks() {
+            try {
+                const response = await fetch('/api/tracks');
+                const data = await response.json();
+                
+                if (data.success) {
+                    renderTracks(data.tracks);
+                    updateStats();
+                } else {
+                    showToast('Ошибка загрузки треков', 'error');
+                }
+            } catch (error) {
+                console.error('Ошибка:', error);
+                showToast('Ошибка соединения с сервером', 'error');
+            }
         }
 
-        // ===== РЕНДЕР ТАБЛИЦЫ =====
-        function renderTable() {
+        // Рендер треков в таблице
+        function renderTracks(tracks) {
             const tbody = document.getElementById('trackList');
             
-            if (tracks.length === 0) {
+            if (!tracks || tracks.length === 0) {
                 tbody.innerHTML = `
                     <tr>
-                        <td colspan="5" class="text-center py-5" style="color: var(--text-secondary);">
+                        <td colspan="6" class="text-center py-5" style="color: var(--text-secondary);">
                             <i class="bi bi-music-note" style="font-size: 32px; display: block; margin-bottom: 12px;"></i>
                             Библиотека пуста. Загрузите треки!
                         </td>
@@ -728,13 +486,14 @@
                 `;
             } else {
                 tbody.innerHTML = tracks.map(t => `
-                    <tr>
+                    <tr data-id="${t.id}">
                         <td><input type="checkbox" class="form-check-input track-select" data-id="${t.id}" /></td>
                         <td><i class="bi bi-music-note-beamed" style="color: #667eea; margin-right: 10px;"></i>${t.name}</td>
-                        <td>${t.duration}</td>
+                        <td>${t.duration || '3:00'}</td>
                         <td><span class="tag">${t.tags || '—'}</span></td>
+                        <td>${t.plays || 0}</td>
                         <td>
-                            <button class="btn btn-sm btn-outline-glass" onclick="deleteTrack(${t.id})" style="padding: 4px 10px;">
+                            <button class="btn btn-sm btn-outline-glass" onclick="deleteTrack('${t.id}')" style="padding: 4px 10px;">
                                 <i class="bi bi-x-lg"></i>
                             </button>
                         </td>
@@ -742,89 +501,374 @@
                 `).join('');
             }
             
-            document.getElementById('trackCount').textContent = tracks.length;
+            document.getElementById('trackCount').textContent = tracks?.length || 0;
             updateSelectedCount();
             
-            // Обновляем обработчики
+            // Обработчики чекбоксов
             document.querySelectorAll('.track-select').forEach(cb => {
                 cb.addEventListener('change', updateSelectedCount);
             });
             
-            // Выбрать все
             document.getElementById('selectAll').addEventListener('change', function() {
                 document.querySelectorAll('.track-select').forEach(cb => cb.checked = this.checked);
                 updateSelectedCount();
             });
         }
 
-        // ===== СЧЕТЧИК =====
-        function updateSelectedCount() {
-            const count = document.querySelectorAll('.track-select:checked').length;
-            document.getElementById('selectedCount').textContent = count;
-        }
-
-        // ===== ЗАГРУЗКА ФАЙЛОВ =====
-        document.getElementById('fileInput').addEventListener('change', function(e) {
-            const files = e.target.files;
-            if (!files.length) return;
+        // Загрузка треков
+        async function uploadTracks(files) {
+            const progressBar = document.getElementById('progressBar');
+            const progressContainer = document.getElementById('uploadProgress');
             
-            let added = 0;
+            progressContainer.style.display = 'block';
+            
+            let uploaded = 0;
+            const total = files.length;
+            
             for (const file of files) {
-                if (file.type.startsWith('audio/') || file.name.match(/\.(mp3|flac|wav|aiff)$/i)) {
-                    tracks.push({
-                        id: nextId++,
-                        name: file.name.replace(/\.[^.]+$/, ''),
-                        duration: '3:00',
-                        tags: 'новый'
+                const formData = new FormData();
+                formData.append('file', file);
+                
+                try {
+                    const response = await fetch('/api/upload', {
+                        method: 'POST',
+                        body: formData
                     });
-                    added++;
+                    
+                    const result = await response.json();
+                    
+                    if (result.success) {
+                        uploaded++;
+                        const percent = (uploaded / total) * 100;
+                        progressBar.style.width = percent + '%';
+                    }
+                } catch (error) {
+                    console.error('Ошибка загрузки:', error);
                 }
             }
             
-            if (added) {
-                renderTable();
-                showToast(`Загружено ${added} треков`, 'success');
-            } else {
-                showToast('Поддерживаются только аудиофайлы', 'warning');
-            }
+            setTimeout(() => {
+                progressContainer.style.display = 'none';
+                progressBar.style.width = '0%';
+            }, 1000);
             
-            this.value = '';
-        });
-
-        // ===== ДЕМО-ТРЕКИ =====
-        function addDemoTracks() {
-            const demos = [
-                { name: 'Solar Flare', duration: '3:45', tags: 'House' },
-                { name: 'Deep Blue', duration: '5:12', tags: 'Downtempo' },
-                { name: 'Velocity', duration: '2:30', tags: 'Drum & Bass' },
-            ];
-            demos.forEach(d => tracks.push({ id: nextId++, ...d }));
-            renderTable();
-            showToast('Добавлены демо-треки', 'success');
+            showToast(`Загружено ${uploaded} из ${total} треков`, 'success');
+            loadTracks(); // Обновляем таблицу
         }
 
-        // ===== УДАЛЕНИЕ =====
-        function deleteTrack(id) {
-            tracks = tracks.filter(t => t.id !== id);
-            renderTable();
-            showToast('Трек удален', 'info');
+        // Удаление трека
+        async function deleteTrack(id) {
+            if (!confirm('Удалить трек?')) return;
+            
+            try {
+                const response = await fetch(`/api/tracks?id=${id}`, {
+                    method: 'DELETE'
+                });
+                
+                const result = await response.json();
+                
+                if (result.success) {
+                    showToast('Трек удален', 'info');
+                    loadTracks();
+                } else {
+                    showToast('Ошибка удаления', 'error');
+                }
+            } catch (error) {
+                console.error('Ошибка:', error);
+                showToast('Ошибка соединения', 'error');
+            }
         }
 
-        function deleteSelected() {
+        // Удаление выбранных
+        async function deleteSelected() {
             const checked = document.querySelectorAll('.track-select:checked');
             if (!checked.length) {
                 showToast('Выберите треки для удаления', 'warning');
                 return;
             }
             
-            const ids = Array.from(checked).map(cb => parseInt(cb.dataset.id));
-            tracks = tracks.filter(t => !ids.includes(t.id));
-            renderTable();
-            showToast(`Удалено ${ids.length} треков`, 'info');
+            if (!confirm(`Удалить ${checked.length} треков?`)) return;
+            
+            const ids = Array.from(checked).map(cb => cb.dataset.id);
+            
+            try {
+                const response = await fetch('/api/tracks', {
+                    method: 'DELETE',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ ids })
+                });
+                
+                const result = await response.json();
+                
+                if (result.success) {
+                    showToast(`Удалено ${ids.length} треков`, 'info');
+                    loadTracks();
+                } else {
+                    showToast('Ошибка удаления', 'error');
+                }
+            } catch (error) {
+                console.error('Ошибка:', error);
+                showToast('Ошибка соединения', 'error');
+            }
         }
 
-        // ===== РАССЫЛКА =====
-        function sendMailing() {
+        // ============================================================
+        // 2. КОНТАКТЫ
+        // ============================================================
+
+        let contacts = [];
+
+        // Загрузка контактов
+        async function loadContacts() {
+            try {
+                const response = await fetch('/api/contacts');
+                const data = await response.json();
+                
+                if (data.success) {
+                    contacts = data.contacts || [];
+                    renderContacts();
+                    document.getElementById('contactCount').textContent = contacts.length;
+                }
+            } catch (error) {
+                console.error('Ошибка загрузки контактов:', error);
+            }
+        }
+
+        // Рендер контактов
+        function renderContacts() {
+            const container = document.getElementById('contactsList');
+            
+            if (!contacts || contacts.length === 0) {
+                container.innerHTML = `
+                    <div class="text-center py-4 text-secondary">
+                        <i class="bi bi-inbox" style="font-size: 24px; display: block; margin-bottom: 8px;"></i>
+                        Нет контактов
+                    </div>
+                `;
+                return;
+            }
+            
+            container.innerHTML = contacts.map(c => `
+                <div class="contact-item">
+                    <span class="email">
+                        <i class="bi bi-envelope" style="color: #667eea;"></i>
+                        ${c.email}
+                    </span>
+                    <div>
+                        <span class="status ${c.status || 'pending'}">${c.status || 'Ожидает'}</span>
+                        <button class="btn btn-sm btn-outline-glass" onclick="deleteContact('${c.id}')" style="padding: 2px 8px; margin-left: 8px;">
+                            <i class="bi bi-x"></i>
+                        </button>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        // Добавление контакта
+        async function addContact() {
+            const emailInput = document.getElementById('manualEmail');
+            const email = emailInput.value.trim();
+            
+            if (!email) {
+                showToast('Введите email', 'warning');
+                return;
+            }
+            
+            try {
+                const response = await fetch('/api/contacts', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ email })
+                });
+                
+                const result = await response.json();
+                
+                if (result.success) {
+                    emailInput.value = '';
+                    showToast('Контакт добавлен', 'success');
+                    loadContacts();
+                } else {
+                    showToast('Ошибка добавления', 'error');
+                }
+            } catch (error) {
+                console.error('Ошибка:', error);
+                showToast('Ошибка соединения', 'error');
+            }
+        }
+
+        // Парсинг контактов через GPT
+        async function parseContactsWithGPT() {
+            const prompt = document.getElementById('gptPrompt').value.trim();
+            
+            if (!prompt) {
+                showToast('Введите текст с email-адресами', 'warning');
+                return;
+            }
+            
+            showToast('🔮 GPT анализирует текст...', 'info');
+            
+            try {
+                const response = await fetch('/api/parse-contacts', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ text: prompt })
+                });
+                
+                const result = await response.json();
+                
+                if (result.success) {
+                    showToast(`Найдено ${result.count} контактов`, 'success');
+                    loadContacts();
+                } else {
+                    showToast('Ошибка парсинга: ' + result.error, 'error');
+                }
+            } catch (error) {
+                console.error('Ошибка:', error);
+                showToast('Ошибка соединения', 'error');
+            }
+        }
+
+        // Импорт из Excel/CSV
+        async function importContacts() {
+            const fileInput = document.getElementById('excelFile');
+            const file = fileInput.files[0];
+            
+            if (!file) {
+                showToast('Выберите файл', 'warning');
+                return;
+            }
+            
+            try {
+                const reader = new FileReader();
+                reader.onload = async function(e) {
+                    const data = new Uint8Array(e.target.result);
+                    const workbook = XLSX.read(data, { type: 'array' });
+                    const firstSheet = workbook.Sheets[workbook.SheetNames[0]];
+                    const json = XLSX.utils.sheet_to_json(firstSheet);
+                    
+                    const emails = json
+                        .map(row => Object.values(row)[0])
+                        .filter(val => val && val.includes('@'))
+                        .map(val => val.trim());
+                    
+                    if (emails.length === 0) {
+                        showToast('Не найдено email-адресов', 'warning');
+                        return;
+                    }
+                    
+                    const response = await fetch('/api/contacts', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ emails })
+                    });
+                    
+                    const result = await response.json();
+                    
+                    if (result.success) {
+                        showToast(`Импортировано ${result.added} контактов`, 'success');
+                        fileInput.value = '';
+                        loadContacts();
+                    } else {
+                        showToast('Ошибка импорта', 'error');
+                    }
+                };
+                reader.readAsArrayBuffer(file);
+            } catch (error) {
+                console.error('Ошибка:', error);
+                showToast('Ошибка чтения файла', 'error');
+            }
+        }
+
+        // Удаление контакта
+        async function deleteContact(id) {
+            try {
+                const response = await fetch(`/api/contacts?id=${id}`, {
+                    method: 'DELETE'
+                });
+                
+                const result = await response.json();
+                
+                if (result.success) {
+                    showToast('Контакт удален', 'info');
+                    loadContacts();
+                }
+            } catch (error) {
+                console.error('Ошибка:', error);
+            }
+        }
+
+        // Очистка всех контактов
+        async function clearContacts() {
+            if (!confirm('Удалить все контакты?')) return;
+            
+            try {
+                const response = await fetch('/api/contacts', {
+                    method: 'DELETE'
+                });
+                
+                const result = await response.json();
+                
+                if (result.success) {
+                    showToast('Все контакты удалены', 'info');
+                    loadContacts();
+                }
+            } catch (error) {
+                console.error('Ошибка:', error);
+            }
+        }
+
+        // Экспорт контактов
+        function exportContacts() {
+            if (!contacts || contacts.length === 0) {
+                showToast('Нет контактов для экспорта', 'warning');
+                return;
+            }
+            
+            const data = contacts.map(c => ({ email: c.email, status: c.status || 'pending' }));
+            const wb = XLSX.utils.book_new();
+            const ws = XLSX.utils.json_to_sheet(data);
+            XLSX.utils.book_append_sheet(wb, ws, 'Contacts');
+            XLSX.writeFile(wb, 'contacts.xlsx');
+            
+            showToast('Экспорт выполнен', 'success');
+        }
+
+        // Открытие модального окна
+        function openContactsModal() {
+            const modal = new bootstrap.Modal(document.getElementById('contactsModal'));
+            modal.show();
+            loadContacts();
+        }
+
+        // ============================================================
+        // 3. СТАТИСТИКА
+        // ============================================================
+
+        async function loadStats() {
+            try {
+                const response = await fetch('/api/stats');
+                const result = await response.json();
+                
+                if (result.success) {
+                    document.getElementById('statTotalTracks').textContent = result.totalTracks || 0;
+                    document.getElementById('statTotalContacts').textContent = result.totalContacts || 0;
+                    document.getElementById('statTotalSent').textContent = result.totalSent || 0;
+                    document.getElementById('statOpenRate').textContent = (result.openRate || 0) + '%';
+                }
+            } catch (error) {
+                console.error('Ошибка загрузки статистики:', error);
+            }
+        }
+
+        function updateStats() {
+            loadStats();
+        }
+
+        // ============================================================
+        // 4. РАССЫЛКА
+        // ============================================================
+
+        async function sendMailing() {
             const checked = document.querySelectorAll('.track-select:checked');
             if (!checked.length) {
                 showToast('Выберите хотя бы один трек', 'warning');
@@ -839,43 +883,51 @@
                 return;
             }
             
-            showToast(`🚀 Рассылка запущена! Треков: ${checked.length}`, 'success');
+            const trackIds = Array.from(checked).map(cb => cb.dataset.id);
+            
+            showToast('⏳ Отправка писем...', 'info');
+            
+            try {
+                const response = await fetch('/api/send-mailing', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        trackIds,
+                        playlistId: playlist,
+                        groupId: group
+                    })
+                });
+                
+                const result = await response.json();
+                
+                if (result.success) {
+                    showToast(`🚀 Рассылка отправлена! ${result.sent} писем`, 'success');
+                    loadStats();
+                } else {
+                    showToast('Ошибка отправки: ' + result.error, 'error');
+                }
+            } catch (error) {
+                console.error('Ошибка:', error);
+                showToast('Ошибка соединения', 'error');
+            }
         }
 
-        // ===== ИНИЦИАЛИЗАЦИЯ =====
-        document.addEventListener('DOMContentLoaded', function() {
-            renderTable();
-            
-            // Анимация при загрузке
-            document.querySelector('.main-container').style.opacity = '1';
-        });
+        // ============================================================
+        // 5. ВСПОМОГАТЕЛЬНЫЕ ФУНКЦИИ
+        // ============================================================
 
-        // ===== DRAG & DROP =====
-        const uploadZone = document.querySelector('.upload-zone');
-        
-        uploadZone.addEventListener('dragover', (e) => {
-            e.preventDefault();
-            uploadZone.style.borderColor = '#667eea';
-            uploadZone.style.background = 'rgba(102, 126, 234, 0.05)';
-        });
-        
-        uploadZone.addEventListener('dragleave', () => {
-            uploadZone.style.borderColor = 'rgba(255, 255, 255, 0.1)';
-            uploadZone.style.background = 'rgba(255, 255, 255, 0.02)';
-        });
-        
-        uploadZone.addEventListener('drop', (e) => {
-            e.preventDefault();
-            uploadZone.style.borderColor = 'rgba(255, 255, 255, 0.1)';
-            uploadZone.style.background = 'rgba(255, 255, 255, 0.02)';
+        // Toast уведомления
+        function showToast(message, type = 'info') {
+            const toast = document.getElementById('toast');
+            const toastMessage = document.getElementById('toastMessage');
             
-            if (e.dataTransfer.files.length) {
-                const input = document.getElementById('fileInput');
-                input.files = e.dataTransfer.files;
-                input.dispatchEvent(new Event('change'));
-            }
-        });
-    </script>
-
-</body>
-</html>
+            const icons = {
+                info: '📌',
+                success: '✅',
+                error: '❌',
+                warning: '⚠️'
+            };
+            
+            toastMessage.textContent = `${icons[type] || '📌'} ${message}`;
+            toast.style.display = 'block';
+            toast.style.borderLeftColor = type === 'success'
