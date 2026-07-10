@@ -1,0 +1,30 @@
+{
+  "name": "fundoza-crm",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/zasorinvlad88-cloud/fundoza-crm.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/zasorinvlad88-cloud/fundoza-crm/issues"
+  },
+  "homepage": "https://github.com/zasorinvlad88-cloud/fundoza-crm#readme",
+  "dependencies": {
+    "@supabase/supabase-js": "^2.110.2",
+    "multer": "^2.2.0",
+    "nodemailer": "^9.0.3",
+    "uuid": "^14.0.1"
+  },
+  "devDependencies": {
+    "@vercel/node": "^5.8.23"
+  }
+}
