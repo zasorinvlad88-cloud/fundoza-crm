@@ -5,11 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>📥 Импорт данных — Music CRM</title>
     
-    <!-- Bootstrap 5 -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" />
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" />
-    
-    <!-- XLSX для работы с Excel -->
     <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
     
     <style>
@@ -387,7 +384,7 @@
             color: var(--text-primary);
             padding: 6px 12px;
             font-size: 13px;
-            min-width: 150px;
+            min-width: 200px;
         }
 
         .mapping-select:focus {
@@ -398,6 +395,22 @@
         .mapping-select option {
             background: #1a1a2e;
             color: var(--text-primary);
+        }
+
+        .field-required {
+            color: #f87171;
+            font-weight: 600;
+        }
+
+        .field-type {
+            color: var(--text-secondary);
+            font-size: 11px;
+            opacity: 0.7;
+        }
+
+        .field-warning {
+            color: #fbbf24;
+            font-size: 11px;
         }
 
         #toast {
@@ -430,7 +443,7 @@
             .card-music { padding: 16px; }
             .upload-zone { padding: 24px 16px; }
             .stats-grid { grid-template-columns: repeat(2, 1fr); }
-            .mapping-select { min-width: 100px; font-size: 12px; }
+            .mapping-select { min-width: 120px; font-size: 12px; }
         }
 
         .fade-in {
@@ -474,7 +487,7 @@
         </header>
 
         <div class="row g-4">
-            <!-- ЛЕВАЯ КОЛОНКА: ЗАГРУЗКА -->
+            <!-- ЛЕВАЯ КОЛОНКА -->
             <div class="col-lg-8">
                 <div class="card-music">
                     <div class="card-title">
@@ -544,38 +557,79 @@
                 </div>
             </div>
 
-            <!-- ПРАВАЯ КОЛОНКА: ИНСТРУКЦИЯ -->
+            <!-- ПРАВАЯ КОЛОНКА -->
             <div class="col-lg-4">
                 <div class="card-music sticky-lg-top" style="position: sticky; top: 20px;">
                     <div class="card-title">
-                        <i class="bi bi-info-circle"></i> Инструкция
+                        <i class="bi bi-info-circle"></i> Поля в базе данных
                     </div>
 
-                    <div style="color: var(--text-secondary); font-size: 14px; line-height: 1.8;">
-                        <ol style="padding-left: 20px;">
-                            <li>Загрузите Excel файл (.xlsx, .xls, .csv)</li>
-                            <li>Сопоставьте колонки с полями БД</li>
-                            <li>Нажмите <strong>"Импортировать"</strong></li>
-                        </ol>
+                    <div style="color: var(--text-secondary); font-size: 13px;">
+                        <p style="color: var(--text-primary); font-weight: 500;">Поля таблицы <code>tracks</code>:</p>
+                        
+                        <div style="display: grid; gap: 4px;">
+                            <div class="d-flex justify-content-between">
+                                <span><span class="field-required">*</span> <code>name</code></span>
+                                <span class="field-type">TEXT</span>
+                            </div>
+                            <div class="d-flex justify-content-between">
+                                <span><code>artist</code></span>
+                                <span class="field-type">TEXT</span>
+                            </div>
+                            <div class="d-flex justify-content-between">
+                                <span><code>album</code></span>
+                                <span class="field-type">TEXT</span>
+                            </div>
+                            <div class="d-flex justify-content-between">
+                                <span><code>duration</code></span>
+                                <span class="field-type">TEXT</span>
+                            </div>
+                            <div class="d-flex justify-content-between">
+                                <span><code>genre</code></span>
+                                <span class="field-type">TEXT</span>
+                            </div>
+                            <div class="d-flex justify-content-between">
+                                <span><code>year</code></span>
+                                <span class="field-type">INTEGER</span>
+                            </div>
+                            <div class="d-flex justify-content-between">
+                                <span><code>tags</code></span>
+                                <span class="field-type">TEXT</span>
+                            </div>
+                            <div class="d-flex justify-content-between">
+                                <span><code>bpm</code></span>
+                                <span class="field-type">INTEGER</span>
+                            </div>
+                            <div class="d-flex justify-content-between">
+                                <span><code>key</code></span>
+                                <span class="field-type">TEXT</span>
+                            </div>
+                            <div class="d-flex justify-content-between">
+                                <span><code>mood</code></span>
+                                <span class="field-type">TEXT</span>
+                            </div>
+                            <div class="d-flex justify-content-between">
+                                <span><code>description</code></span>
+                                <span class="field-type">TEXT</span>
+                            </div>
+                        </div>
 
-                        <hr style="border-color: rgba(255,255,255,0.05);" />
+                        <hr style="border-color: rgba(255,255,255,0.05); margin: 16px 0;" />
 
-                        <h6 style="color: var(--text-primary);">Доступные поля:</h6>
-                        <ul style="padding-left: 20px; font-size: 13px;">
-                            <li><code style="color: #a5b4fc;">name</code> — Название трека <span style="color: #f87171;">*</span></li>
-                            <li><code style="color: #a5b4fc;">artist</code> — Исполнитель</li>
-                            <li><code style="color: #a5b4fc;">album</code> — Альбом</li>
-                            <li><code style="color: #a5b4fc;">duration</code> — Длительность</li>
-                            <li><code style="color: #a5b4fc;">genre</code> — Жанр</li>
-                            <li><code style="color: #a5b4fc;">year</code> — Год</li>
-                            <li><code style="color: #a5b4fc;">tags</code> — Теги</li>
-                        </ul>
+                        <div style="background: rgba(251, 191, 36, 0.08); border: 1px solid rgba(251, 191, 36, 0.15); border-radius: 12px; padding: 12px 16px;">
+                            <p style="color: #fbbf24; margin: 0; font-size: 12px;">
+                                <i class="bi bi-info-circle"></i>
+                                <strong>Важно:</strong> Поля <code>email</code> и <code>phone</code> из Excel 
+                                <strong>НЕ БУДУТ</strong> импортированы в таблицу <code>tracks</code>.
+                                Они предназначены для таблицы <code>contacts</code>.
+                            </p>
+                        </div>
 
-                        <hr style="border-color: rgba(255,255,255,0.05);" />
+                        <hr style="border-color: rgba(255,255,255,0.05); margin: 16px 0;" />
 
                         <div class="alert" style="background: rgba(251, 191, 36, 0.1); border: 1px solid rgba(251, 191, 36, 0.2); border-radius: 12px; padding: 12px 16px; color: #fbbf24;">
-                            <i class="bi bi-info-circle"></i>
-                            <small><strong>name</strong> — обязательное поле</small>
+                            <i class="bi bi-exclamation-triangle"></i>
+                            <small><span class="field-required">*</span> <strong>name</strong> — обязательное поле</small>
                         </div>
 
                         <button class="btn btn-outline-glass w-100 mt-3" onclick="downloadTemplate()">
@@ -592,7 +646,6 @@
         <div id="toastMessage"></div>
     </div>
 
-    <!-- СКРИПТЫ -->
     <script>
         // ============================================================
         // 1. ПЕРЕМЕННЫЕ
@@ -604,7 +657,28 @@
         let mapping = {};
 
         // ============================================================
-        // 2. TOAST УВЕДОМЛЕНИЯ
+        // 2. ПОЛЯ БАЗЫ ДАННЫХ (только те, что есть в tracks)
+        // ============================================================
+
+        const DB_FIELDS = [
+            { value: 'name', label: 'Название (name)', required: true, type: 'TEXT' },
+            { value: 'artist', label: 'Исполнитель (artist)', required: false, type: 'TEXT' },
+            { value: 'album', label: 'Альбом (album)', required: false, type: 'TEXT' },
+            { value: 'duration', label: 'Длительность (duration)', required: false, type: 'TEXT' },
+            { value: 'genre', label: 'Жанр (genre)', required: false, type: 'TEXT' },
+            { value: 'year', label: 'Год (year)', required: false, type: 'INTEGER' },
+            { value: 'tags', label: 'Теги (tags)', required: false, type: 'TEXT' },
+            { value: 'bpm', label: 'BPM (bpm)', required: false, type: 'INTEGER' },
+            { value: 'key', label: 'Тональность (key)', required: false, type: 'TEXT' },
+            { value: 'mood', label: 'Настроение (mood)', required: false, type: 'TEXT' },
+            { value: 'description', label: 'Описание (description)', required: false, type: 'TEXT' },
+        ];
+
+        // Поля, которые НЕ будут импортированы (предупреждение)
+        const SKIP_FIELDS = ['email', 'phone'];
+
+        // ============================================================
+        // 3. TOAST
         // ============================================================
 
         function showToast(message, type = 'info') {
@@ -631,17 +705,14 @@
         }
 
         // ============================================================
-        // 3. ЗАГРУЗКА ФАЙЛА
+        // 4. ЗАГРУЗКА ФАЙЛА
         // ============================================================
 
         document.getElementById('fileInput').addEventListener('change', function(e) {
             const file = e.target.files[0];
-            if (file) {
-                handleFile(file);
-            }
+            if (file) handleFile(file);
         });
 
-        // Drag & Drop
         const uploadZone = document.getElementById('uploadZone');
         uploadZone.addEventListener('dragover', (e) => {
             e.preventDefault();
@@ -661,7 +732,7 @@
         });
 
         // ============================================================
-        // 4. ОБРАБОТКА ФАЙЛА
+        // 5. ОБРАБОТКА ФАЙЛА
         // ============================================================
 
         function handleFile(file) {
@@ -684,20 +755,24 @@
                     rows = json;
                     excelData = json;
                     
-                    // Показываем информацию
                     document.getElementById('fileInfo').style.display = 'block';
                     document.getElementById('fileName').textContent = file.name;
                     document.getElementById('fileSize').textContent = (file.size / 1024).toFixed(1) + ' KB';
                     
-                    // Показываем статистику
                     document.getElementById('statsGrid').style.display = 'grid';
                     document.getElementById('statRows').textContent = rows.length;
                     document.getElementById('statColumns').textContent = headers.length;
                     document.getElementById('statValid').textContent = rows.length;
                     
-                    // Показываем маппинг
-                    showMapping();
+                    // Проверяем наличие полей email/phone
+                    const hasEmail = headers.some(h => h.toLowerCase() === 'email');
+                    const hasPhone = headers.some(h => h.toLowerCase() === 'phone');
                     
+                    if (hasEmail || hasPhone) {
+                        showToast('⚠️ Поля email/phone будут пропущены (не в таблице tracks)', 'warning');
+                    }
+                    
+                    showMapping();
                     showToast(`✅ Загружено ${rows.length} строк`, 'success');
                 } catch (error) {
                     console.error('Ошибка:', error);
@@ -708,7 +783,7 @@
         }
 
         // ============================================================
-        // 5. МАППИНГ КОЛОНОК
+        // 6. МАППИНГ
         // ============================================================
 
         function showMapping() {
@@ -716,40 +791,40 @@
             section.style.display = 'block';
             
             const container = document.getElementById('mappingContainer');
-            const dbFields = [
-                { value: 'name', label: 'Название (name) *' },
-                { value: 'artist', label: 'Исполнитель (artist)' },
-                { value: 'album', label: 'Альбом (album)' },
-                { value: 'duration', label: 'Длительность (duration)' },
-                { value: 'genre', label: 'Жанр (genre)' },
-                { value: 'year', label: 'Год (year)' },
-                { value: 'tags', label: 'Теги (tags)' },
-            ];
             
             let html = '<div class="table-container"><table>';
             html += `<thead><tr>
-                <th>Колонка в Excel</th>
-                <th>Поле в БД</th>
-                <th>Пример</th>
+                <th style="width: 25%;">Колонка в Excel</th>
+                <th style="width: 40%;">Поле в БД</th>
+                <th style="width: 35%;">Пример данных</th>
             </tr></thead><tbody>`;
             
             headers.forEach(header => {
                 const sample = rows.length > 0 ? rows[0][header] : '';
                 const sampleStr = String(sample).substring(0, 30);
+                const isSkipped = SKIP_FIELDS.includes(header.toLowerCase());
                 
                 html += `<tr>
-                    <td><strong style="color: var(--text-primary);">${header}</strong></td>
                     <td>
-                        <select class="mapping-select" data-header="${header}" onchange="updateMapping('${header}', this.value)">
-                            <option value="">— Не использовать —</option>
-                            ${dbFields.map(f => 
-                                `<option value="${f.value}" ${f.value === header.toLowerCase() ? 'selected' : ''}>
-                                    ${f.label}
-                                </option>`
-                            ).join('')}
-                        </select>
+                        <strong style="color: var(--text-primary);">${header}</strong>
+                        ${isSkipped ? ' <span class="field-warning">⛔ пропускается</span>' : ''}
                     </td>
-                    <td style="color: var(--text-secondary); font-size: 13px;">${sampleStr || '—'}</td>
+                    <td>
+                        ${isSkipped ? 
+                            `<span style="color: var(--text-secondary);">— Не импортируется</span>` :
+                            `<select class="mapping-select" data-header="${header}" onchange="updateMapping('${header}', this.value)">
+                                <option value="">— Не использовать —</option>
+                                ${DB_FIELDS.map(f => {
+                                    const selected = f.value === header.toLowerCase() || f.value === header ? 'selected' : '';
+                                    const required = f.required ? ' *' : '';
+                                    return `<option value="${f.value}" ${selected}>
+                                        ${f.label}${required}
+                                    </option>`;
+                                }).join('')}
+                            </select>`
+                        }
+                    </td>
+                    <td style="color: var(--text-secondary); font-size: 13px; word-break: break-word;">${sampleStr || '—'}</td>
                 </tr>`;
             });
             
@@ -760,46 +835,44 @@
         }
 
         function updateMapping(header, value) {
-            // Удаляем старый маппинг
             Object.keys(mapping).forEach(key => {
-                if (mapping[key] === header) {
-                    delete mapping[key];
-                }
+                if (mapping[key] === header) delete mapping[key];
             });
-            
-            if (value) {
-                mapping[value] = header;
-            }
+            if (value) mapping[value] = header;
         }
 
         // ============================================================
-        // 6. ИМПОРТ ДАННЫХ
+        // 7. ИМПОРТ
         // ============================================================
 
         async function importData() {
             try {
-                // Проверка маппинга
                 if (Object.keys(mapping).length === 0) {
                     showToast('Сопоставьте колонки с полями БД', 'warning');
                     return;
                 }
 
                 if (!mapping['name']) {
-                    showToast('Обязательно укажите поле "name"', 'warning');
+                    showToast('Обязательное поле: name (название трека)', 'warning');
                     return;
                 }
 
-                // Подготовка данных
                 const dataToImport = rows.map(row => {
                     const obj = {};
                     Object.keys(mapping).forEach(dbField => {
                         const excelField = mapping[dbField];
-                        obj[dbField] = row[excelField] || '';
+                        let value = row[excelField] || '';
+                        
+                        // Обработка числовых полей
+                        if (dbField === 'year' || dbField === 'bpm') {
+                            value = parseInt(value) || null;
+                        }
+                        
+                        obj[dbField] = value;
                     });
                     return obj;
                 });
 
-                // Фильтруем пустые строки
                 const validData = dataToImport.filter(row => 
                     row.name && row.name.trim() !== ''
                 );
@@ -811,12 +884,9 @@
 
                 showToast(`⏳ Импорт ${validData.length} записей...`, 'info');
 
-                // Отправка на сервер
                 const response = await fetch('/api/import', {
                     method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
+                    headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({
                         table: 'tracks',
                         data: validData
@@ -828,8 +898,6 @@
                 if (result.success) {
                     showToast(`✅ Импортировано ${result.imported} записей!`, 'success');
                     document.getElementById('statValid').textContent = validData.length;
-                    
-                    // Очищаем через 2 секунды
                     setTimeout(() => clearFile(), 2000);
                 } else {
                     throw new Error(result.error || 'Ошибка импорта');
@@ -837,18 +905,16 @@
 
             } catch (error) {
                 console.error('Ошибка импорта:', error);
-                
                 let errorMessage = error.message;
                 if (error.message.includes('Failed to fetch')) {
-                    errorMessage = 'Не удалось соединиться с сервером. Проверьте интернет и Vercel.';
+                    errorMessage = 'Не удалось соединиться с сервером. Проверьте Vercel.';
                 }
-                
                 showToast('❌ ' + errorMessage, 'error');
             }
         }
 
         // ============================================================
-        // 7. ПРЕДПРОСМОТР
+        // 8. ПРЕДПРОСМОТР
         // ============================================================
 
         function previewData() {
@@ -860,12 +926,9 @@
             console.log('📊 Данные для импорта:');
             console.table(rows.slice(0, 10));
             
-            // Показываем в модальном окне
             let previewHtml = '<div class="table-container"><table class="table table-dark">';
             previewHtml += '<thead><tr>';
-            headers.forEach(h => {
-                previewHtml += `<th>${h}</th>`;
-            });
+            headers.forEach(h => previewHtml += `<th>${h}</th>`);
             previewHtml += '</tr></thead><tbody>';
             
             rows.slice(0, 10).forEach(row => {
@@ -875,10 +938,8 @@
                 });
                 previewHtml += '</tr>';
             });
-            
             previewHtml += '</tbody></table></div>';
             
-            // Создаем модальное окно
             const modal = document.createElement('div');
             modal.className = 'modal fade';
             modal.id = 'previewModal';
@@ -901,32 +962,26 @@
             const modalInstance = new bootstrap.Modal(modal);
             modalInstance.show();
             
-            modal.addEventListener('hidden.bs.modal', () => {
-                modal.remove();
-            });
+            modal.addEventListener('hidden.bs.modal', () => modal.remove());
             
             showToast('📊 Данные в консоли и модальном окне', 'info');
         }
 
         // ============================================================
-        // 8. СКАЧИВАНИЕ ШАБЛОНА
+        // 9. СКАЧИВАНИЕ ШАБЛОНА (с email и phone)
         // ============================================================
 
         function downloadTemplate() {
             try {
-                const data = [
-                    ['name', 'artist', 'album', 'duration', 'genre', 'year', 'tags'],
-                    ['Название трека', 'Исполнитель', 'Альбом', '3:45', 'Rock', '2024', 'рок, альтернатива'],
-                    ['Пример 2', 'Исполнитель 2', 'Альбом 2', '4:20', 'Pop', '2023', 'поп, диско'],
-                    ['Пример 3', 'Исполнитель 3', 'Альбом 3', '2:55', 'Jazz', '2022', 'джаз'],
-                ];
+                // Все поля из Excel (включая email и phone для шаблона)
+                const allFields = ['name', 'artist', 'album', 'duration', 'genre', 'year', 'tags', 'email', 'phone'];
+                const example = ['Название трека', 'Исполнитель', 'Альбом', '3:45', 'Rock', 2024, 'рок, альтернатива', 'artist@example.com', '+79001234567'];
+                
+                const data = [allFields, example];
                 
                 const wb = XLSX.utils.book_new();
                 const ws = XLSX.utils.aoa_to_sheet(data);
-                ws['!cols'] = [
-                    { wch: 20 }, { wch: 20 }, { wch: 20 }, 
-                    { wch: 12 }, { wch: 15 }, { wch: 10 }, { wch: 30 }
-                ];
+                ws['!cols'] = allFields.map(() => ({ wch: 20 }));
                 XLSX.utils.book_append_sheet(wb, ws, 'Tracks');
                 XLSX.writeFile(wb, 'music_crm_template.xlsx');
                 
@@ -938,7 +993,7 @@
         }
 
         // ============================================================
-        // 9. ОЧИСТКА
+        // 10. ОЧИСТКА
         // ============================================================
 
         function clearFile() {
@@ -957,10 +1012,12 @@
         }
 
         // ============================================================
-        // 10. ИНИЦИАЛИЗАЦИЯ
+        // 11. ИНИЦИАЛИЗАЦИЯ
         // ============================================================
 
         console.log('📥 Страница импорта загружена');
+        console.log('📋 Поля БД tracks:', DB_FIELDS.map(f => f.value).join(', '));
+        console.log('⛔ Пропускаемые поля:', SKIP_FIELDS.join(', '));
         console.log('📦 XLSX библиотека:', typeof XLSX !== 'undefined' ? '✅ Доступна' : '❌ Недоступна');
     </script>
 </body>
