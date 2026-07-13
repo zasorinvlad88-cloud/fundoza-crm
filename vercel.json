@@ -2,12 +2,20 @@
   "version": 2,
   "routes": [
     {
+      "src": "/login",
+      "dest": "/login.html"
+    },
+    {
       "src": "/import",
       "dest": "/import.html"
     },
     {
       "src": "/import-contacts",
       "dest": "/import-contacts.html"
+    },
+    {
+      "src": "/api/(.*)",
+      "dest": "/api/$1"
     },
     {
       "src": "/(.*)",
