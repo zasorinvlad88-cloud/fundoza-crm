@@ -5,8 +5,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>📥 Импорт данных — Music CRM</title>
     
+    <!-- Bootstrap 5 -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" />
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" />
+    
+    <!-- XLSX -->
     <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
     
     <style>
@@ -621,7 +624,6 @@
                                 <i class="bi bi-info-circle"></i>
                                 <strong>Важно:</strong> Поля <code>email</code> и <code>phone</code> из Excel 
                                 <strong>НЕ БУДУТ</strong> импортированы в таблицу <code>tracks</code>.
-                                Они предназначены для таблицы <code>contacts</code>.
                             </p>
                         </div>
 
@@ -657,7 +659,7 @@
         let mapping = {};
 
         // ============================================================
-        // 2. ПОЛЯ БАЗЫ ДАННЫХ (только те, что есть в tracks)
+        // 2. ПОЛЯ БАЗЫ ДАННЫХ
         // ============================================================
 
         const DB_FIELDS = [
@@ -674,7 +676,7 @@
             { value: 'description', label: 'Описание (description)', required: false, type: 'TEXT' },
         ];
 
-        // Поля, которые НЕ будут импортированы (предупреждение)
+        // Поля, которые НЕ будут импортированы
         const SKIP_FIELDS = ['email', 'phone'];
 
         // ============================================================
@@ -701,7 +703,7 @@
             clearTimeout(window.toastTimeout);
             window.toastTimeout = setTimeout(() => {
                 toast.style.display = 'none';
-            }, 4000);
+            }, 5000);
         }
 
         // ============================================================
@@ -764,14 +766,6 @@
                     document.getElementById('statColumns').textContent = headers.length;
                     document.getElementById('statValid').textContent = rows.length;
                     
-                    // Проверяем наличие полей email/phone
-                    const hasEmail = headers.some(h => h.toLowerCase() === 'email');
-                    const hasPhone = headers.some(h => h.toLowerCase() === 'phone');
-                    
-                    if (hasEmail || hasPhone) {
-                        showToast('⚠️ Поля email/phone будут пропущены (не в таблице tracks)', 'warning');
-                    }
-                    
                     showMapping();
                     showToast(`✅ Загружено ${rows.length} строк`, 'success');
                 } catch (error) {
@@ -783,7 +777,7 @@
         }
 
         // ============================================================
-        // 6. МАППИНГ
+        // 6. МАППИНГ (АВТОМАТИЧЕСКИЙ)
         // ============================================================
 
         function showMapping() {
@@ -791,6 +785,21 @@
             section.style.display = 'block';
             
             const container = document.getElementById('mappingContainer');
+            
+            // Автоматическое сопоставление
+            const autoMapping = {
+                'name': 'name',
+                'artist': 'artist',
+                'album': 'album',
+                'duration': 'duration',
+                'genre': 'genre',
+                'year': 'year',
+                'tags': 'tags',
+                'bpm': 'bpm',
+                'key': 'key',
+                'mood': 'mood',
+                'description': 'description'
+            };
             
             let html = '<div class="table-container"><table>';
             html += `<thead><tr>
@@ -803,6 +812,7 @@
                 const sample = rows.length > 0 ? rows[0][header] : '';
                 const sampleStr = String(sample).substring(0, 30);
                 const isSkipped = SKIP_FIELDS.includes(header.toLowerCase());
+                const autoValue = autoMapping[header.toLowerCase()] || '';
                 
                 html += `<tr>
                     <td>
@@ -815,7 +825,7 @@
                             `<select class="mapping-select" data-header="${header}" onchange="updateMapping('${header}', this.value)">
                                 <option value="">— Не использовать —</option>
                                 ${DB_FIELDS.map(f => {
-                                    const selected = f.value === header.toLowerCase() || f.value === header ? 'selected' : '';
+                                    const selected = f.value === autoValue ? 'selected' : '';
                                     const required = f.required ? ' *' : '';
                                     return `<option value="${f.value}" ${selected}>
                                         ${f.label}${required}
@@ -831,6 +841,15 @@
             html += '</tbody></table></div>';
             container.innerHTML = html;
             
+            // Автоматически устанавливаем маппинг
+            Object.keys(autoMapping).forEach(key => {
+                const select = container.querySelector(`select[data-header="${key}"]`);
+                if (select) {
+                    select.value = autoMapping[key];
+                    mapping[autoMapping[key]] = key;
+                }
+            });
+            
             document.getElementById('actionButtons').style.display = 'flex';
         }
 
@@ -842,11 +861,12 @@
         }
 
         // ============================================================
-        // 7. ИМПОРТ
+        // 7. ИМПОРТ (ИСПРАВЛЕННЫЙ)
         // ============================================================
 
         async function importData() {
             try {
+                // Проверка маппинга
                 if (Object.keys(mapping).length === 0) {
                     showToast('Сопоставьте колонки с полями БД', 'warning');
                     return;
@@ -857,6 +877,7 @@
                     return;
                 }
 
+                // Подготовка данных
                 const dataToImport = rows.map(row => {
                     const obj = {};
                     Object.keys(mapping).forEach(dbField => {
@@ -873,6 +894,7 @@
                     return obj;
                 });
 
+                // Фильтруем пустые строки
                 const validData = dataToImport.filter(row => 
                     row.name && row.name.trim() !== ''
                 );
@@ -884,16 +906,34 @@
 
                 showToast(`⏳ Импорт ${validData.length} записей...`, 'info');
 
+                // Отправка на сервер
                 const response = await fetch('/api/import', {
                     method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
                     body: JSON.stringify({
                         table: 'tracks',
                         data: validData
                     })
                 });
 
-                const result = await response.json();
+                // Проверяем статус ответа
+                if (!response.ok) {
+                    const text = await response.text();
+                    console.error('Ошибка сервера:', text);
+                    throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+                }
+
+                // Пытаемся парсить JSON
+                let result;
+                try {
+                    result = await response.json();
+                } catch (e) {
+                    const text = await response.text();
+                    console.error('Не удалось распарсить JSON:', text);
+                    throw new Error('Сервер вернул некорректный ответ');
+                }
 
                 if (result.success) {
                     showToast(`✅ Импортировано ${result.imported} записей!`, 'success');
@@ -905,10 +945,19 @@
 
             } catch (error) {
                 console.error('Ошибка импорта:', error);
+                
                 let errorMessage = error.message;
-                if (error.message.includes('Failed to fetch')) {
-                    errorMessage = 'Не удалось соединиться с сервером. Проверьте Vercel.';
+                
+                if (error.message.includes('Failed to fetch') || error.message.includes('NetworkError')) {
+                    errorMessage = 'Не удалось соединиться с сервером. Проверьте интернет и Vercel.';
+                } else if (error.message.includes('HTTP 404')) {
+                    errorMessage = 'API /api/import не найден. Проверьте файл api/import.js';
+                } else if (error.message.includes('HTTP 500')) {
+                    errorMessage = 'Внутренняя ошибка сервера. Проверьте логи Vercel.';
+                } else if (error.message.includes('некорректный ответ')) {
+                    errorMessage = 'Сервер вернул HTML вместо JSON. Проверьте API endpoint.';
                 }
+                
                 showToast('❌ ' + errorMessage, 'error');
             }
         }
@@ -968,12 +1017,11 @@
         }
 
         // ============================================================
-        // 9. СКАЧИВАНИЕ ШАБЛОНА (с email и phone)
+        // 9. СКАЧИВАНИЕ ШАБЛОНА
         // ============================================================
 
         function downloadTemplate() {
             try {
-                // Все поля из Excel (включая email и phone для шаблона)
                 const allFields = ['name', 'artist', 'album', 'duration', 'genre', 'year', 'tags', 'email', 'phone'];
                 const example = ['Название трека', 'Исполнитель', 'Альбом', '3:45', 'Rock', 2024, 'рок, альтернатива', 'artist@example.com', '+79001234567'];
                 
@@ -1017,8 +1065,12 @@
 
         console.log('📥 Страница импорта загружена');
         console.log('📋 Поля БД tracks:', DB_FIELDS.map(f => f.value).join(', '));
-        console.log('⛔ Пропускаемые поля:', SKIP_FIELDS.join(', '));
         console.log('📦 XLSX библиотека:', typeof XLSX !== 'undefined' ? '✅ Доступна' : '❌ Недоступна');
+        
+        // Проверка API при загрузке
+        fetch('/api/import', { method: 'OPTIONS' })
+            .then(() => console.log('✅ API /api/import доступен'))
+            .catch(() => console.warn('⚠️ API /api/import недоступен'));
     </script>
 </body>
 </html>
