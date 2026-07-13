@@ -1,0 +1,17 @@
+{
+  "version": 2,
+  "routes": [
+    {
+      "src": "/import",
+      "dest": "/import.html"
+    },
+    {
+      "src": "/import-contacts",
+      "dest": "/import-contacts.html"
+    },
+    {
+      "src": "/(.*)",
+      "dest": "/index.html"
+    }
+  ]
+}
