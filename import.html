@@ -411,11 +411,6 @@
             opacity: 0.7;
         }
 
-        .field-warning {
-            color: #fbbf24;
-            font-size: 11px;
-        }
-
         #toast {
             position: fixed;
             bottom: 30px;
@@ -619,16 +614,6 @@
 
                         <hr style="border-color: rgba(255,255,255,0.05); margin: 16px 0;" />
 
-                        <div style="background: rgba(251, 191, 36, 0.08); border: 1px solid rgba(251, 191, 36, 0.15); border-radius: 12px; padding: 12px 16px;">
-                            <p style="color: #fbbf24; margin: 0; font-size: 12px;">
-                                <i class="bi bi-info-circle"></i>
-                                <strong>Важно:</strong> Поля <code>email</code> и <code>phone</code> из Excel 
-                                <strong>НЕ БУДУТ</strong> импортированы в таблицу <code>tracks</code>.
-                            </p>
-                        </div>
-
-                        <hr style="border-color: rgba(255,255,255,0.05); margin: 16px 0;" />
-
                         <div class="alert" style="background: rgba(251, 191, 36, 0.1); border: 1px solid rgba(251, 191, 36, 0.2); border-radius: 12px; padding: 12px 16px; color: #fbbf24;">
                             <i class="bi bi-exclamation-triangle"></i>
                             <small><span class="field-required">*</span> <strong>name</strong> — обязательное поле</small>
@@ -659,7 +644,7 @@
         let mapping = {};
 
         // ============================================================
-        // 2. ПОЛЯ БАЗЫ ДАННЫХ
+        // 2. ПОЛЯ БАЗЫ ДАННЫХ (только tracks)
         // ============================================================
 
         const DB_FIELDS = [
@@ -675,9 +660,6 @@
             { value: 'mood', label: 'Настроение (mood)', required: false, type: 'TEXT' },
             { value: 'description', label: 'Описание (description)', required: false, type: 'TEXT' },
         ];
-
-        // Поля, которые НЕ будут импортированы
-        const SKIP_FIELDS = ['email', 'phone'];
 
         // ============================================================
         // 3. TOAST
@@ -811,28 +793,23 @@
             headers.forEach(header => {
                 const sample = rows.length > 0 ? rows[0][header] : '';
                 const sampleStr = String(sample).substring(0, 30);
-                const isSkipped = SKIP_FIELDS.includes(header.toLowerCase());
                 const autoValue = autoMapping[header.toLowerCase()] || '';
                 
                 html += `<tr>
                     <td>
                         <strong style="color: var(--text-primary);">${header}</strong>
-                        ${isSkipped ? ' <span class="field-warning">⛔ пропускается</span>' : ''}
                     </td>
                     <td>
-                        ${isSkipped ? 
-                            `<span style="color: var(--text-secondary);">— Не импортируется</span>` :
-                            `<select class="mapping-select" data-header="${header}" onchange="updateMapping('${header}', this.value)">
-                                <option value="">— Не использовать —</option>
-                                ${DB_FIELDS.map(f => {
-                                    const selected = f.value === autoValue ? 'selected' : '';
-                                    const required = f.required ? ' *' : '';
-                                    return `<option value="${f.value}" ${selected}>
-                                        ${f.label}${required}
-                                    </option>`;
-                                }).join('')}
-                            </select>`
-                        }
+                        <select class="mapping-select" data-header="${header}" onchange="updateMapping('${header}', this.value)">
+                            <option value="">— Не использовать —</option>
+                            ${DB_FIELDS.map(f => {
+                                const selected = f.value === autoValue ? 'selected' : '';
+                                const required = f.required ? ' *' : '';
+                                return `<option value="${f.value}" ${selected}>
+                                    ${f.label}${required}
+                                </option>`;
+                            }).join('')}
+                        </select>
                     </td>
                     <td style="color: var(--text-secondary); font-size: 13px; word-break: break-word;">${sampleStr || '—'}</td>
                 </tr>`;
@@ -861,7 +838,7 @@
         }
 
         // ============================================================
-        // 7. ИМПОРТ (ИСПРАВЛЕННЫЙ)
+        // 7. ИМПОРТ
         // ============================================================
 
         async function importData() {
@@ -1022,8 +999,8 @@
 
         function downloadTemplate() {
             try {
-                const allFields = ['name', 'artist', 'album', 'duration', 'genre', 'year', 'tags', 'email', 'phone'];
-                const example = ['Название трека', 'Исполнитель', 'Альбом', '3:45', 'Rock', 2024, 'рок, альтернатива', 'artist@example.com', '+79001234567'];
+                const allFields = ['name', 'artist', 'album', 'duration', 'genre', 'year', 'tags', 'bpm', 'key', 'mood', 'description'];
+                const example = ['Название трека', 'Исполнитель', 'Альбом', '3:45', 'Rock', 2024, 'рок, альтернатива', 120, 'C#m', 'энергичный', 'Отличный трек'];
                 
                 const data = [allFields, example];
                 
