@@ -33,6 +33,12 @@ export default async function handler(req, res) {
             });
         }
 
+        console.log('📥 Импорт данных:', {
+            table,
+            count: data.length,
+            firstRow: data[0]
+        });
+
         // Вставляем данные
         const { data: inserted, error } = await supabase
             .from(table)
@@ -40,12 +46,15 @@ export default async function handler(req, res) {
             .select();
 
         if (error) {
-            console.error('Supabase error:', error);
+            console.error('❌ Supabase error:', error);
             return res.status(500).json({
                 success: false,
-                error: error.message
+                error: error.message,
+                details: error
             });
         }
+
+        console.log('✅ Импортировано:', inserted?.length);
 
         return res.status(200).json({
             success: true,
@@ -54,10 +63,11 @@ export default async function handler(req, res) {
         });
 
     } catch (error) {
-        console.error('Import error:', error);
+        console.error('❌ Import error:', error);
         return res.status(500).json({
             success: false,
-            error: error.message
+            error: error.message || 'Внутренняя ошибка сервера',
+            stack: process.env.NODE_ENV === 'development' ? error.stack : undefined
         });
     }
 }
