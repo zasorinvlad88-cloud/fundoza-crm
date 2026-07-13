@@ -595,19 +595,11 @@
                                 <span class="field-type">TEXT</span>
                             </div>
                             <div class="d-flex justify-content-between">
-                                <span><code>bpm</code></span>
-                                <span class="field-type">INTEGER</span>
-                            </div>
-                            <div class="d-flex justify-content-between">
-                                <span><code>key</code></span>
+                                <span><code>email</code></span>
                                 <span class="field-type">TEXT</span>
                             </div>
                             <div class="d-flex justify-content-between">
-                                <span><code>mood</code></span>
-                                <span class="field-type">TEXT</span>
-                            </div>
-                            <div class="d-flex justify-content-between">
-                                <span><code>description</code></span>
+                                <span><code>phone</code></span>
                                 <span class="field-type">TEXT</span>
                             </div>
                         </div>
@@ -644,21 +636,19 @@
         let mapping = {};
 
         // ============================================================
-        // 2. ПОЛЯ БАЗЫ ДАННЫХ (только tracks)
+        // 2. ПОЛЯ БАЗЫ ДАННЫХ (ВСЕ 9 ПОЛЕЙ ИЗ EXCEL)
         // ============================================================
 
         const DB_FIELDS = [
-            { value: 'name', label: 'Название (name)', required: true, type: 'TEXT' },
-            { value: 'artist', label: 'Исполнитель (artist)', required: false, type: 'TEXT' },
-            { value: 'album', label: 'Альбом (album)', required: false, type: 'TEXT' },
-            { value: 'duration', label: 'Длительность (duration)', required: false, type: 'TEXT' },
-            { value: 'genre', label: 'Жанр (genre)', required: false, type: 'TEXT' },
-            { value: 'year', label: 'Год (year)', required: false, type: 'INTEGER' },
-            { value: 'tags', label: 'Теги (tags)', required: false, type: 'TEXT' },
-            { value: 'bpm', label: 'BPM (bpm)', required: false, type: 'INTEGER' },
-            { value: 'key', label: 'Тональность (key)', required: false, type: 'TEXT' },
-            { value: 'mood', label: 'Настроение (mood)', required: false, type: 'TEXT' },
-            { value: 'description', label: 'Описание (description)', required: false, type: 'TEXT' },
+            { value: 'name', label: 'Название (name)', required: true },
+            { value: 'artist', label: 'Исполнитель (artist)' },
+            { value: 'album', label: 'Альбом (album)' },
+            { value: 'duration', label: 'Длительность (duration)' },
+            { value: 'genre', label: 'Жанр (genre)' },
+            { value: 'year', label: 'Год (year)' },
+            { value: 'tags', label: 'Теги (tags)' },
+            { value: 'email', label: 'Email (email)' },
+            { value: 'phone', label: 'Телефон (phone)' },
         ];
 
         // ============================================================
@@ -768,7 +758,7 @@
             
             const container = document.getElementById('mappingContainer');
             
-            // Автоматическое сопоставление
+            // Автоматическое сопоставление (все поля из Excel)
             const autoMapping = {
                 'name': 'name',
                 'artist': 'artist',
@@ -777,10 +767,8 @@
                 'genre': 'genre',
                 'year': 'year',
                 'tags': 'tags',
-                'bpm': 'bpm',
-                'key': 'key',
-                'mood': 'mood',
-                'description': 'description'
+                'email': 'email',
+                'phone': 'phone'
             };
             
             let html = '<div class="table-container"><table>';
@@ -862,7 +850,7 @@
                         let value = row[excelField] || '';
                         
                         // Обработка числовых полей
-                        if (dbField === 'year' || dbField === 'bpm') {
+                        if (dbField === 'year') {
                             value = parseInt(value) || null;
                         }
                         
@@ -999,8 +987,8 @@
 
         function downloadTemplate() {
             try {
-                const allFields = ['name', 'artist', 'album', 'duration', 'genre', 'year', 'tags', 'bpm', 'key', 'mood', 'description'];
-                const example = ['Название трека', 'Исполнитель', 'Альбом', '3:45', 'Rock', 2024, 'рок, альтернатива', 120, 'C#m', 'энергичный', 'Отличный трек'];
+                const allFields = ['name', 'artist', 'album', 'duration', 'genre', 'year', 'tags', 'email', 'phone'];
+                const example = ['Название трека', 'Исполнитель', 'Альбом', '3:45', 'Rock', 2024, 'рок, альтернатива', 'artist@example.com', '+79001234567'];
                 
                 const data = [allFields, example];
                 
