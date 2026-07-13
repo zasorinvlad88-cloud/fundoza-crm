@@ -3,525 +3,246 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>🎵 Music CRM — Управление треками и рассылкой - test</title>
+    <title>🎵 Music CRM — Управление треками и рассылкой</title>
     
-    <!-- Bootstrap 5 + иконки -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" />
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" />
-    
-    <!-- DataTables -->
     <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/dataTables.bootstrap5.min.css" />
     
-    <!-- Кастомные стили -->
-   <style>
-    :root {
-        --primary-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-        --bg-dark: #0f0e17;
-        --bg-card: #1a1a2e;
-        --text-primary: #fffffe;
-        --text-secondary: #a7a9be;
-    }
-
-    * { margin: 0; padding: 0; box-sizing: border-box; }
-
-    body {
-        background: var(--bg-dark);
-        color: var(--text-primary);
-        font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, sans-serif;
-        min-height: 100vh;
-        padding: 20px;
-    }
-
-    .bg-animation {
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background: var(--bg-dark);
-        z-index: -1;
-    }
-    
-    .bg-animation::before {
-        content: '';
-        position: absolute;
-        width: 200%;
-        height: 200%;
-        background: radial-gradient(circle at 30% 50%, rgba(102, 126, 234, 0.03) 0%, transparent 50%),
-                    radial-gradient(circle at 70% 80%, rgba(118, 75, 162, 0.03) 0%, transparent 50%);
-        animation: float 20s ease-in-out infinite;
-    }
-
-    @keyframes float {
-        0%, 100% { transform: translate(0, 0) rotate(0deg); }
-        33% { transform: translate(2%, -2%) rotate(1deg); }
-        66% { transform: translate(-2%, 2%) rotate(-1deg); }
-    }
-
-    .main-container {
-        position: relative;
-        z-index: 1;
-        max-width: 1600px;
-        margin: 0 auto;
-    }
-
-    .header {
-        background: rgba(26, 26, 46, 0.8);
-        backdrop-filter: blur(20px);
-        -webkit-backdrop-filter: blur(20px);
-        border: 1px solid rgba(255, 255, 255, 0.05);
-        border-radius: 24px;
-        padding: 20px 32px;
-        margin-bottom: 32px;
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        flex-wrap: wrap;
-        gap: 16px;
-        box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
-    }
-
-    .header-brand {
-        display: flex;
-        align-items: center;
-        gap: 16px;
-    }
-
-    .header-brand .logo-icon {
-        width: 48px;
-        height: 48px;
-        background: var(--primary-gradient);
-        border-radius: 14px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        font-size: 24px;
-        box-shadow: 0 4px 20px rgba(102, 126, 234, 0.3);
-    }
-
-    .header-brand h1 {
-        font-size: 24px;
-        font-weight: 700;
-        background: var(--primary-gradient);
-        -webkit-background-clip: text;
-        background-clip: text;
-        -webkit-text-fill-color: transparent;
-        color: transparent;
-        margin: 0;
-    }
-
-    .header-brand .subtitle {
-        font-size: 13px;
-        color: var(--text-secondary);
-        -webkit-text-fill-color: var(--text-secondary);
-    }
-
-    .header-actions {
-        display: flex;
-        gap: 12px;
-        flex-wrap: wrap;
-    }
-
-    .badge-status {
-        background: rgba(16, 185, 129, 0.15);
-        color: #34d399;
-        padding: 8px 16px;
-        border-radius: 40px;
-        font-size: 13px;
-        border: 1px solid rgba(52, 211, 153, 0.2);
-        display: flex;
-        align-items: center;
-        gap: 6px;
-    }
-
-    .badge-status .pulse {
-        width: 8px;
-        height: 8px;
-        background: #34d399;
-        border-radius: 50%;
-        animation: pulse 2s ease-in-out infinite;
-        display: inline-block;
-    }
-
-    @keyframes pulse {
-        0%, 100% { opacity: 1; transform: scale(1); }
-        50% { opacity: 0.5; transform: scale(0.8); }
-    }
-
-    .card-music {
-        background: rgba(26, 26, 46, 0.7);
-        backdrop-filter: blur(10px);
-        -webkit-backdrop-filter: blur(10px);
-        border: 1px solid rgba(255, 255, 255, 0.06);
-        border-radius: 20px;
-        padding: 28px;
-        transition: all 0.3s ease;
-        box-shadow: 0 4px 24px rgba(0, 0, 0, 0.2);
-    }
-
-    .card-music:hover {
-        border-color: rgba(102, 126, 234, 0.2);
-        box-shadow: 0 8px 40px rgba(0, 0, 0, 0.3);
-    }
-
-    .card-title {
-        font-size: 18px;
-        font-weight: 600;
-        margin-bottom: 24px;
-        display: flex;
-        align-items: center;
-        gap: 12px;
-        color: var(--text-primary);
-    }
-
-    .card-title i {
-        color: #667eea;
-        font-size: 22px;
-    }
-
-    .btn-gradient {
-        background: var(--primary-gradient);
-        border: none;
-        color: white;
-        padding: 10px 24px;
-        border-radius: 12px;
-        font-weight: 600;
-        transition: all 0.3s ease;
-        box-shadow: 0 4px 16px rgba(102, 126, 234, 0.3);
-    }
-
-    .btn-gradient:hover {
-        transform: translateY(-2px);
-        box-shadow: 0 8px 32px rgba(102, 126, 234, 0.4);
-        color: white;
-    }
-
-    .btn-outline-glass {
-        background: rgba(255, 255, 255, 0.05);
-        border: 1px solid rgba(255, 255, 255, 0.1);
-        color: var(--text-secondary);
-        padding: 10px 24px;
-        border-radius: 12px;
-        font-weight: 500;
-        transition: all 0.3s ease;
-    }
-
-    .btn-outline-glass:hover {
-        background: rgba(255, 255, 255, 0.1);
-        border-color: rgba(255, 255, 255, 0.2);
-        color: var(--text-primary);
-    }
-
-    .btn-danger-glass {
-        background: rgba(239, 68, 68, 0.15);
-        border: 1px solid rgba(239, 68, 68, 0.2);
-        color: #f87171;
-        padding: 10px 24px;
-        border-radius: 12px;
-        font-weight: 500;
-        transition: all 0.3s ease;
-    }
-
-    .btn-danger-glass:hover {
-        background: rgba(239, 68, 68, 0.25);
-        border-color: rgba(239, 68, 68, 0.3);
-        color: #fca5a5;
-    }
-
-    .btn-success-glass {
-        background: rgba(16, 185, 129, 0.15);
-        border: 1px solid rgba(16, 185, 129, 0.2);
-        color: #34d399;
-        padding: 12px 32px;
-        border-radius: 12px;
-        font-weight: 600;
-        transition: all 0.3s ease;
-        width: 100%;
-    }
-
-    .btn-success-glass:hover {
-        background: rgba(16, 185, 129, 0.25);
-        border-color: rgba(16, 185, 129, 0.3);
-        color: #6ee7b7;
-        transform: translateY(-2px);
-    }
-
-    .upload-zone {
-        border: 2px dashed rgba(255, 255, 255, 0.1);
-        border-radius: 16px;
-        padding: 40px 20px;
-        text-align: center;
-        transition: all 0.3s ease;
-        background: rgba(255, 255, 255, 0.02);
-        cursor: pointer;
-        margin-bottom: 24px;
-    }
-
-    .upload-zone:hover {
-        border-color: #667eea;
-        background: rgba(102, 126, 234, 0.05);
-        transform: scale(1.01);
-    }
-
-    .upload-zone i {
-        font-size: 48px;
-        color: #667eea;
-        margin-bottom: 12px;
-        display: block;
-    }
-
-    .upload-zone .text {
-        color: var(--text-secondary);
-        font-size: 14px;
-    }
-
-    .upload-zone .text strong {
-        color: var(--text-primary);
-    }
-
-    .upload-progress {
-        height: 4px;
-        background: rgba(255, 255, 255, 0.05);
-        border-radius: 4px;
-        margin-top: 12px;
-        overflow: hidden;
-        display: none;
-    }
-
-    .upload-progress .progress-bar {
-        height: 100%;
-        background: var(--primary-gradient);
-        width: 0%;
-        transition: width 0.3s ease;
-    }
-
-    .selected-counter {
-        background: rgba(102, 126, 234, 0.08);
-        border: 1px solid rgba(102, 126, 234, 0.15);
-        border-radius: 16px;
-        padding: 16px;
-        text-align: center;
-        margin: 20px 0;
-    }
-
-    .selected-counter .number {
-        font-size: 32px;
-        font-weight: 700;
-        background: var(--primary-gradient);
-        -webkit-background-clip: text;
-        background-clip: text;
-        -webkit-text-fill-color: transparent;
-        color: transparent;
-    }
-
-    .form-select-glass {
-        background: rgba(255, 255, 255, 0.05);
-        border: 1px solid rgba(255, 255, 255, 0.1);
-        border-radius: 12px;
-        color: var(--text-primary);
-        padding: 12px 16px;
-        transition: all 0.3s ease;
-        cursor: pointer;
-    }
-
-    .form-select-glass:focus {
-        background: rgba(255, 255, 255, 0.08);
-        border-color: #667eea;
-        box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
-        color: var(--text-primary);
-    }
-
-    .form-select-glass option {
-        background: #1a1a2e;
-        color: var(--text-primary);
-    }
-
-    .form-check-input {
-        background-color: rgba(255, 255, 255, 0.05);
-        border: 2px solid rgba(255, 255, 255, 0.2);
-        border-radius: 6px;
-        width: 18px;
-        height: 18px;
-        cursor: pointer;
-        transition: all 0.2s ease;
-    }
-
-    .form-check-input:checked {
-        background-color: #667eea;
-        border-color: #667eea;
-        box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.2);
-    }
-
-    .tag {
-        background: rgba(102, 126, 234, 0.15);
-        color: #a5b4fc;
-        padding: 4px 14px;
-        border-radius: 40px;
-        font-size: 12px;
-        font-weight: 500;
-        border: 1px solid rgba(102, 126, 234, 0.1);
-        display: inline-block;
-    }
-
-    .stats-grid {
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-        gap: 16px;
-        margin-bottom: 24px;
-    }
-
-    .stats-card {
-        background: rgba(26, 26, 46, 0.7);
-        backdrop-filter: blur(10px);
-        -webkit-backdrop-filter: blur(10px);
-        border: 1px solid rgba(255, 255, 255, 0.06);
-        border-radius: 16px;
-        padding: 20px;
-        text-align: center;
-        transition: all 0.3s ease;
-    }
-
-    .stats-card:hover {
-        transform: translateY(-4px);
-        border-color: rgba(102, 126, 234, 0.3);
-    }
-
-    .stats-card .number {
-        font-size: 32px;
-        font-weight: 700;
-        background: var(--primary-gradient);
-        -webkit-background-clip: text;
-        background-clip: text;
-        -webkit-text-fill-color: transparent;
-        color: transparent;
-    }
-
-    .stats-card .label {
-        color: var(--text-secondary);
-        font-size: 14px;
-        margin-top: 4px;
-    }
-
-    .stats-card .change {
-        font-size: 12px;
-        padding: 2px 10px;
-        border-radius: 20px;
-        display: inline-block;
-        margin-top: 8px;
-    }
-
-    .stats-card .change.positive {
-        background: rgba(16, 185, 129, 0.15);
-        color: #34d399;
-    }
-
-    .modal-glass {
-        background: rgba(26, 26, 46, 0.95);
-        backdrop-filter: blur(20px);
-        -webkit-backdrop-filter: blur(20px);
-        border: 1px solid rgba(255, 255, 255, 0.1);
-    }
-
-    .modal-glass .modal-header {
-        border-bottom: 1px solid rgba(255, 255, 255, 0.05);
-    }
-
-    .modal-glass .modal-footer {
-        border-top: 1px solid rgba(255, 255, 255, 0.05);
-    }
-
-    .form-control-glass {
-        background: rgba(255, 255, 255, 0.05);
-        border: 1px solid rgba(255, 255, 255, 0.1);
-        color: var(--text-primary);
-        border-radius: 12px;
-        padding: 12px 16px;
-    }
-
-    .form-control-glass:focus {
-        background: rgba(255, 255, 255, 0.08);
-        border-color: #667eea;
-        box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
-        color: var(--text-primary);
-    }
-
-    .contacts-list {
-        max-height: 300px;
-        overflow-y: auto;
-    }
-
-    .contact-item {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        padding: 8px 12px;
-        border-bottom: 1px solid rgba(255, 255, 255, 0.05);
-    }
-
-    .contact-item:hover {
-        background: rgba(255, 255, 255, 0.02);
-    }
-
-    .contact-item .email {
-        color: var(--text-primary);
-    }
-
-    .contact-item .status {
-        font-size: 12px;
-        padding: 2px 12px;
-        border-radius: 20px;
-    }
-
-    .status.sent { background: rgba(16, 185, 129, 0.15); color: #34d399; }
-    .status.pending { background: rgba(251, 191, 36, 0.15); color: #fbbf24; }
-    .status.failed { background: rgba(239, 68, 68, 0.15); color: #f87171; }
-
-    .fade-in {
-        animation: fadeInUp 0.6s ease-out;
-    }
-
-    @keyframes fadeInUp {
-        from { opacity: 0; transform: translateY(20px); }
-        to { opacity: 1; transform: translateY(0); }
-    }
-
-    #toast {
-        position: fixed;
-        bottom: 30px;
-        right: 30px;
-        background: rgba(26, 26, 46, 0.95);
-        backdrop-filter: blur(20px);
-        -webkit-backdrop-filter: blur(20px);
-        border: 1px solid rgba(255,255,255,0.1);
-        border-radius: 16px;
-        padding: 16px 24px;
-        color: white;
-        box-shadow: 0 20px 60px rgba(0,0,0,0.6);
-        display: none;
-        z-index: 9999;
-        max-width: 400px;
-        font-size: 14px;
-        border-left: 4px solid #667eea;
-    }
-
-    @media (max-width: 768px) {
-        .header {
-            flex-direction: column;
-            align-items: flex-start;
-            padding: 16px 20px;
+    <style>
+        /* ===== ОСНОВНЫЕ СТИЛИ ===== */
+        :root {
+            --primary-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            --bg-dark: #0f0e17;
+            --bg-card: #1a1a2e;
+            --text-primary: #fffffe;
+            --text-secondary: #a7a9be;
         }
-        .header-actions { width: 100%; justify-content: stretch; }
-        .header-actions .btn { flex: 1; justify-content: center; font-size: 13px; }
-        .card-music { padding: 16px; }
-        .upload-zone { padding: 24px 16px; }
-        .stats-grid { grid-template-columns: repeat(2, 1fr); }
-    }
 
-    ::-webkit-scrollbar { width: 8px; height: 8px; }
-    ::-webkit-scrollbar-track { background: rgba(255, 255, 255, 0.02); border-radius: 10px; }
-    ::-webkit-scrollbar-thumb { background: rgba(102, 126, 234, 0.3); border-radius: 10px; }
-    ::-webkit-scrollbar-thumb:hover { background: rgba(102, 126, 234, 0.5); }
-</style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            background: var(--bg-dark);
+            color: var(--text-primary);
+            font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, sans-serif;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .bg-animation {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: var(--bg-dark);
+            z-index: -1;
+        }
+        
+        .bg-animation::before {
+            content: '';
+            position: absolute;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle at 30% 50%, rgba(102, 126, 234, 0.03) 0%, transparent 50%),
+                        radial-gradient(circle at 70% 80%, rgba(118, 75, 162, 0.03) 0%, transparent 50%);
+            animation: float 20s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translate(0, 0) rotate(0deg); }
+            33% { transform: translate(2%, -2%) rotate(1deg); }
+            66% { transform: translate(-2%, 2%) rotate(-1deg); }
+        }
+
+        .main-container {
+            position: relative;
+            z-index: 1;
+            max-width: 1600px;
+            margin: 0 auto;
+        }
+
+        /* ===== НАВИГАЦИОННОЕ МЕНЮ ===== */
+        .nav-menu {
+            display: flex;
+            gap: 8px;
+            background: rgba(26, 26, 46, 0.6);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 16px;
+            padding: 6px;
+            margin-bottom: 24px;
+            overflow-x: auto;
+            flex-wrap: nowrap;
+        }
+
+        .nav-link {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 10px 20px;
+            border-radius: 12px;
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            white-space: nowrap;
+            background: transparent;
+            border: none;
+            cursor: pointer;
+        }
+
+        .nav-link:hover {
+            background: rgba(255, 255, 255, 0.05);
+            color: var(--text-primary);
+            text-decoration: none;
+        }
+
+        .nav-link.active {
+            background: var(--primary-gradient);
+            color: white;
+            box-shadow: 0 4px 16px rgba(102, 126, 234, 0.3);
+        }
+
+        .nav-link i {
+            font-size: 18px;
+        }
+
+        @media (max-width: 768px) {
+            .nav-link {
+                font-size: 12px;
+                padding: 8px 14px;
+            }
+            .nav-link i {
+                font-size: 14px;
+            }
+            .nav-link span {
+                display: none;
+            }
+        }
+
+        /* ===== ШАПКА ===== */
+        .header {
+            background: rgba(26, 26, 46, 0.8);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 24px;
+            padding: 20px 32px;
+            margin-bottom: 32px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 16px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+        }
+
+        .header-brand {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .header-brand .logo-icon {
+            width: 48px;
+            height: 48px;
+            background: var(--primary-gradient);
+            border-radius: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            box-shadow: 0 4px 20px rgba(102, 126, 234, 0.3);
+        }
+
+        .header-brand h1 {
+            font-size: 24px;
+            font-weight: 700;
+            background: var(--primary-gradient);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            color: transparent;
+            margin: 0;
+        }
+
+        .header-brand .subtitle {
+            font-size: 13px;
+            color: var(--text-secondary);
+            -webkit-text-fill-color: var(--text-secondary);
+        }
+
+        .header-actions {
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+
+        .badge-status {
+            background: rgba(16, 185, 129, 0.15);
+            color: #34d399;
+            padding: 8px 16px;
+            border-radius: 40px;
+            font-size: 13px;
+            border: 1px solid rgba(52, 211, 153, 0.2);
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .badge-status .pulse {
+            width: 8px;
+            height: 8px;
+            background: #34d399;
+            border-radius: 50%;
+            animation: pulse 2s ease-in-out infinite;
+            display: inline-block;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.5; transform: scale(0.8); }
+        }
+
+        /* ===== ОСТАЛЬНЫЕ СТИЛИ (оставляем ваши) ===== */
+        /* ... ваш код ... */
+        
+        .card-music {
+            background: rgba(26, 26, 46, 0.7);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            border-radius: 20px;
+            padding: 28px;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 24px rgba(0, 0, 0, 0.2);
+        }
+
+        .card-music:hover {
+            border-color: rgba(102, 126, 234, 0.2);
+            box-shadow: 0 8px 40px rgba(0, 0, 0, 0.3);
+        }
+
+        .card-title {
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 24px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            color: var(--text-primary);
+        }
+
+        .card-title i {
+            color: #667eea;
+            font-size: 22px;
+        }
+
+        /* ... остальные ваши стили ... */
+    </style>
 </head>
 <body>
 
@@ -529,12 +250,23 @@
 
     <div class="main-container fade-in">
         
-        <!-- ШАПКА -->
+        <!-- ===== МЕНЮ НАВИГАЦИИ ===== -->
+        <nav class="nav-menu">
+            <a href="/" class="nav-link active">
+                <i class="bi bi-grid-1x2-fill"></i> <span>Главная</span>
+            </a>
+            <a href="/import" class="nav-link">
+                <i class="bi bi-file-earmark-spreadsheet"></i> <span>Импорт треков</span>
+            </a>
+            <a href="/import-contacts" class="nav-link">
+                <i class="bi bi-people-fill"></i> <span>Импорт контактов</span>
+            </a>
+        </nav>
+
+        <!-- ===== ШАПКА ===== -->
         <header class="header">
             <div class="header-brand">
-                <div class="logo-icon">
-                    <i class="bi bi-headphones"></i>
-                </div>
+                <div class="logo-icon"><i class="bi bi-headphones"></i></div>
                 <div>
                     <h1>Music CRM</h1>
                     <span class="subtitle">Управление треками и рассылкой</span>
@@ -542,159 +274,20 @@
             </div>
             <div class="header-actions">
                 <div class="badge-status">
-                    <span class="pulse"></span>
-                    Система активна
+                    <span class="pulse"></span> Система активна
                 </div>
-                <button class="btn btn-outline-glass" onclick="showToast('📊 Статистика загружается...')">
+                <button class="btn btn-outline-glass" onclick="loadStats()">
                     <i class="bi bi-graph-up-arrow"></i> Статистика
                 </button>
-                <button class="btn btn-gradient" onclick="showToast('⚡ AI-микст генерируется...')">
-                    <i class="bi bi-stars"></i> AI Микст
+                <button class="btn btn-gradient" onclick="openContactsModal()">
+                    <i class="bi bi-people"></i> Контакты
                 </button>
             </div>
         </header>
 
-        <!-- ОСНОВНОЙ КОНТЕНТ -->
-        <div class="row g-4">
-            
-            <!-- ЛЕВАЯ КОЛОНКА: БИБЛИОТЕКА ТРЕКОВ -->
-            <div class="col-lg-8">
-                <div class="card-music">
-                    <div class="card-title">
-                        <i class="bi bi-music-note-beamed"></i>
-                        Библиотека треков
-                        <span class="badge bg-primary rounded-pill ms-2" id="trackCount">0</span>
-                    </div>
+        <!-- ОСТАЛЬНОЙ КОНТЕНТ (ваш) -->
+        <!-- ... -->
 
-                    <!-- Зона загрузки -->
-                    <div class="upload-zone" onclick="document.getElementById('fileInput').click()">
-                        <i class="bi bi-cloud-arrow-up"></i>
-                        <div class="text">
-                            <strong>Нажмите</strong> для загрузки или перетащите файлы<br />
-                            <small style="color: rgba(255,255,255,0.3);">MP3, FLAC, WAV, AIFF</small>
-                        </div>
-                        <input type="file" id="fileInput" multiple accept=".mp3,.flac,.wav,.aiff" style="display:none;" />
-                    </div>
-
-                    <!-- Кнопки управления -->
-                    <div class="d-flex gap-2 mb-4 flex-wrap">
-                        <button class="btn btn-gradient" onclick="document.getElementById('fileInput').click()">
-                            <i class="bi bi-upload"></i> Загрузить
-                        </button>
-                        <button class="btn btn-outline-glass" onclick="addDemoTracks()">
-                            <i class="bi bi-plus-circle"></i> Демо
-                        </button>
-                        <button class="btn btn-danger-glass" onclick="deleteSelected()">
-                            <i class="bi bi-trash3"></i> Удалить выбранные
-                        </button>
-                    </div>
-
-                    <!-- Таблица -->
-                    <div class="table-responsive">
-                        <table id="tracksTable" class="table table-dark table-hover">
-                            <thead>
-                                <tr>
-                                    <th style="width: 40px;">
-                                        <input type="checkbox" class="form-check-input" id="selectAll" />
-                                    </th>
-                                    <th>Название</th>
-                                    <th>Длительность</th>
-                                    <th>Теги</th>
-                                    <th style="width: 60px;">Действия</th>
-                                </tr>
-                            </thead>
-                            <tbody id="trackList">
-                                <!-- Данные загружаются через DataTables -->
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-            </div>
-
-            <!-- ПРАВАЯ КОЛОНКА: РАССЫЛКА -->
-            <div class="col-lg-4">
-                <div class="card-music sticky-lg-top" style="position: sticky; top: 20px;">
-                    <div class="card-title">
-                        <i class="bi bi-send"></i>
-                        Рассылка
-                    </div>
-
-                    <!-- Выбор плейлиста -->
-                    <div class="mb-4">
-                        <label class="form-label" style="color: var(--text-secondary); font-size: 14px; font-weight: 500;">
-                            <i class="bi bi-list-ul"></i> Плейлист
-                        </label>
-                        <select class="form-select-glass w-100" id="playlistSelect">
-                            <option value="">Выберите плейлист</option>
-                            <option value="1">🎵 Основной микс</option>
-                            <option value="2">🎵 Chill & Lo-fi</option>
-                            <option value="3">🎵 В работе</option>
-                        </select>
-                    </div>
-
-                    <!-- Выбор группы -->
-                    <div class="mb-4">
-                        <label class="form-label" style="color: var(--text-secondary); font-size: 14px; font-weight: 500;">
-                            <i class="bi bi-people"></i> Группа получателей
-                        </label>
-                        <select class="form-select-glass w-100" id="groupSelect">
-                            <option value="">Выберите группу</option>
-                            <option value="1">👑 Премиум-подписчики (124)</option>
-                            <option value="2">🌙 Ночной эфир (56)</option>
-                        </select>
-                    </div>
-
-                    <!-- Счетчик -->
-                    <div class="selected-counter">
-                        <i class="bi bi-check-circle-fill" style="color: #667eea; font-size: 20px;"></i>
-                        <div style="margin-top: 8px;">
-                            <span style="color: var(--text-secondary);">Выбрано треков</span>
-                            <div class="number" id="selectedCount">0</div>
-                        </div>
-                    </div>
-
-                    <!-- Кнопки -->
-                    <button class="btn btn-success-glass" onclick="sendMailing()">
-                        <i class="bi bi-broadcast"></i> Запустить рассылку
-                    </button>
-
-                    <div class="d-flex gap-2 mt-3">
-                        <button class="btn btn-outline-glass flex-grow-1" onclick="showToast('💾 Сохранено в шаблоны')">
-                            <i class="bi bi-bookmark"></i> Шаблон
-                        </button>
-                        <button class="btn btn-outline-glass flex-grow-1" onclick="showToast('📋 Отчет готов')">
-                            <i class="bi bi-file-text"></i> Отчет
-                        </button>
-                    </div>
-
-                    <div class="mt-3 text-center" style="font-size: 12px; color: var(--text-secondary);">
-                        <i class="bi bi-shield-check"></i> Отправка через защищенный SMTP-шлюз
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- TOAST УВЕДОМЛЕНИЯ -->
-    <div id="toast" style="
-        position: fixed;
-        bottom: 30px;
-        right: 30px;
-        background: rgba(26, 26, 46, 0.95);
-        backdrop-filter: blur(20px);
-        border: 1px solid rgba(255,255,255,0.1);
-        border-radius: 16px;
-        padding: 16px 24px;
-        color: white;
-        box-shadow: 0 20px 60px rgba(0,0,0,0.6);
-        display: none;
-        z-index: 9999;
-        max-width: 400px;
-        font-size: 14px;
-        animation: fadeInUp 0.4s ease-out;
-        border-left: 4px solid #667eea;
-    ">
-        <div id="toastMessage"></div>
     </div>
 
     <!-- СКРИПТЫ -->
@@ -702,203 +295,6 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
     <script src="https://cdn.datatables.net/1.13.6/js/dataTables.bootstrap5.min.js"></script>
-
-    <script>
-        // ===== ДАННЫЕ =====
-        let tracks = [
-            { id: 1, name: 'Neon Dreams', duration: '3:24', tags: 'Electronic' },
-            { id: 2, name: 'Midnight Drive', duration: '4:02', tags: 'Synthwave' },
-            { id: 3, name: 'Echoes', duration: '2:58', tags: 'Ambient' },
-        ];
-        let nextId = 4;
-
-        // ===== ТОАСТ =====
-        function showToast(message, type = 'info') {
-            const toast = document.getElementById('toast');
-            const toastMessage = document.getElementById('toastMessage');
-            
-            const icons = {
-                info: '📌',
-                success: '✅',
-                error: '❌',
-                warning: '⚠️'
-            };
-            
-            toastMessage.textContent = `${icons[type] || '📌'} ${message}`;
-            toast.style.display = 'block';
-            toast.style.borderLeftColor = type === 'success' ? '#34d399' : 
-                                          type === 'error' ? '#f87171' : 
-                                          type === 'warning' ? '#fbbf24' : '#667eea';
-            
-            clearTimeout(window.toastTimeout);
-            window.toastTimeout = setTimeout(() => {
-                toast.style.display = 'none';
-            }, 3500);
-        }
-
-        // ===== РЕНДЕР ТАБЛИЦЫ =====
-        function renderTable() {
-            const tbody = document.getElementById('trackList');
-            
-            if (tracks.length === 0) {
-                tbody.innerHTML = `
-                    <tr>
-                        <td colspan="5" class="text-center py-5" style="color: var(--text-secondary);">
-                            <i class="bi bi-music-note" style="font-size: 32px; display: block; margin-bottom: 12px;"></i>
-                            Библиотека пуста. Загрузите треки!
-                        </td>
-                    </tr>
-                `;
-            } else {
-                tbody.innerHTML = tracks.map(t => `
-                    <tr>
-                        <td><input type="checkbox" class="form-check-input track-select" data-id="${t.id}" /></td>
-                        <td><i class="bi bi-music-note-beamed" style="color: #667eea; margin-right: 10px;"></i>${t.name}</td>
-                        <td>${t.duration}</td>
-                        <td><span class="tag">${t.tags || '—'}</span></td>
-                        <td>
-                            <button class="btn btn-sm btn-outline-glass" onclick="deleteTrack(${t.id})" style="padding: 4px 10px;">
-                                <i class="bi bi-x-lg"></i>
-                            </button>
-                        </td>
-                    </tr>
-                `).join('');
-            }
-            
-            document.getElementById('trackCount').textContent = tracks.length;
-            updateSelectedCount();
-            
-            // Обновляем обработчики
-            document.querySelectorAll('.track-select').forEach(cb => {
-                cb.addEventListener('change', updateSelectedCount);
-            });
-            
-            // Выбрать все
-            document.getElementById('selectAll').addEventListener('change', function() {
-                document.querySelectorAll('.track-select').forEach(cb => cb.checked = this.checked);
-                updateSelectedCount();
-            });
-        }
-
-        // ===== СЧЕТЧИК =====
-        function updateSelectedCount() {
-            const count = document.querySelectorAll('.track-select:checked').length;
-            document.getElementById('selectedCount').textContent = count;
-        }
-
-        // ===== ЗАГРУЗКА ФАЙЛОВ =====
-        document.getElementById('fileInput').addEventListener('change', function(e) {
-            const files = e.target.files;
-            if (!files.length) return;
-            
-            let added = 0;
-            for (const file of files) {
-                if (file.type.startsWith('audio/') || file.name.match(/\.(mp3|flac|wav|aiff)$/i)) {
-                    tracks.push({
-                        id: nextId++,
-                        name: file.name.replace(/\.[^.]+$/, ''),
-                        duration: '3:00',
-                        tags: 'новый'
-                    });
-                    added++;
-                }
-            }
-            
-            if (added) {
-                renderTable();
-                showToast(`Загружено ${added} треков`, 'success');
-            } else {
-                showToast('Поддерживаются только аудиофайлы', 'warning');
-            }
-            
-            this.value = '';
-        });
-
-        // ===== ДЕМО-ТРЕКИ =====
-        function addDemoTracks() {
-            const demos = [
-                { name: 'Solar Flare', duration: '3:45', tags: 'House' },
-                { name: 'Deep Blue', duration: '5:12', tags: 'Downtempo' },
-                { name: 'Velocity', duration: '2:30', tags: 'Drum & Bass' },
-            ];
-            demos.forEach(d => tracks.push({ id: nextId++, ...d }));
-            renderTable();
-            showToast('Добавлены демо-треки', 'success');
-        }
-
-        // ===== УДАЛЕНИЕ =====
-        function deleteTrack(id) {
-            tracks = tracks.filter(t => t.id !== id);
-            renderTable();
-            showToast('Трек удален', 'info');
-        }
-
-        function deleteSelected() {
-            const checked = document.querySelectorAll('.track-select:checked');
-            if (!checked.length) {
-                showToast('Выберите треки для удаления', 'warning');
-                return;
-            }
-            
-            const ids = Array.from(checked).map(cb => parseInt(cb.dataset.id));
-            tracks = tracks.filter(t => !ids.includes(t.id));
-            renderTable();
-            showToast(`Удалено ${ids.length} треков`, 'info');
-        }
-
-        // ===== РАССЫЛКА =====
-        function sendMailing() {
-            const checked = document.querySelectorAll('.track-select:checked');
-            if (!checked.length) {
-                showToast('Выберите хотя бы один трек', 'warning');
-                return;
-            }
-            
-            const playlist = document.getElementById('playlistSelect').value;
-            const group = document.getElementById('groupSelect').value;
-            
-            if (!playlist || !group) {
-                showToast('Выберите плейлист и группу', 'warning');
-                return;
-            }
-            
-            showToast(`🚀 Рассылка запущена! Треков: ${checked.length}`, 'success');
-        }
-
-        // ===== ИНИЦИАЛИЗАЦИЯ =====
-        document.addEventListener('DOMContentLoaded', function() {
-            renderTable();
-            
-            // Анимация при загрузке
-            document.querySelector('.main-container').style.opacity = '1';
-        });
-
-        // ===== DRAG & DROP =====
-        const uploadZone = document.querySelector('.upload-zone');
-        
-        uploadZone.addEventListener('dragover', (e) => {
-            e.preventDefault();
-            uploadZone.style.borderColor = '#667eea';
-            uploadZone.style.background = 'rgba(102, 126, 234, 0.05)';
-        });
-        
-        uploadZone.addEventListener('dragleave', () => {
-            uploadZone.style.borderColor = 'rgba(255, 255, 255, 0.1)';
-            uploadZone.style.background = 'rgba(255, 255, 255, 0.02)';
-        });
-        
-        uploadZone.addEventListener('drop', (e) => {
-            e.preventDefault();
-            uploadZone.style.borderColor = 'rgba(255, 255, 255, 0.1)';
-            uploadZone.style.background = 'rgba(255, 255, 255, 0.02)';
-            
-            if (e.dataTransfer.files.length) {
-                const input = document.getElementById('fileInput');
-                input.files = e.dataTransfer.files;
-                input.dispatchEvent(new Event('change'));
-            }
-        });
-    </script>
-
+    <!-- ... ваш код ... -->
 </body>
 </html>
