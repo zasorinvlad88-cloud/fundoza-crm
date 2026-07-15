@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>🎛️ FUNDOZA Music CRM — Pioneer Style</title>
+    <title>🎛️ FUNDOZA Music CRM — Exclusive Edition</title>
     
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" />
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" />
@@ -13,27 +13,29 @@
     
     <style>
         /* ============================================================
-           PIONEER DJ STYLE — ТЁМНЫЙ ТЕХНОЛОГИЧНЫЙ ДИЗАЙН
+           EXCLUSIVE EDITION — ТЁМНЫЙ ТЕХНОЛОГИЧНЫЙ ДИЗАЙН
            ============================================================ */
         
         :root {
-            --pioneer-bg: #0a0a0a;
-            --pioneer-surface: #121212;
-            --pioneer-card: #1a1a1a;
-            --pioneer-border: #2a2a2a;
-            --pioneer-text: #ffffff;
-            --pioneer-text-secondary: #888888;
-            --pioneer-text-dim: #555555;
-            --pioneer-orange: #ff5500;
-            --pioneer-orange-dim: rgba(255, 85, 0, 0.15);
-            --pioneer-orange-glow: 0 0 30px rgba(255, 85, 0, 0.15);
-            --pioneer-blue: #00aaff;
-            --pioneer-blue-dim: rgba(0, 170, 255, 0.1);
-            --pioneer-green: #00ff88;
-            --pioneer-green-dim: rgba(0, 255, 136, 0.1);
-            --pioneer-red: #ff2244;
-            --pioneer-red-dim: rgba(255, 34, 68, 0.1);
-            --pioneer-gradient: linear-gradient(135deg, #ff5500, #ff7700);
+            --exclusive-bg: #0a0a0a;
+            --exclusive-surface: #121212;
+            --exclusive-card: #1a1a1a;
+            --exclusive-border: #2a2a2a;
+            --exclusive-text: #ffffff;
+            --exclusive-text-secondary: #888888;
+            --exclusive-text-dim: #555555;
+            --exclusive-orange: #ff5500;
+            --exclusive-orange-dim: rgba(255, 85, 0, 0.15);
+            --exclusive-orange-glow: 0 0 30px rgba(255, 85, 0, 0.15);
+            --exclusive-blue: #00aaff;
+            --exclusive-blue-dim: rgba(0, 170, 255, 0.1);
+            --exclusive-gold: #ffd700;
+            --exclusive-gold-dim: rgba(255, 215, 0, 0.1);
+            --exclusive-green: #00ff88;
+            --exclusive-green-dim: rgba(0, 255, 136, 0.1);
+            --exclusive-red: #ff2244;
+            --exclusive-red-dim: rgba(255, 34, 68, 0.1);
+            --exclusive-gradient: linear-gradient(135deg, #ff5500, #ffd700);
             --font-display: 'Inter', sans-serif;
             --font-body: 'Inter', sans-serif;
         }
@@ -41,8 +43,8 @@
         * { margin: 0; padding: 0; box-sizing: border-box; }
 
         body {
-            background: var(--pioneer-bg);
-            color: var(--pioneer-text);
+            background: var(--exclusive-bg);
+            color: var(--exclusive-text);
             font-family: var(--font-body);
             min-height: 100vh;
             padding: 16px;
@@ -60,7 +62,7 @@
             z-index: 0;
             background: 
                 radial-gradient(ellipse at 30% 40%, rgba(255, 85, 0, 0.03) 0%, transparent 60%),
-                radial-gradient(ellipse at 70% 60%, rgba(0, 170, 255, 0.02) 0%, transparent 50%);
+                radial-gradient(ellipse at 70% 60%, rgba(255, 215, 0, 0.02) 0%, transparent 50%);
         }
 
         .vinyl-bg::before {
@@ -95,13 +97,13 @@
         }
 
         /* ============================================================
-           МЕНЮ НАВИГАЦИИ — PIONEER STYLE
+           МЕНЮ НАВИГАЦИИ
            ============================================================ */
         .nav-menu {
             display: flex;
             gap: 4px;
-            background: var(--pioneer-surface);
-            border: 1px solid var(--pioneer-border);
+            background: var(--exclusive-surface);
+            border: 1px solid var(--exclusive-border);
             border-radius: 10px;
             padding: 4px;
             margin-bottom: 20px;
@@ -115,7 +117,7 @@
             gap: 8px;
             padding: 10px 20px;
             border-radius: 8px;
-            color: var(--pioneer-text-secondary);
+            color: var(--exclusive-text-secondary);
             text-decoration: none;
             font-family: var(--font-display);
             font-size: 12px;
@@ -130,14 +132,14 @@
         }
 
         .nav-link:hover {
-            color: var(--pioneer-text);
+            color: var(--exclusive-text);
             background: rgba(255, 255, 255, 0.03);
             text-decoration: none;
         }
 
         .nav-link.active {
-            background: var(--pioneer-orange-dim);
-            color: var(--pioneer-orange);
+            background: var(--exclusive-orange-dim);
+            color: var(--exclusive-orange);
             box-shadow: inset 0 0 20px rgba(255, 85, 0, 0.05);
         }
 
@@ -155,11 +157,11 @@
         }
 
         /* ============================================================
-           ШАПКА — PIONEER STYLE
+           ШАПКА
            ============================================================ */
         .header {
-            background: var(--pioneer-surface);
-            border: 1px solid var(--pioneer-border);
+            background: var(--exclusive-surface);
+            border: 1px solid var(--exclusive-border);
             border-radius: 10px;
             padding: 14px 24px;
             margin-bottom: 20px;
@@ -179,14 +181,14 @@
         .header-brand .logo-icon {
             width: 40px;
             height: 40px;
-            background: var(--pioneer-gradient);
+            background: var(--exclusive-gradient);
             border-radius: 8px;
             display: flex;
             align-items: center;
             justify-content: center;
             font-size: 20px;
-            color: var(--pioneer-text);
-            box-shadow: var(--pioneer-orange-glow);
+            color: var(--exclusive-text);
+            box-shadow: var(--exclusive-orange-glow);
         }
 
         .header-brand h1 {
@@ -195,12 +197,12 @@
             font-weight: 700;
             letter-spacing: 1px;
             margin: 0;
-            color: var(--pioneer-text);
+            color: var(--exclusive-text);
         }
 
         .header-brand .subtitle {
             font-size: 11px;
-            color: var(--pioneer-text-secondary);
+            color: var(--exclusive-text-secondary);
             font-weight: 400;
             letter-spacing: 1px;
             text-transform: uppercase;
@@ -214,8 +216,8 @@
         }
 
         .badge-status {
-            background: var(--pioneer-green-dim);
-            color: var(--pioneer-green);
+            background: var(--exclusive-green-dim);
+            color: var(--exclusive-green);
             padding: 4px 12px;
             border-radius: 40px;
             font-size: 10px;
@@ -231,7 +233,7 @@
         .badge-status .pulse {
             width: 6px;
             height: 6px;
-            background: var(--pioneer-green);
+            background: var(--exclusive-green);
             border-radius: 50%;
             animation: pulseDot 2s ease-in-out infinite;
             display: inline-block;
@@ -242,10 +244,10 @@
             50% { opacity: 0.3; transform: scale(0.6); }
         }
 
-        .btn-pioneer {
+        .btn-exclusive {
             background: transparent;
-            border: 1px solid var(--pioneer-border);
-            color: var(--pioneer-text-secondary);
+            border: 1px solid var(--exclusive-border);
+            color: var(--exclusive-text-secondary);
             padding: 6px 14px;
             border-radius: 6px;
             font-family: var(--font-display);
@@ -258,17 +260,17 @@
             letter-spacing: 0.5px;
         }
 
-        .btn-pioneer:hover {
+        .btn-exclusive:hover {
             background: rgba(255, 255, 255, 0.03);
-            border-color: var(--pioneer-text-secondary);
-            color: var(--pioneer-text);
+            border-color: var(--exclusive-text-secondary);
+            color: var(--exclusive-text);
             text-decoration: none;
         }
 
-        .btn-pioneer-danger {
+        .btn-exclusive-danger {
             background: transparent;
-            border: 1px solid var(--pioneer-red-dim);
-            color: var(--pioneer-red);
+            border: 1px solid var(--exclusive-red-dim);
+            color: var(--exclusive-red);
             padding: 6px 14px;
             border-radius: 6px;
             font-family: var(--font-display);
@@ -281,17 +283,17 @@
             letter-spacing: 0.5px;
         }
 
-        .btn-pioneer-danger:hover {
-            background: var(--pioneer-red-dim);
-            border-color: var(--pioneer-red);
-            color: var(--pioneer-text);
+        .btn-exclusive-danger:hover {
+            background: var(--exclusive-red-dim);
+            border-color: var(--exclusive-red);
+            color: var(--exclusive-text);
             text-decoration: none;
         }
 
-        .btn-pioneer-primary {
-            background: var(--pioneer-gradient);
+        .btn-exclusive-primary {
+            background: var(--exclusive-gradient);
             border: none;
-            color: var(--pioneer-text);
+            color: var(--exclusive-text);
             padding: 6px 16px;
             border-radius: 6px;
             font-family: var(--font-display);
@@ -304,21 +306,21 @@
             letter-spacing: 0.5px;
         }
 
-        .btn-pioneer-primary:hover {
+        .btn-exclusive-primary:hover {
             transform: translateY(-2px);
-            box-shadow: var(--pioneer-orange-glow);
-            color: var(--pioneer-text);
+            box-shadow: var(--exclusive-orange-glow);
+            color: var(--exclusive-text);
             text-decoration: none;
         }
 
         .user-email {
-            color: var(--pioneer-text-secondary);
+            color: var(--exclusive-text-secondary);
             font-size: 12px;
             font-weight: 400;
         }
 
         /* ============================================================
-           СТАТИСТИКА — PIONEER CARDS
+           СТАТИСТИКА
            ============================================================ */
         .stats-grid {
             display: grid;
@@ -328,8 +330,8 @@
         }
 
         .stat-card {
-            background: var(--pioneer-surface);
-            border: 1px solid var(--pioneer-border);
+            background: var(--exclusive-surface);
+            border: 1px solid var(--exclusive-border);
             border-radius: 10px;
             padding: 16px 18px;
             transition: all 0.4s ease;
@@ -338,8 +340,8 @@
         }
 
         .stat-card:hover {
-            border-color: var(--pioneer-orange);
-            box-shadow: var(--pioneer-orange-glow);
+            border-color: var(--exclusive-orange);
+            box-shadow: var(--exclusive-orange-glow);
             transform: translateY(-2px);
         }
 
@@ -361,13 +363,13 @@
         }
 
         .stat-card .icon.purple { background: rgba(102, 126, 234, 0.1); color: #a5b4fc; }
-        .stat-card .icon.green { background: var(--pioneer-green-dim); color: var(--pioneer-green); }
-        .stat-card .icon.blue { background: var(--pioneer-blue-dim); color: var(--pioneer-blue); }
-        .stat-card .icon.orange { background: var(--pioneer-orange-dim); color: var(--pioneer-orange); }
-        .stat-card .icon.pink { background: rgba(244, 114, 182, 0.1); color: #f472b6; }
+        .stat-card .icon.green { background: var(--exclusive-green-dim); color: var(--exclusive-green); }
+        .stat-card .icon.blue { background: var(--exclusive-blue-dim); color: var(--exclusive-blue); }
+        .stat-card .icon.orange { background: var(--exclusive-orange-dim); color: var(--exclusive-orange); }
+        .stat-card .icon.gold { background: var(--exclusive-gold-dim); color: var(--exclusive-gold); }
 
         .stat-card .stat-label {
-            color: var(--pioneer-text-secondary);
+            color: var(--exclusive-text-secondary);
             font-size: 10px;
             font-weight: 500;
             text-transform: uppercase;
@@ -378,7 +380,7 @@
             font-family: var(--font-display);
             font-size: 26px;
             font-weight: 700;
-            color: var(--pioneer-text);
+            color: var(--exclusive-text);
             letter-spacing: 0.5px;
         }
 
@@ -390,15 +392,15 @@
             font-weight: 500;
         }
 
-        .stat-card .change.up { background: var(--pioneer-green-dim); color: var(--pioneer-green); }
-        .stat-card .change.down { background: var(--pioneer-red-dim); color: var(--pioneer-red); }
+        .stat-card .change.up { background: var(--exclusive-green-dim); color: var(--exclusive-green); }
+        .stat-card .change.down { background: var(--exclusive-red-dim); color: var(--exclusive-red); }
 
         /* ============================================================
-           КАРТОЧКИ — PIONEER STYLE
+           КАРТОЧКИ
            ============================================================ */
         .card-glass {
-            background: var(--pioneer-surface);
-            border: 1px solid var(--pioneer-border);
+            background: var(--exclusive-surface);
+            border: 1px solid var(--exclusive-border);
             border-radius: 10px;
             padding: 18px 20px;
             transition: all 0.4s ease;
@@ -417,13 +419,13 @@
             display: flex;
             align-items: center;
             gap: 10px;
-            color: var(--pioneer-text);
+            color: var(--exclusive-text);
             letter-spacing: 0.5px;
             text-transform: uppercase;
         }
 
         .card-title i {
-            color: var(--pioneer-orange);
+            color: var(--exclusive-orange);
             font-size: 16px;
         }
 
@@ -454,13 +456,13 @@
         }
 
         .playlist-item .info .name {
-            color: var(--pioneer-text);
+            color: var(--exclusive-text);
             font-weight: 400;
             font-size: 13px;
         }
 
         .playlist-item .info .count {
-            color: var(--pioneer-text-secondary);
+            color: var(--exclusive-text-secondary);
             font-size: 11px;
         }
 
@@ -473,7 +475,7 @@
             letter-spacing: 0.5px;
         }
 
-        .playlist-item .status.public { background: var(--pioneer-green-dim); color: var(--pioneer-green); }
+        .playlist-item .status.public { background: var(--exclusive-green-dim); color: var(--exclusive-green); }
         .playlist-item .status.private { background: rgba(251, 191, 36, 0.1); color: #fbbf24; }
 
         /* ============================================================
@@ -503,68 +505,68 @@
             flex-shrink: 0;
         }
 
-        .status-item .dot.green { background: var(--pioneer-green); box-shadow: 0 0 10px rgba(0, 255, 136, 0.2); }
+        .status-item .dot.green { background: var(--exclusive-green); box-shadow: 0 0 10px rgba(0, 255, 136, 0.2); }
         .status-item .dot.yellow { background: #fbbf24; box-shadow: 0 0 10px rgba(251, 191, 36, 0.2); }
-        .status-item .dot.red { background: var(--pioneer-red); box-shadow: 0 0 10px rgba(255, 34, 68, 0.2); }
+        .status-item .dot.red { background: var(--exclusive-red); box-shadow: 0 0 10px rgba(255, 34, 68, 0.2); }
 
         .status-item .label {
-            color: var(--pioneer-text-secondary);
+            color: var(--exclusive-text-secondary);
             font-size: 10px;
             font-weight: 400;
         }
 
         .status-item .value {
-            color: var(--pioneer-text);
+            color: var(--exclusive-text);
             font-size: 10px;
             font-weight: 500;
         }
 
         /* ============================================================
-           ТАБЛИЦА — PIONEER STYLE
+           ТАБЛИЦА
            ============================================================ */
         .table-wrapper {
             overflow-x: auto;
             margin: 0 -4px;
         }
 
-        .table-pioneer {
+        .table-exclusive {
             width: 100%;
             border-collapse: collapse;
             font-size: 13px;
-            color: var(--pioneer-text-secondary);
+            color: var(--exclusive-text-secondary);
             min-width: 600px;
         }
 
-        .table-pioneer thead th {
+        .table-exclusive thead th {
             font-size: 10px;
             font-weight: 600;
             text-transform: uppercase;
             letter-spacing: 0.5px;
-            color: var(--pioneer-text-secondary);
-            border-bottom: 1px solid var(--pioneer-border);
+            color: var(--exclusive-text-secondary);
+            border-bottom: 1px solid var(--exclusive-border);
             padding: 8px 12px;
             text-align: left;
             white-space: nowrap;
         }
 
-        .table-pioneer tbody td {
+        .table-exclusive tbody td {
             padding: 8px 12px;
             border-bottom: 1px solid rgba(255, 255, 255, 0.03);
             vertical-align: middle;
         }
 
-        .table-pioneer tbody tr:hover td {
+        .table-exclusive tbody tr:hover td {
             background: rgba(255, 255, 255, 0.02);
         }
 
-        .table-pioneer .track-name {
-            color: var(--pioneer-text);
+        .table-exclusive .track-name {
+            color: var(--exclusive-text);
             font-weight: 500;
         }
 
         .badge-tag {
-            background: var(--pioneer-orange-dim);
-            color: var(--pioneer-orange);
+            background: var(--exclusive-orange-dim);
+            color: var(--exclusive-orange);
             padding: 2px 10px;
             border-radius: 40px;
             font-size: 10px;
@@ -580,17 +582,17 @@
             position: fixed;
             bottom: 30px;
             right: 30px;
-            background: var(--pioneer-surface);
-            border: 1px solid var(--pioneer-orange);
+            background: var(--exclusive-surface);
+            border: 1px solid var(--exclusive-orange);
             border-radius: 10px;
             padding: 14px 22px;
-            color: var(--pioneer-text);
-            box-shadow: var(--pioneer-orange-glow);
+            color: var(--exclusive-text);
+            box-shadow: var(--exclusive-orange-glow);
             display: none;
             z-index: 9999;
             max-width: 400px;
             font-size: 13px;
-            border-left: 3px solid var(--pioneer-orange);
+            border-left: 3px solid var(--exclusive-orange);
             font-family: var(--font-body);
         }
 
@@ -629,8 +631,8 @@
             .card-glass { padding: 14px; }
             .system-status { grid-template-columns: 1fr 1fr; }
             .nav-link span { display: none; }
-            .table-pioneer { font-size: 12px; min-width: 480px; }
-            .table-pioneer thead th, .table-pioneer tbody td { padding: 6px 8px; }
+            .table-exclusive { font-size: 12px; min-width: 480px; }
+            .table-exclusive thead th, .table-exclusive tbody td { padding: 6px 8px; }
             .header-brand h1 { font-size: 15px; }
             .header-brand .subtitle { font-size: 9px; }
             .header-brand .logo-icon { width: 34px; height: 34px; font-size: 16px; }
@@ -640,8 +642,8 @@
             .stats-grid { grid-template-columns: 1fr 1fr; }
             .stat-card .number { font-size: 18px; }
             .stat-card .stat-label { font-size: 9px; }
-            .table-pioneer { font-size: 11px; min-width: 400px; }
-            .table-pioneer thead th, .table-pioneer tbody td { padding: 4px 6px; }
+            .table-exclusive { font-size: 11px; min-width: 400px; }
+            .table-exclusive thead th, .table-exclusive tbody td { padding: 4px 6px; }
             .badge-tag { font-size: 8px; padding: 1px 6px; }
         }
 
@@ -655,9 +657,9 @@
         }
 
         ::-webkit-scrollbar { width: 5px; height: 5px; }
-        ::-webkit-scrollbar-track { background: var(--pioneer-surface); }
-        ::-webkit-scrollbar-thumb { background: var(--pioneer-border); border-radius: 10px; }
-        ::-webkit-scrollbar-thumb:hover { background: var(--pioneer-orange); }
+        ::-webkit-scrollbar-track { background: var(--exclusive-surface); }
+        ::-webkit-scrollbar-thumb { background: var(--exclusive-border); border-radius: 10px; }
+        ::-webkit-scrollbar-thumb:hover { background: var(--exclusive-orange); }
     </style>
 </head>
 <body>
@@ -670,13 +672,13 @@
         <!-- ===== МЕНЮ ===== -->
         <nav class="nav-menu">
             <a href="/" class="nav-link active">
-                <i class="bi bi-grid-1x2-fill"></i> <span>Mission</span>
+                <i class="bi bi-grid-1x2-fill"></i> <span>Миссия</span>
             </a>
             <a href="/import" class="nav-link">
-                <i class="bi bi-file-earmark-spreadsheet"></i> <span>Upload</span>
+                <i class="bi bi-file-earmark-spreadsheet"></i> <span>Загрузка</span>
             </a>
             <a href="/import-contacts" class="nav-link">
-                <i class="bi bi-people-fill"></i> <span>Contacts</span>
+                <i class="bi bi-people-fill"></i> <span>Контакты</span>
             </a>
         </nav>
 
@@ -686,19 +688,19 @@
                 <div class="logo-icon"><i class="bi bi-sliders"></i></div>
                 <div>
                     <h1>FUNDOZA Music CRM</h1>
-                    <span class="subtitle">Pioneer Edition · v1.0</span>
+                    <span class="subtitle">Exclusive Edition · v1.0</span>
                 </div>
             </div>
             <div class="header-actions">
                 <div class="badge-status">
-                    <span class="pulse"></span> Ready
+                    <span class="pulse"></span> Готов
                 </div>
                 <span class="user-email" id="userEmail">dj@fundoza.com</span>
-                <button class="btn-pioneer" onclick="refreshData()">
-                    <i class="bi bi-arrow-clockwise"></i> Sync
+                <button class="btn-exclusive" onclick="refreshData()">
+                    <i class="bi bi-arrow-clockwise"></i> Синхр.
                 </button>
-                <button class="btn-pioneer-danger" onclick="logout()">
-                    <i class="bi bi-box-arrow-right"></i> Exit
+                <button class="btn-exclusive-danger" onclick="logout()">
+                    <i class="bi bi-box-arrow-right"></i> Выход
                 </button>
             </div>
         </header>
@@ -711,7 +713,7 @@
                     <span class="change up">+12%</span>
                 </div>
                 <div class="number" id="statTracks">0</div>
-                <div class="stat-label">Tracks</div>
+                <div class="stat-label">Треков</div>
             </div>
 
             <div class="stat-card">
@@ -720,7 +722,7 @@
                     <span class="change up">+8%</span>
                 </div>
                 <div class="number" id="statContacts">0</div>
-                <div class="stat-label">Contacts</div>
+                <div class="stat-label">Контактов</div>
             </div>
 
             <div class="stat-card">
@@ -729,7 +731,7 @@
                     <span class="change up">+3</span>
                 </div>
                 <div class="number" id="statPlaylists">0</div>
-                <div class="stat-label">Playlists</div>
+                <div class="stat-label">Плейлистов</div>
             </div>
 
             <div class="stat-card">
@@ -738,16 +740,16 @@
                     <span class="change up">+156</span>
                 </div>
                 <div class="number" id="statSent">0</div>
-                <div class="stat-label">Sent</div>
+                <div class="stat-label">Отправлено</div>
             </div>
 
             <div class="stat-card">
                 <div class="stat-header">
-                    <div class="icon pink"><i class="bi bi-graph-up"></i></div>
+                    <div class="icon gold"><i class="bi bi-graph-up"></i></div>
                     <span class="change up">+23%</span>
                 </div>
                 <div class="number" id="statPlays">0</div>
-                <div class="stat-label">Plays</div>
+                <div class="stat-label">Прослушиваний</div>
             </div>
         </div>
 
@@ -758,19 +760,19 @@
             <div class="col-lg-5">
                 <div class="card-glass">
                     <div class="card-title">
-                        <i class="bi bi-list-ul"></i> Playlists
-                        <span class="badge" style="background: var(--pioneer-orange-dim); color: var(--pioneer-orange); margin-left: auto; font-size: 10px; font-weight: 600; padding: 2px 10px; border-radius: 40px;">6</span>
+                        <i class="bi bi-list-ul"></i> Плейлисты
+                        <span class="badge" style="background: var(--exclusive-orange-dim); color: var(--exclusive-orange); margin-left: auto; font-size: 10px; font-weight: 600; padding: 2px 10px; border-radius: 40px;">6</span>
                     </div>
                     <div id="playlistContainer">
                         <div class="playlist-item">
                             <div class="info">
                                 <div class="color" style="background: #667eea;"></div>
                                 <div>
-                                    <div class="name">Main Mix</div>
-                                    <div class="count">18 tracks</div>
+                                    <div class="name">Основной микс</div>
+                                    <div class="count">18 треков</div>
                                 </div>
                             </div>
-                            <span class="status public">Public</span>
+                            <span class="status public">Публичный</span>
                         </div>
 
                         <div class="playlist-item">
@@ -778,21 +780,21 @@
                                 <div class="color" style="background: #34d399;"></div>
                                 <div>
                                     <div class="name">Chill & Lo-fi</div>
-                                    <div class="count">9 tracks</div>
+                                    <div class="count">9 треков</div>
                                 </div>
                             </div>
-                            <span class="status public">Public</span>
+                            <span class="status public">Публичный</span>
                         </div>
 
                         <div class="playlist-item">
                             <div class="info">
                                 <div class="color" style="background: #fbbf24;"></div>
                                 <div>
-                                    <div class="name">In Progress</div>
-                                    <div class="count">4 tracks</div>
+                                    <div class="name">В работе</div>
+                                    <div class="count">4 трека</div>
                                 </div>
                             </div>
-                            <span class="status private">Draft</span>
+                            <span class="status private">Черновик</span>
                         </div>
 
                         <div class="playlist-item">
@@ -800,10 +802,10 @@
                                 <div class="color" style="background: #f472b6;"></div>
                                 <div>
                                     <div class="name">Synthwave</div>
-                                    <div class="count">12 tracks</div>
+                                    <div class="count">12 треков</div>
                                 </div>
                             </div>
-                            <span class="status public">Public</span>
+                            <span class="status public">Публичный</span>
                         </div>
 
                         <div class="playlist-item">
@@ -811,10 +813,10 @@
                                 <div class="color" style="background: #60a5fa;"></div>
                                 <div>
                                     <div class="name">Ambient Dreams</div>
-                                    <div class="count">7 tracks</div>
+                                    <div class="count">7 треков</div>
                                 </div>
                             </div>
-                            <span class="status private">Draft</span>
+                            <span class="status private">Черновик</span>
                         </div>
 
                         <div class="playlist-item">
@@ -822,10 +824,10 @@
                                 <div class="color" style="background: #f87171;"></div>
                                 <div>
                                     <div class="name">Party Hits</div>
-                                    <div class="count">15 tracks</div>
+                                    <div class="count">15 треков</div>
                                 </div>
                             </div>
-                            <span class="status public">Public</span>
+                            <span class="status public">Публичный</span>
                         </div>
                     </div>
                 </div>
@@ -835,9 +837,9 @@
             <div class="col-lg-7">
                 <div class="card-glass mb-4">
                     <div class="card-title">
-                        <i class="bi bi-hdd-stack"></i> System Status
-                        <span class="badge" style="background: var(--pioneer-green-dim); color: var(--pioneer-green); margin-left: auto; font-size: 10px; font-weight: 600; padding: 2px 10px; border-radius: 40px;">
-                            <i class="bi bi-check-circle"></i> All systems go
+                        <i class="bi bi-hdd-stack"></i> Статус системы
+                        <span class="badge" style="background: var(--exclusive-green-dim); color: var(--exclusive-green); margin-left: auto; font-size: 10px; font-weight: 600; padding: 2px 10px; border-radius: 40px;">
+                            <i class="bi bi-check-circle"></i> Все системы работают
                         </span>
                     </div>
 
@@ -845,42 +847,42 @@
                         <div class="status-item">
                             <div class="dot green"></div>
                             <div>
-                                <div class="label">Database</div>
-                                <div class="value">Online</div>
+                                <div class="label">База данных</div>
+                                <div class="value">Подключена</div>
                             </div>
                         </div>
                         <div class="status-item">
                             <div class="dot green"></div>
                             <div>
                                 <div class="label">Supabase</div>
-                                <div class="value">Available</div>
+                                <div class="value">Доступен</div>
                             </div>
                         </div>
                         <div class="status-item">
                             <div class="dot green"></div>
                             <div>
                                 <div class="label">SMTP</div>
-                                <div class="value">Ready</div>
+                                <div class="value">Готов</div>
                             </div>
                         </div>
                         <div class="status-item">
                             <div class="dot green"></div>
                             <div>
-                                <div class="label">Storage</div>
+                                <div class="label">Хранилище</div>
                                 <div class="value">2.4 / 10 GB</div>
                             </div>
                         </div>
                         <div class="status-item">
                             <div class="dot yellow"></div>
                             <div>
-                                <div class="label">Queue</div>
-                                <div class="value">3 pending</div>
+                                <div class="label">Очередь</div>
+                                <div class="value">3 письма</div>
                             </div>
                         </div>
                         <div class="status-item">
                             <div class="dot green"></div>
                             <div>
-                                <div class="label">Version</div>
+                                <div class="label">Версия</div>
                                 <div class="value">v1.0</div>
                             </div>
                         </div>
@@ -890,21 +892,21 @@
                 <!-- Быстрые действия -->
                 <div class="card-glass">
                     <div class="card-title">
-                        <i class="bi bi-lightning-fill"></i> Quick Actions
+                        <i class="bi bi-lightning-fill"></i> Быстрые действия
                     </div>
 
                     <div class="d-flex flex-wrap gap-2">
-                        <a href="/import" class="btn-pioneer-primary" style="flex: 1; min-width: 120px; text-align: center; padding: 10px 16px; text-decoration: none;">
-                            <i class="bi bi-file-earmark-spreadsheet"></i> Upload Tracks
+                        <a href="/import" class="btn-exclusive-primary" style="flex: 1; min-width: 120px; text-align: center; padding: 10px 16px; text-decoration: none;">
+                            <i class="bi bi-file-earmark-spreadsheet"></i> Загрузить треки
                         </a>
-                        <a href="/import-contacts" class="btn-pioneer-primary" style="flex: 1; min-width: 120px; text-align: center; padding: 10px 16px; text-decoration: none;">
-                            <i class="bi bi-people"></i> Contacts
+                        <a href="/import-contacts" class="btn-exclusive-primary" style="flex: 1; min-width: 120px; text-align: center; padding: 10px 16px; text-decoration: none;">
+                            <i class="bi bi-people"></i> Контакты
                         </a>
-                        <a href="#" class="btn-pioneer" style="flex: 1; min-width: 120px; text-align: center; padding: 10px 16px; text-decoration: none;" onclick="showToast('🚀 Mailing started', 'success')">
-                            <i class="bi bi-send"></i> Mailing
+                        <a href="#" class="btn-exclusive" style="flex: 1; min-width: 120px; text-align: center; padding: 10px 16px; text-decoration: none;" onclick="showToast('🚀 Рассылка запущена', 'success')">
+                            <i class="bi bi-send"></i> Рассылка
                         </a>
-                        <a href="#" class="btn-pioneer" style="flex: 1; min-width: 120px; text-align: center; padding: 10px 16px; text-decoration: none;" onclick="showToast('📊 Report generated', 'success')">
-                            <i class="bi bi-file-text"></i> Report
+                        <a href="#" class="btn-exclusive" style="flex: 1; min-width: 120px; text-align: center; padding: 10px 16px; text-decoration: none;" onclick="showToast('📊 Отчёт сформирован', 'success')">
+                            <i class="bi bi-file-text"></i> Отчёт
                         </a>
                     </div>
                 </div>
@@ -916,20 +918,20 @@
             <div class="col-12">
                 <div class="card-glass">
                     <div class="card-title">
-                        <i class="bi bi-clock-history"></i> Recent Tracks
-                        <span class="badge" style="background: var(--pioneer-orange-dim); color: var(--pioneer-orange); margin-left: auto; font-size: 10px; font-weight: 600; padding: 2px 10px; border-radius: 40px;">5</span>
+                        <i class="bi bi-clock-history"></i> Последние добавленные треки
+                        <span class="badge" style="background: var(--exclusive-orange-dim); color: var(--exclusive-orange); margin-left: auto; font-size: 10px; font-weight: 600; padding: 2px 10px; border-radius: 40px;">5</span>
                     </div>
 
                     <div class="table-wrapper">
-                        <table class="table-pioneer">
+                        <table class="table-exclusive">
                             <thead>
                                 <tr>
                                     <th style="width: 40px;">#</th>
-                                    <th style="min-width: 160px;">Title</th>
-                                    <th style="min-width: 140px;">Artist</th>
-                                    <th style="min-width: 100px;">Genre</th>
-                                    <th style="width: 100px;">Plays</th>
-                                    <th style="min-width: 130px;">Date</th>
+                                    <th style="min-width: 160px;">Название</th>
+                                    <th style="min-width: 140px;">Исполнитель</th>
+                                    <th style="min-width: 100px;">Жанр</th>
+                                    <th style="width: 100px;">Прослушиваний</th>
+                                    <th style="min-width: 130px;">Дата</th>
                                 </tr>
                             </thead>
                             <tbody id="recentTracks">
@@ -939,7 +941,7 @@
                                     <td>Synthwave Band</td>
                                     <td><span class="badge-tag">Electronic</span></td>
                                     <td>156</td>
-                                    <td>Today, 14:32</td>
+                                    <td>Сегодня, 14:32</td>
                                 </tr>
                                 <tr>
                                     <td>2</td>
@@ -947,7 +949,7 @@
                                     <td>Night Riders</td>
                                     <td><span class="badge-tag">Synthwave</span></td>
                                     <td>89</td>
-                                    <td>Today, 12:15</td>
+                                    <td>Сегодня, 12:15</td>
                                 </tr>
                                 <tr>
                                     <td>3</td>
@@ -955,7 +957,7 @@
                                     <td>Ambient Masters</td>
                                     <td><span class="badge-tag">Ambient</span></td>
                                     <td>234</td>
-                                    <td>Yesterday, 22:40</td>
+                                    <td>Вчера, 22:40</td>
                                 </tr>
                                 <tr>
                                     <td>4</td>
@@ -963,7 +965,7 @@
                                     <td>Space Sounds</td>
                                     <td><span class="badge-tag">House</span></td>
                                     <td>412</td>
-                                    <td>Yesterday, 18:20</td>
+                                    <td>Вчера, 18:20</td>
                                 </tr>
                                 <tr>
                                     <td>5</td>
@@ -971,7 +973,7 @@
                                     <td>Oceanic</td>
                                     <td><span class="badge-tag">Downtempo</span></td>
                                     <td>78</td>
-                                    <td>2 days ago</td>
+                                    <td>2 дня назад</td>
                                 </tr>
                             </tbody>
                         </table>
@@ -981,8 +983,8 @@
         </div>
 
         <!-- ===== ФУТЕР ===== -->
-        <div class="text-center mt-4" style="font-size: 10px; color: var(--pioneer-text-dim); font-weight: 400; letter-spacing: 1px; border-top: 1px solid var(--pioneer-border); padding-top: 16px;">
-            <i class="bi bi-sliders"></i> FUNDOZA Music CRM · Pioneer Edition · © 2026
+        <div class="text-center mt-4" style="font-size: 10px; color: var(--exclusive-text-dim); font-weight: 400; letter-spacing: 1px; border-top: 1px solid var(--exclusive-border); padding-top: 16px;">
+            <i class="bi bi-sliders"></i> FUNDOZA Music CRM · Exclusive Edition · © 2026
         </div>
     </div>
 
@@ -1080,9 +1082,9 @@
         // ============================================================
 
         window.refreshData = function() {
-            showToast('🔄 Syncing...', 'info');
+            showToast('🔄 Синхронизация...', 'info');
             loadStats();
-            setTimeout(() => showToast('✅ Data updated', 'success'), 1000);
+            setTimeout(() => showToast('✅ Данные обновлены', 'success'), 1000);
         };
 
         // ============================================================
@@ -1092,7 +1094,7 @@
         document.addEventListener('DOMContentLoaded', async function() {
             await checkAuth();
             loadStats();
-            console.log('🎛️ FUNDOZA Music CRM — Pioneer Edition loaded');
+            console.log('🎛️ FUNDOZA Music CRM — Exclusive Edition загружена');
             
             setInterval(() => loadStats(), 60000);
         });
