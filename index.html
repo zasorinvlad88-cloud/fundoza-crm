@@ -628,6 +628,86 @@
             letter-spacing: 0.5px;
         }
 
+        /* ===== СЧЁТЧИК РАДИОСИГНАЛА ===== */
+        .signal-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 10px;
+            margin-top: 6px;
+        }
+
+        .signal-item {
+            background: rgba(0, 255, 136, 0.02);
+            border: 1px solid rgba(0, 255, 136, 0.06);
+            border-radius: 8px;
+            padding: 8px 10px;
+            text-align: center;
+        }
+
+        .signal-item .label {
+            font-size: 9px;
+            color: var(--vip-text-secondary);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .signal-item .value {
+            font-family: var(--font-display);
+            font-size: 15px;
+            font-weight: 700;
+            color: var(--vip-lime);
+        }
+
+        .signal-item .value .sub {
+            font-size: 11px;
+            font-weight: 400;
+            color: var(--vip-text-secondary);
+        }
+
+        .signal-main {
+            margin-top: 10px;
+            background: rgba(0, 255, 136, 0.02);
+            border: 1px solid rgba(0, 255, 136, 0.06);
+            border-radius: 8px;
+            padding: 14px 16px;
+            text-align: center;
+        }
+
+        .signal-main .label {
+            font-size: 9px;
+            color: var(--vip-text-secondary);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .signal-main .distance {
+            font-family: var(--font-display);
+            font-size: 30px;
+            font-weight: 700;
+            color: var(--vip-lime);
+            letter-spacing: 1px;
+        }
+
+        .signal-main .distance .sub {
+            font-size: 15px;
+            font-weight: 400;
+            color: var(--vip-text-secondary);
+        }
+
+        .signal-main .light-years {
+            font-size: 11px;
+            color: var(--vip-text-secondary);
+            margin-top: 2px;
+        }
+
+        .signal-footer {
+            margin-top: 6px;
+            display: flex;
+            justify-content: space-between;
+            font-size: 8px;
+            color: var(--vip-text-dim);
+        }
+
         /* ===== ТАБЛИЦА ===== */
         .table-wrapper {
             overflow-x: auto;
@@ -743,6 +823,9 @@
             .header-brand .subtitle { font-size: 9px; }
             .header-brand .logo-icon { width: 34px; height: 34px; font-size: 16px; }
             .network-widget { font-size: 11px; padding: 8px 12px; }
+            .signal-grid { grid-template-columns: 1fr 1fr 1fr; gap: 6px; }
+            .signal-item .value { font-size: 13px; }
+            .signal-main .distance { font-size: 24px; }
         }
 
         @media (max-width: 480px) {
@@ -753,6 +836,9 @@
             .table-vip thead th, .table-vip tbody td { padding: 6px 6px; }
             .badge-vip-tag { font-size: 8px; padding: 1px 6px; }
             .system-status { grid-template-columns: 1fr 1fr; }
+            .signal-grid { grid-template-columns: 1fr 1fr; }
+            .signal-item:last-child { grid-column: span 2; }
+            .signal-main .distance { font-size: 20px; }
         }
 
         .fade-in {
@@ -940,7 +1026,7 @@
                 </div>
             </div>
 
-            <!-- ===== СИСТЕМНЫЙ СТАТУС + ГЛОБАЛЬНАЯ СЕТЬ + РАДИОСТАНЦИИ + САМОЛЁТЫ ===== -->
+            <!-- ===== СИСТЕМНЫЙ СТАТУС + ВСЕ СЧЁТЧИКИ ===== -->
             <div class="col-lg-7">
                 <div class="card-vip mb-4">
                     <div class="card-title">
@@ -1042,6 +1128,52 @@
                             <span class="value" id="networkStatus">🟢 Стабильно</span>
                             <span class="source">· Cloudflare Radar</span>
                         </div>
+                    </div>
+                </div>
+
+                <!-- ===== СЧЁТЧИК РАДИОСИГНАЛА ===== -->
+                <div class="card-vip mb-4">
+                    <div class="card-title">
+                        <i class="bi bi-radio-waves"></i> Расстояние первого радиосигнала
+                        <span class="badge" style="background: var(--vip-lime-dim); color: var(--vip-lime); margin-left: auto; font-size: 10px; font-weight: 600; padding: 2px 10px; border-radius: 40px;">
+                            <i class="bi bi-rocket"></i> Live
+                        </span>
+                    </div>
+
+                    <div class="signal-grid">
+                        <div class="signal-item">
+                            <div class="label">Скорость</div>
+                            <div class="value">
+                                299 792 <span class="sub">км/с</span>
+                            </div>
+                        </div>
+                        <div class="signal-item">
+                            <div class="label">Старт</div>
+                            <div class="value" style="font-size: 13px;">
+                                15.07.2026 <span class="sub">15:10 МСК</span>
+                            </div>
+                        </div>
+                        <div class="signal-item">
+                            <div class="label">В пути</div>
+                            <div class="value" id="signalTime" style="font-size: 15px;">
+                                00:00:00
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="signal-main">
+                        <div class="label">Расстояние от Земли</div>
+                        <div class="distance">
+                            <span id="signalDistance">0</span> <span class="sub">км</span>
+                        </div>
+                        <div class="light-years">
+                            ≈ <span id="signalLightYears">0</span> световых лет
+                        </div>
+                    </div>
+
+                    <div class="signal-footer">
+                        <span><i class="bi bi-info-circle"></i> Скорость света: 299 792,458 км/с</span>
+                        <span>Обновление: <span id="signalUpdateTime">каждую секунду</span></span>
                     </div>
                 </div>
 
@@ -1418,7 +1550,68 @@
         }
 
         // ============================================================
-        // 9. ОБНОВЛЕНИЕ ДАННЫХ
+        // 9. СЧЁТЧИК РАССТОЯНИЯ РАДИОСИГНАЛА
+        // ============================================================
+
+        // Дата старта: 15 июля 2026 года, 15:10 по МСК (UTC+3)
+        // В UTC это 15:10 - 3 = 12:10 UTC
+        const SIGNAL_START = new Date('2026-07-15T12:10:00Z');
+
+        function formatNumberWithSpaces(num) {
+            return Math.round(num).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ' ');
+        }
+
+        function padZero(num) {
+            return num.toString().padStart(2, '0');
+        }
+
+        function updateSignalCounter() {
+            const now = new Date();
+            const elapsedMs = now - SIGNAL_START;
+            
+            if (elapsedMs < 0) {
+                document.getElementById('signalDistance').textContent = '0';
+                document.getElementById('signalLightYears').textContent = '0';
+                document.getElementById('signalTime').textContent = '--:--:--';
+                return;
+            }
+            
+            // Расчёт времени в пути
+            const totalSeconds = Math.floor(elapsedMs / 1000);
+            const hours = Math.floor(totalSeconds / 3600);
+            const minutes = Math.floor((totalSeconds % 3600) / 60);
+            const seconds = totalSeconds % 60;
+            document.getElementById('signalTime').textContent = 
+                `${padZero(hours)}:${padZero(minutes)}:${padZero(seconds)}`;
+            
+            // Расчёт расстояния в километрах
+            const speedKmPerSec = 299792.458;
+            const distanceKm = (elapsedMs / 1000) * speedKmPerSec;
+            document.getElementById('signalDistance').textContent = formatNumberWithSpaces(distanceKm);
+            
+            // Расчёт в световых годах (1 световой год = 9.4607 × 10^12 км)
+            const lightYearKm = 9460730472580.8;
+            const lightYears = distanceKm / lightYearKm;
+            document.getElementById('signalLightYears').textContent = lightYears.toFixed(6);
+        }
+
+        let signalInterval = null;
+
+        function startSignalCounter() {
+            updateSignalCounter();
+            if (signalInterval) clearInterval(signalInterval);
+            signalInterval = setInterval(updateSignalCounter, 1000);
+        }
+
+        function stopSignalCounter() {
+            if (signalInterval) {
+                clearInterval(signalInterval);
+                signalInterval = null;
+            }
+        }
+
+        // ============================================================
+        // 10. ОБНОВЛЕНИЕ ДАННЫХ
         // ============================================================
 
         window.refreshData = function() {
@@ -1431,7 +1624,7 @@
         };
 
         // ============================================================
-        // 10. ИНИЦИАЛИЗАЦИЯ
+        // 11. ИНИЦИАЛИЗАЦИЯ
         // ============================================================
 
         document.addEventListener('DOMContentLoaded', async function() {
@@ -1440,6 +1633,7 @@
             fetchNetworkStatus();
             fetchRadioStats();
             fetchPlaneStats();
+            startSignalCounter();
             console.log('🎛️ FUNDOZA Music CRM — VIP EXPERT EDITION загружена');
             
             // Анимация счётчика стран (195 стран ООН)
@@ -1457,7 +1651,7 @@
                 }, 50);
             }
             
-            // Обновляем все данные каждые 60 секунд
+            // Обновляем все данные 60секунд
             setInterval(() => {
                 loadStats();
                 fetchNetworkStatus();
@@ -1467,4 +1661,4 @@
         });
     </script>
 </body>
-</html>
+</html>ы
