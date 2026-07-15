@@ -52,7 +52,6 @@
             overflow-x: hidden;
         }
 
-        /* ===== ФОН ===== */
         .vip-bg {
             position: fixed;
             top: 0;
@@ -629,40 +628,6 @@
             letter-spacing: 0.5px;
         }
 
-        /* ===== КАРТА ПОЛЁТОВ ===== */
-        .flight-map-container {
-            margin-top: 12px;
-            border-radius: 8px;
-            overflow: hidden;
-            border: 1px solid rgba(0, 255, 136, 0.08);
-            position: relative;
-        }
-
-        .flight-map-container iframe {
-            width: 100%;
-            height: 200px;
-            border: none;
-            display: block;
-        }
-
-        .flight-map-footer {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 4px 6px 0 6px;
-            font-size: 8px;
-            color: var(--vip-text-dim);
-        }
-
-        .flight-map-footer a {
-            color: var(--vip-lime);
-            text-decoration: none;
-        }
-
-        .flight-map-footer a:hover {
-            text-decoration: underline;
-        }
-
         /* ===== ТАБЛИЦА ===== */
         .table-wrapper {
             overflow-x: auto;
@@ -778,7 +743,6 @@
             .header-brand .subtitle { font-size: 9px; }
             .header-brand .logo-icon { width: 34px; height: 34px; font-size: 16px; }
             .network-widget { font-size: 11px; padding: 8px 12px; }
-            .flight-map-container iframe { height: 140px; }
         }
 
         @media (max-width: 480px) {
@@ -789,7 +753,6 @@
             .table-vip thead th, .table-vip tbody td { padding: 6px 6px; }
             .badge-vip-tag { font-size: 8px; padding: 1px 6px; }
             .system-status { grid-template-columns: 1fr 1fr; }
-            .flight-map-container iframe { height: 120px; }
         }
 
         .fade-in {
@@ -1067,21 +1030,6 @@
                                 </div>
                             </div>
                         </div>
-                    </div>
-
-                    <!-- ===== КАРТА ПОЛЁТОВ ===== -->
-                    <div class="flight-map-container">
-                        <iframe 
-                            id="flightMap"
-                            src="https://www.flightradar24.com/simple?map=16/52.52/13.40&mode=default"
-                            loading="lazy"
-                            allow="autoplay"
-                            title="Карта полётов в реальном времени"
-                        ></iframe>
-                    </div>
-                    <div class="flight-map-footer">
-                        <span><i class="bi bi-geo-alt"></i> Данные в реальном времени</span>
-                        <span>Источник: <a href="https://www.flightradar24.com" target="_blank">Flightradar24</a></span>
                     </div>
 
                     <!-- ===== ВИДЖЕТ ГЛОБАЛЬНОЙ СЕТИ ===== -->
