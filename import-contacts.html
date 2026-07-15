@@ -8,7 +8,6 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" />
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" />
     
-    <!-- Supabase Auth -->
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
     
@@ -16,8 +15,6 @@
         :root {
             --primary-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             --success-gradient: linear-gradient(135deg, #34d399 0%, #059669 100%);
-            --warning-gradient: linear-gradient(135deg, #fbbf24 0%, #d97706 100%);
-            --danger-gradient: linear-gradient(135deg, #f87171 0%, #dc2626 100%);
             --bg-dark: #0f0e17;
             --bg-card: #1a1a2e;
             --text-primary: #fffffe;
@@ -64,7 +61,7 @@
         .main-container {
             position: relative;
             z-index: 1;
-            max-width: 1440px;
+            max-width: 1600px;
             margin: 0 auto;
         }
 
@@ -218,7 +215,6 @@
             background: rgba(255, 255, 255, 0.1);
             border-color: rgba(255, 255, 255, 0.2);
             color: var(--text-primary);
-            text-decoration: none;
         }
 
         .btn-gradient {
@@ -230,7 +226,6 @@
             font-weight: 600;
             transition: all 0.3s ease;
             font-size: 13px;
-            text-decoration: none;
             cursor: pointer;
         }
 
@@ -238,7 +233,6 @@
             transform: translateY(-2px);
             box-shadow: 0 8px 32px rgba(102, 126, 234, 0.4);
             color: white;
-            text-decoration: none;
         }
 
         .btn-success {
@@ -391,7 +385,7 @@
         .table-container table {
             width: 100%;
             border-collapse: collapse;
-            font-size: 13px;
+            font-size: 12px;
         }
 
         .table-container th {
@@ -400,18 +394,18 @@
             background: #1a1a2e;
             color: var(--text-secondary);
             font-weight: 600;
-            padding: 10px 8px;
+            padding: 8px 6px;
             border-bottom: 2px solid rgba(255, 255, 255, 0.05);
             text-align: left;
-            font-size: 12px;
+            font-size: 11px;
             white-space: nowrap;
         }
 
         .table-container td {
-            padding: 8px;
+            padding: 6px;
             border-bottom: 1px solid rgba(255, 255, 255, 0.04);
-            font-size: 12px;
-            max-width: 150px;
+            font-size: 11px;
+            max-width: 120px;
             overflow: hidden;
             text-overflow: ellipsis;
             white-space: nowrap;
@@ -446,6 +440,111 @@
             font-size: 13px;
             margin-top: 6px;
             text-align: center;
+        }
+
+        /* ===== ПОЛЯ С ОПИСАНИЯМИ ===== */
+        .field-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 2px;
+            max-height: 500px;
+            overflow-y: auto;
+            padding-right: 4px;
+        }
+
+        .field-grid .field-item {
+            display: grid;
+            grid-template-columns: 130px 1fr;
+            gap: 6px 12px;
+            padding: 4px 6px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.02);
+            align-items: center;
+            border-radius: 4px;
+            transition: background 0.2s ease;
+        }
+
+        .field-grid .field-item:hover {
+            background: rgba(255, 255, 255, 0.02);
+        }
+
+        .field-grid .field-item .field-name {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            font-size: 12px;
+            font-weight: 500;
+        }
+
+        .field-grid .field-item .field-name code {
+            color: #a5b4fc;
+            font-size: 11px;
+            background: rgba(102, 126, 234, 0.1);
+            padding: 1px 6px;
+            border-radius: 4px;
+            white-space: nowrap;
+        }
+
+        .field-grid .field-item .field-name .required {
+            color: #f87171;
+            font-size: 10px;
+        }
+
+        .field-grid .field-item .field-desc {
+            color: var(--text-secondary);
+            font-size: 11px;
+            line-height: 1.3;
+            padding: 2px 0;
+        }
+
+        .field-grid .field-item .field-desc .type {
+            color: var(--text-muted);
+            font-size: 9px;
+            background: rgba(255, 255, 255, 0.04);
+            padding: 1px 6px;
+            border-radius: 10px;
+            margin-left: 4px;
+            white-space: nowrap;
+        }
+
+        .field-grid .field-item .field-desc .example {
+            color: #6b7280;
+            font-size: 10px;
+            display: block;
+            margin-top: 1px;
+            font-style: italic;
+        }
+
+        .field-grid .field-item .field-desc .badge-option {
+            display: inline-block;
+            background: rgba(102, 126, 234, 0.08);
+            color: #a5b4fc;
+            font-size: 9px;
+            padding: 0px 6px;
+            border-radius: 10px;
+            margin: 1px 2px 1px 0;
+        }
+
+        .field-grid .field-item.section-header {
+            background: rgba(102, 126, 234, 0.05);
+            border-bottom: 1px solid rgba(102, 126, 234, 0.1);
+            padding: 6px 8px;
+            margin-top: 4px;
+            border-radius: 6px;
+            grid-template-columns: 1fr;
+            text-align: center;
+        }
+
+        .field-grid .field-item.section-header span {
+            color: var(--text-secondary);
+            font-size: 11px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .field-grid .field-item.section-header i {
+            color: #667eea;
+            margin-right: 6px;
         }
 
         /* ===== TOAST ===== */
@@ -491,14 +590,19 @@
             .upload-zone { padding: 24px 16px; }
             .upload-zone i { font-size: 32px; }
             .stats-grid { grid-template-columns: repeat(2, 1fr); }
-            .table-container { max-height: 300px; }
-            .table-container table { font-size: 11px; }
-            .table-container th, .table-container td { padding: 6px 4px; }
-        }
-
-        @media (max-width: 480px) {
-            .stats-grid { grid-template-columns: 1fr 1fr; }
-            .table-container table { font-size: 10px; }
+            .table-container { max-height: 250px; }
+            .field-grid .field-item {
+                grid-template-columns: 1fr;
+                gap: 2px;
+                padding: 6px 4px;
+            }
+            .field-grid .field-item .field-name {
+                font-size: 11px;
+            }
+            .field-grid .field-item .field-desc {
+                font-size: 10px;
+                padding-left: 4px;
+            }
         }
 
         .fade-in {
@@ -563,7 +667,7 @@
         <div class="row g-4">
             
             <!-- ===== ЛЕВАЯ КОЛОНКА: ЗАГРУЗКА ===== -->
-            <div class="col-lg-8">
+            <div class="col-lg-7">
                 <div class="card-glass">
                     <div class="card-title">
                         <i class="bi bi-file-spreadsheet"></i> Загрузка контактов из Excel
@@ -629,7 +733,7 @@
                     <!-- Предпросмотр -->
                     <div id="previewSection" style="display: none;">
                         <h5 class="mt-3 mb-2" style="color: var(--text-secondary); font-size: 14px;">
-                            <i class="bi bi-eye"></i> Предпросмотр контактов
+                            <i class="bi bi-eye"></i> Предпросмотр контактов (первые 10)
                         </h5>
                         <div class="table-container" id="previewContainer"></div>
                     </div>
@@ -649,70 +753,355 @@
                 </div>
             </div>
 
-            <!-- ===== ПРАВАЯ КОЛОНКА: ИНФОРМАЦИЯ ===== -->
-            <div class="col-lg-4">
+            <!-- ===== ПРАВАЯ КОЛОНКА: ПОЛЯ С ОПИСАНИЯМИ ===== -->
+            <div class="col-lg-5">
                 <div class="card-glass">
                     <div class="card-title">
-                        <i class="bi bi-info-circle"></i> Поля в Excel
+                        <i class="bi bi-list-check"></i> Поля базы данных
+                        <span class="badge" style="background: rgba(16,185,129,0.15); color: #34d399; margin-left: auto; font-size: 11px;">
+                            38 полей
+                        </span>
                     </div>
 
-                    <div style="color: var(--text-secondary); font-size: 13px; max-height: 500px; overflow-y: auto;">
-                        <p style="color: var(--text-primary); font-weight: 500;">Всего полей: <span id="fieldCount">40</span></p>
-                        <div id="fieldList" style="display: grid; grid-template-columns: 1fr 1fr; gap: 4px 12px; font-size: 12px;">
-                            <div><code>name</code></div>
-                            <div><code>contact_name</code></div>
-                            <div><code>email</code></div>
-                            <div><code>phone</code></div>
-                            <div><code>type</code></div>
-                            <div><code>platform</code></div>
-                            <div><code>genre</code></div>
-                            <div><code>genres</code></div>
-                            <div><code>country</code></div>
-                            <div><code>city</code></div>
-                            <div><code>language</code></div>
-                            <div><code>website</code></div>
-                            <div><code>submission_url</code></div>
-                            <div><code>contact_form</code></div>
-                            <div><code>spotify_url</code></div>
-                            <div><code>youtube_url</code></div>
-                            <div><code>instagram</code></div>
-                            <div><code>facebook</code></div>
-                            <div><code>x</code></div>
-                            <div><code>telegram</code></div>
-                            <div><code>tiktok</code></div>
-                            <div><code>soundcloud</code></div>
-                            <div><code>beatport</code></div>
-                            <div><code>followers</code></div>
-                            <div><code>monthly_listeners</code></div>
-                            <div><code>accepts_demo</code></div>
-                            <div><code>accepts_remix</code></div>
-                            <div><code>accepts_radio_edit</code></div>
-                            <div><code>accepts_extended</code></div>
-                            <div><code>preferred_format</code></div>
-                            <div><code>bpm_min</code></div>
-                            <div><code>bpm_max</code></div>
-                            <div><code>mood</code></div>
-                            <div><code>priority</code></div>
-                            <div><code>verified</code></div>
-                            <div><code>status</code></div>
-                            <div><code>last_contact</code></div>
-                            <div><code>notes</code></div>
-                            <div><code>source</code></div>
+                    <div style="margin-bottom: 8px; font-size: 12px; color: var(--text-secondary);">
+                        <i class="bi bi-info-circle"></i> Наведите для подробностей
+                    </div>
+
+                    <div class="field-grid" id="fieldList">
+                        <!-- Основные поля -->
+                        <div class="field-item section-header"><span><i class="bi bi-person"></i> Основные</span></div>
+                        
+                        <div class="field-item">
+                            <div class="field-name"><code>name</code></div>
+                            <div class="field-desc">
+                                Название контакта <span class="type">TEXT</span>
+                                <span class="example">Например: "Основной микс"</span>
+                            </div>
+                        </div>
+                        <div class="field-item">
+                            <div class="field-name"><code>contact_name</code></div>
+                            <div class="field-desc">
+                                Имя контактного лица <span class="type">TEXT</span>
+                                <span class="example">Например: "Иван Петров"</span>
+                            </div>
+                        </div>
+                        <div class="field-item">
+                            <div class="field-name"><code>email</code> <span class="required">*</span></div>
+                            <div class="field-desc">
+                                Email для связи <span class="type">TEXT</span>
+                                <span class="example">Например: "contact@example.com"</span>
+                            </div>
+                        </div>
+                        <div class="field-item">
+                            <div class="field-name"><code>phone</code></div>
+                            <div class="field-desc">
+                                Номер телефона <span class="type">TEXT</span>
+                                <span class="example">Например: "+79001234567"</span>
+                            </div>
+                        </div>
+
+                        <!-- Тип и платформа -->
+                        <div class="field-item section-header"><span><i class="bi bi-tag"></i> Тип и платформа</span></div>
+
+                        <div class="field-item">
+                            <div class="field-name"><code>type</code></div>
+                            <div class="field-desc">
+                                Тип контакта <span class="type">TEXT</span>
+                                <span class="badge-option">Playlist</span>
+                                <span class="badge-option">Radio</span>
+                                <span class="badge-option">Blog</span>
+                                <span class="badge-option">Label</span>
+                                <span class="badge-option">DJ</span>
+                                <span class="badge-option">Media</span>
+                            </div>
+                        </div>
+                        <div class="field-item">
+                            <div class="field-name"><code>platform</code></div>
+                            <div class="field-desc">
+                                Платформа <span class="type">TEXT</span>
+                                <span class="badge-option">Spotify</span>
+                                <span class="badge-option">YouTube</span>
+                                <span class="badge-option">SoundCloud</span>
+                                <span class="badge-option">VK Music</span>
+                                <span class="badge-option">PromoDJ</span>
+                            </div>
+                        </div>
+
+                        <!-- Музыка -->
+                        <div class="field-item section-header"><span><i class="bi bi-music-note-beamed"></i> Музыка</span></div>
+
+                        <div class="field-item">
+                            <div class="field-name"><code>genre</code></div>
+                            <div class="field-desc">
+                                Основной жанр <span class="type">TEXT</span>
+                                <span class="badge-option">Deep House</span>
+                                <span class="badge-option">Tech House</span>
+                                <span class="badge-option">EDM</span>
+                            </div>
+                        </div>
+                        <div class="field-item">
+                            <div class="field-name"><code>genres</code></div>
+                            <div class="field-desc">
+                                Все жанры (через запятую) <span class="type">TEXT</span>
+                                <span class="example">Например: "Deep House, Techno, Minimal"</span>
+                            </div>
+                        </div>
+
+                        <!-- География -->
+                        <div class="field-item section-header"><span><i class="bi bi-geo-alt"></i> География</span></div>
+
+                        <div class="field-item">
+                            <div class="field-name"><code>country</code></div>
+                            <div class="field-desc">
+                                Страна <span class="type">TEXT</span>
+                                <span class="badge-option">Germany</span>
+                                <span class="badge-option">UK</span>
+                                <span class="badge-option">USA</span>
+                            </div>
+                        </div>
+                        <div class="field-item">
+                            <div class="field-name"><code>city</code></div>
+                            <div class="field-desc">
+                                Город <span class="type">TEXT</span>
+                                <span class="example">Например: "Berlin, London, New York"</span>
+                            </div>
+                        </div>
+                        <div class="field-item">
+                            <div class="field-name"><code>language</code></div>
+                            <div class="field-desc">
+                                Язык <span class="type">TEXT</span>
+                                <span class="badge-option">English</span>
+                                <span class="badge-option">Russian</span>
+                                <span class="badge-option">German</span>
+                            </div>
+                        </div>
+
+                        <!-- Ссылки -->
+                        <div class="field-item section-header"><span><i class="bi bi-link-45deg"></i> Ссылки</span></div>
+
+                        <div class="field-item">
+                            <div class="field-name"><code>website</code></div>
+                            <div class="field-desc">
+                                Сайт <span class="type">TEXT</span>
+                                <span class="example">Например: "https://example.com"</span>
+                            </div>
+                        </div>
+                        <div class="field-item">
+                            <div class="field-name"><code>submission_url</code></div>
+                            <div class="field-desc">
+                                URL для отправки демо <span class="type">TEXT</span>
+                                <span class="example">Например: "https://example.com/submit"</span>
+                            </div>
+                        </div>
+                        <div class="field-item">
+                            <div class="field-name"><code>contact_form</code></div>
+                            <div class="field-desc">
+                                Контактная форма <span class="type">TEXT</span>
+                                <span class="example">Например: "https://example.com/contact"</span>
+                            </div>
+                        </div>
+                        <div class="field-item">
+                            <div class="field-name"><code>spotify_url</code></div>
+                            <div class="field-desc">
+                                Spotify ссылка <span class="type">TEXT</span>
+                            </div>
+                        </div>
+                        <div class="field-item">
+                            <div class="field-name"><code>youtube_url</code></div>
+                            <div class="field-desc">
+                                YouTube ссылка <span class="type">TEXT</span>
+                            </div>
+                        </div>
+
+                        <!-- Соцсети -->
+                        <div class="field-item section-header"><span><i class="bi bi-share"></i> Социальные сети</span></div>
+
+                        <div class="field-item">
+                            <div class="field-name"><code>instagram</code></div>
+                            <div class="field-desc">Instagram <span class="type">TEXT</span></div>
+                        </div>
+                        <div class="field-item">
+                            <div class="field-name"><code>facebook</code></div>
+                            <div class="field-desc">Facebook <span class="type">TEXT</span></div>
+                        </div>
+                        <div class="field-item">
+                            <div class="field-name"><code>x</code></div>
+                            <div class="field-desc">Twitter / X <span class="type">TEXT</span></div>
+                        </div>
+                        <div class="field-item">
+                            <div class="field-name"><code>telegram</code></div>
+                            <div class="field-desc">Telegram <span class="type">TEXT</span></div>
+                        </div>
+                        <div class="field-item">
+                            <div class="field-name"><code>soundcloud</code></div>
+                            <div class="field-desc">SoundCloud <span class="type">TEXT</span></div>
+                        </div>
+                        <div class="field-item">
+                            <div class="field-name"><code>beatport</code></div>
+                            <div class="field-desc">Beatport <span class="type">TEXT</span></div>
+                        </div>
+
+                        <!-- Статистика -->
+                        <div class="field-item section-header"><span><i class="bi bi-graph-up"></i> Статистика</span></div>
+
+                        <div class="field-item">
+                            <div class="field-name"><code>followers</code></div>
+                            <div class="field-desc">
+                                Количество подписчиков <span class="type">INTEGER</span>
+                                <span class="example">Например: 15000</span>
+                            </div>
+                        </div>
+                        <div class="field-item">
+                            <div class="field-name"><code>monthly_listeners</code></div>
+                            <div class="field-desc">
+                                Месячные слушатели <span class="type">INTEGER</span>
+                                <span class="example">Например: 75000</span>
+                            </div>
+                        </div>
+
+                        <!-- Настройки приёма -->
+                        <div class="field-item section-header"><span><i class="bi bi-check2-square"></i> Настройки приёма</span></div>
+
+                        <div class="field-item">
+                            <div class="field-name"><code>preferred_format</code></div>
+                            <div class="field-desc">
+                                Предпочитаемый формат <span class="type">TEXT</span>
+                                <span class="badge-option">MP3</span>
+                                <span class="badge-option">WAV</span>
+                                <span class="badge-option">AIFF</span>
+                            </div>
+                        </div>
+                        <div class="field-item">
+                            <div class="field-name"><code>accepts_demo</code></div>
+                            <div class="field-desc">
+                                Принимает демо <span class="type">BOOLEAN</span>
+                                <span class="example">True / False</span>
+                            </div>
+                        </div>
+                        <div class="field-item">
+                            <div class="field-name"><code>accepts_remix</code></div>
+                            <div class="field-desc">
+                                Принимает ремиксы <span class="type">BOOLEAN</span>
+                            </div>
+                        </div>
+                        <div class="field-item">
+                            <div class="field-name"><code>accepts_radio_edit</code></div>
+                            <div class="field-desc">
+                                Принимает радио-редакции <span class="type">BOOLEAN</span>
+                            </div>
+                        </div>
+                        <div class="field-item">
+                            <div class="field-name"><code>accepts_extended</code></div>
+                            <div class="field-desc">
+                                Принимает расширенные версии <span class="type">BOOLEAN</span>
+                            </div>
+                        </div>
+
+                        <!-- Статусы -->
+                        <div class="field-item section-header"><span><i class="bi bi-check-circle"></i> Статусы</span></div>
+
+                        <div class="field-item">
+                            <div class="field-name"><code>verified</code></div>
+                            <div class="field-desc">
+                                Верифицирован <span class="type">BOOLEAN</span>
+                                <span class="example">True / False</span>
+                            </div>
+                        </div>
+                        <div class="field-item">
+                            <div class="field-name"><code>priority</code></div>
+                            <div class="field-desc">
+                                Приоритет <span class="type">INTEGER</span>
+                                <span class="example">1 (низкий) — 5 (высокий)</span>
+                            </div>
+                        </div>
+                        <div class="field-item">
+                            <div class="field-name"><code>status</code></div>
+                            <div class="field-desc">
+                                Статус <span class="type">TEXT</span>
+                                <span class="badge-option">New</span>
+                                <span class="badge-option">Contacted</span>
+                                <span class="badge-option">Approved</span>
+                                <span class="badge-option">Rejected</span>
+                            </div>
+                        </div>
+                        <div class="field-item">
+                            <div class="field-name"><code>verification_status</code></div>
+                            <div class="field-desc">
+                                Статус верификации <span class="type">TEXT</span>
+                                <span class="badge-option">Pending</span>
+                                <span class="badge-option">Verified</span>
+                                <span class="badge-option">Failed</span>
+                            </div>
+                        </div>
+                        <div class="field-item">
+                            <div class="field-name"><code>email_status</code></div>
+                            <div class="field-desc">
+                                Статус email <span class="type">TEXT</span>
+                                <span class="badge-option">Valid</span>
+                                <span class="badge-option">Invalid</span>
+                                <span class="badge-option">Bounced</span>
+                            </div>
+                        </div>
+                        <div class="field-item">
+                            <div class="field-name"><code>submission_status</code></div>
+                            <div class="field-desc">
+                                Статус отправки <span class="type">TEXT</span>
+                                <span class="badge-option">Sent</span>
+                                <span class="badge-option">Pending</span>
+                                <span class="badge-option">Failed</span>
+                            </div>
+                        </div>
+
+                        <!-- Системные -->
+                        <div class="field-item section-header"><span><i class="bi bi-gear"></i> Системные</span></div>
+
+                        <div class="field-item">
+                            <div class="field-name"><code>notes</code></div>
+                            <div class="field-desc">
+                                Заметки <span class="type">TEXT</span>
+                                <span class="example">Любые дополнительные сведения</span>
+                            </div>
+                        </div>
+                        <div class="field-item">
+                            <div class="field-name"><code>source</code></div>
+                            <div class="field-desc">
+                                Источник <span class="type">TEXT</span>
+                                <span class="badge-option">Import</span>
+                                <span class="badge-option">Manual</span>
+                                <span class="badge-option">API</span>
+                            </div>
+                        </div>
+                        <div class="field-item">
+                            <div class="field-name"><code>crm_tags</code></div>
+                            <div class="field-desc">
+                                CRM теги <span class="type">TEXT</span>
+                                <span class="example">"важный, приоритетный, новинка"</span>
+                            </div>
+                        </div>
+                        <div class="field-item">
+                            <div class="field-name"><code>last_verified</code></div>
+                            <div class="field-desc">
+                                Дата верификации <span class="type">TIMESTAMP</span>
+                            </div>
+                        </div>
+                        <div class="field-item">
+                            <div class="field-name"><code>last_updated</code></div>
+                            <div class="field-desc">
+                                Дата обновления <span class="type">TIMESTAMP</span>
+                            </div>
                         </div>
                     </div>
 
-                    <hr style="border-color: rgba(255,255,255,0.05); margin: 16px 0;" />
+                    <hr style="border-color: rgba(255,255,255,0.05); margin: 12px 0;" />
 
-                    <div style="background: rgba(52,211,153,0.08); border: 1px solid rgba(52,211,153,0.15); border-radius: 12px; padding: 12px; color: #34d399; font-size: 13px;">
-                        <i class="bi bi-check-circle"></i>
-                        <strong>Кэширование включено</strong><br />
-                        <small>Данные сохраняются в браузере и не пропадают при обновлении</small>
+                    <div style="background: rgba(251,191,36,0.08); border: 1px solid rgba(251,191,36,0.15); border-radius: 12px; padding: 10px; color: #fbbf24; font-size: 12px;">
+                        <i class="bi bi-info-circle"></i>
+                        <strong>Обязательное поле:</strong> <code>email</code>
                     </div>
 
-                    <div style="background: rgba(96,165,250,0.08); border: 1px solid rgba(96,165,250,0.15); border-radius: 12px; padding: 12px; color: #60a5fa; font-size: 13px; margin-top: 8px;">
+                    <div style="background: rgba(52,211,153,0.08); border: 1px solid rgba(52,211,153,0.15); border-radius: 12px; padding: 10px; color: #34d399; font-size: 12px; margin-top: 6px;">
                         <i class="bi bi-database"></i>
-                        <strong>Сохранение в SQL</strong><br />
-                        <small>Контакты сохраняются в Supabase (таблица contacts)</small>
+                        <strong>Кэширование:</strong> данные сохраняются в браузере
                     </div>
                 </div>
             </div>
@@ -727,7 +1116,7 @@
     <!-- ===== СКРИПТЫ ===== -->
     <script>
         // ============================================================
-        // 1. SUPABASE
+        // 1. НАСТРОЙКИ
         // ============================================================
 
         const SUPABASE_URL = 'https://ваш-проект.supabase.co';
@@ -738,27 +1127,36 @@
         // 2. ПЕРЕМЕННЫЕ
         // ============================================================
 
-        let contactsData = [];
         let contactsHeaders = [];
         let contactsRows = [];
         let currentFileName = '';
-
         const CACHE_KEY = 'music_crm_contacts_cache';
 
         // ============================================================
-        // 3. TOAST
+        // 3. ВСЕ ПОЛЯ
+        // ============================================================
+
+        const ALL_FIELDS = [
+            'name', 'contact_name', 'email', 'phone', 'type', 'platform',
+            'genre', 'genres', 'country', 'city', 'language', 'website',
+            'submission_url', 'contact_form', 'spotify_url', 'youtube_url',
+            'instagram', 'facebook', 'x', 'telegram', 'soundcloud', 'beatport',
+            'followers', 'monthly_listeners', 'preferred_format', 'accepts_demo',
+            'accepts_remix', 'accepts_radio_edit', 'accepts_extended',
+            'verified', 'priority', 'status', 'verification_status',
+            'email_status', 'submission_status', 'notes', 'source', 'crm_tags',
+            'last_verified', 'last_updated'
+        ];
+
+        // ============================================================
+        // 4. TOAST
         // ============================================================
 
         function showToast(message, type = 'info') {
             const toast = document.getElementById('toast');
             const toastMessage = document.getElementById('toastMessage');
             
-            const icons = {
-                info: '📌',
-                success: '✅',
-                error: '❌',
-                warning: '⚠️'
-            };
+            const icons = { info: '📌', success: '✅', error: '❌', warning: '⚠️' };
             
             toastMessage.textContent = `${icons[type] || '📌'} ${message}`;
             toast.style.display = 'block';
@@ -773,7 +1171,7 @@
         }
 
         // ============================================================
-        // 4. КЭШИРОВАНИЕ
+        // 5. КЭШИРОВАНИЕ
         // ============================================================
 
         function saveToCache() {
@@ -792,7 +1190,6 @@
                 };
                 localStorage.setItem(CACHE_KEY, JSON.stringify(cacheData));
                 showToast(`💾 Сохранено ${contactsRows.length} контактов в кэш`, 'success');
-                
                 document.getElementById('cachedBadge').style.display = 'inline';
             } catch (error) {
                 console.error('Ошибка сохранения кэша:', error);
@@ -852,7 +1249,7 @@
         }
 
         // ============================================================
-        // 5. ЗАГРУЗКА ФАЙЛА
+        // 6. ЗАГРУЗКА ФАЙЛА
         // ============================================================
 
         document.getElementById('fileInput').addEventListener('change', function(e) {
@@ -931,7 +1328,7 @@
         }
 
         // ============================================================
-        // 6. ПРЕДПРОСМОТР
+        // 7. ПРЕДПРОСМОТР
         // ============================================================
 
         function showPreview(rows) {
@@ -977,8 +1374,8 @@
                                 <h5 class="modal-title text-white"><i class="bi bi-table"></i> Все контакты (${contactsRows.length})</h5>
                                 <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
                             </div>
-                            <div class="modal-body" style="background: #0f0e17; padding: 16px;">
-                                <div class="table-container" style="max-height: 500px;">
+                            <div class="modal-body" style="background: #0f0e17; padding: 16px; max-height: 70vh; overflow-y: auto;">
+                                <div class="table-container" style="max-height: none;">
                                     <table>
                                         <thead><tr>
                                             ${contactsHeaders.map(h => `<th>${h}</th>`).join('')}
@@ -1007,12 +1404,10 @@
             document.body.insertAdjacentHTML('beforeend', modalHtml);
             const modal = new bootstrap.Modal(document.getElementById('previewModal'));
             modal.show();
-            
-            showToast(`📊 Показано ${contactsRows.length} контактов`, 'info');
         }
 
         // ============================================================
-        // 7. ИМПОРТ В SQL (SUPABASE)
+        // 8. ИМПОРТ В SQL
         // ============================================================
 
         async function importContacts() {
@@ -1023,41 +1418,38 @@
                     return;
                 }
                 
-                // Подготовка данных для импорта
+                // Подготовка данных - маппинг всех полей
                 const contacts = contactsRows
                     .filter(row => row.email && row.email.includes('@'))
-                    .map(row => ({
-                        email: row.email.trim(),
-                        phone: row.phone || '',
-                        name: row.contact_name || row.name || '',
-                        company: row.platform || '',
-                        position: row.type || '',
-                        genre: row.genre || '',
-                        country: row.country || '',
-                        city: row.city || '',
-                        followers: parseInt(row.followers) || 0,
-                        monthly_listeners: parseInt(row.monthly_listeners) || 0,
-                        status: row.status || 'new',
-                        source: row.source || 'import',
-                        notes: row.notes || '',
-                        // дополнительные поля для полной информации
-                        platform: row.platform || '',
-                        website: row.website || '',
-                        spotify_url: row.spotify_url || '',
-                        youtube_url: row.youtube_url || '',
-                        instagram: row.instagram || '',
-                        facebook: row.facebook || '',
-                        soundcloud: row.soundcloud || '',
-                        beatport: row.beatport || '',
-                        mood: row.mood || '',
-                        priority: parseInt(row.priority) || 0,
-                        verified: row.verified === 'True' || row.verified === true,
-                        accepts_demo: row.accepts_demo === 'True' || row.accepts_demo === true,
-                        accepts_remix: row.accepts_remix === 'True' || row.accepts_remix === true,
-                        bpm_min: parseInt(row.bpm_min) || 0,
-                        bpm_max: parseInt(row.bpm_max) || 0,
-                        preferred_format: row.preferred_format || ''
-                    }));
+                    .map(row => {
+                        const contact = {};
+                        ALL_FIELDS.forEach(field => {
+                            const excelField = contactsHeaders.find(h => 
+                                h.toLowerCase() === field.toLowerCase()
+                            );
+                            
+                            if (excelField && row[excelField] !== undefined && row[excelField] !== '') {
+                                let value = row[excelField];
+                                
+                                if (['followers', 'monthly_listeners', 'priority'].includes(field)) {
+                                    value = parseInt(value) || 0;
+                                } else if (['accepts_demo', 'accepts_remix', 'accepts_radio_edit', 'accepts_extended', 'verified'].includes(field)) {
+                                    value = value === 'True' || value === true || value === 'TRUE' || value === '1' || value === 1;
+                                } else if (field === 'last_verified' || field === 'last_updated') {
+                                    try {
+                                        const date = new Date(value);
+                                        if (!isNaN(date)) value = date.toISOString();
+                                    } catch (e) {
+                                        value = null;
+                                    }
+                                }
+                                
+                                contact[field] = value;
+                            }
+                        });
+                        return contact;
+                    })
+                    .filter(c => c.email);
                 
                 if (contacts.length === 0) {
                     showToast('Нет валидных email-адресов', 'warning');
@@ -1066,13 +1458,11 @@
                 
                 showToast(`⏳ Импорт ${contacts.length} контактов в SQL...`, 'info');
                 
-                // Показываем прогресс
                 const progressContainer = document.getElementById('progressContainer');
                 const progressBar = document.getElementById('progressBar');
                 const progressText = document.getElementById('progressText');
                 progressContainer.style.display = 'block';
                 
-                // Импортируем через API
                 const response = await fetch('/api/contacts/import', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
@@ -1092,8 +1482,6 @@
                 if (result.success) {
                     showToast(`✅ Импортировано ${result.imported} контактов в SQL`, 'success');
                     document.getElementById('statValid').textContent = contacts.length;
-                    
-                    // Обновляем статус в кэше
                     saveToCache();
                 } else {
                     throw new Error(result.error || 'Ошибка импорта');
@@ -1101,18 +1489,16 @@
             } catch (error) {
                 console.error('Ошибка импорта:', error);
                 showToast('❌ ' + error.message, 'error');
-                
                 document.getElementById('progressContainer').style.display = 'none';
                 document.getElementById('progressBar').style.width = '0%';
             }
         }
 
         // ============================================================
-        // 8. ОЧИСТКА
+        // 9. ОЧИСТКА
         // ============================================================
 
         function clearFile() {
-            contactsData = [];
             contactsHeaders = [];
             contactsRows = [];
             currentFileName = '';
@@ -1130,7 +1516,7 @@
         }
 
         // ============================================================
-        // 9. АВТОРИЗАЦИЯ
+        // 10. АВТОРИЗАЦИЯ
         // ============================================================
 
         async function checkAuth() {
@@ -1146,17 +1532,14 @@
         }
 
         // ============================================================
-        // 10. ИНИЦИАЛИЗАЦИЯ
+        // 11. ИНИЦИАЛИЗАЦИЯ
         // ============================================================
 
         document.addEventListener('DOMContentLoaded', async function() {
             await checkAuth();
             loadFromCache();
-            
-            document.getElementById('fieldCount').textContent = 
-                document.querySelectorAll('#fieldList code').length;
-            
             console.log('📇 Страница импорта контактов загружена');
+            console.log('📋 Всего полей:', ALL_FIELDS.length);
             console.log('📦 XLSX:', typeof XLSX !== 'undefined' ? '✅' : '❌');
             console.log('💾 Кэш:', localStorage.getItem(CACHE_KEY) ? '✅' : '❌');
         });

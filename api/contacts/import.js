@@ -34,7 +34,7 @@ export default async function handler(req, res) {
 
         console.log(`📥 Импорт ${contacts.length} контактов...`);
 
-        // Вставляем данные с обновлением при конфликте
+        // Вставляем данные (обновляем при конфликте по email)
         const { data, error } = await supabase
             .from('contacts')
             .upsert(contacts, { 
