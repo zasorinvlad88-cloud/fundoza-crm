@@ -3,48 +3,54 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>🚀 NASA Music CRM — Дашборд</title>
+    <title>🎛️ FUNDOZA Music CRM — Pioneer Style</title>
     
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" />
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" />
-    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;700;900&family=Rajdhani:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet" />
     
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     
     <style>
         /* ============================================================
-           NASA STYLE — КОСМИЧЕСКИЙ ДИЗАЙН
+           PIONEER DJ STYLE — ТЁМНЫЙ ТЕХНОЛОГИЧНЫЙ ДИЗАЙН
            ============================================================ */
         
         :root {
-            --nasa-blue: #0b3d91;
-            --nasa-red: #fc3d21;
-            --nasa-orange: #f5793b;
-            --nasa-gold: #fdb813;
-            --nasa-white: #ffffff;
-            --nasa-gray: #a0a8b0;
-            --nasa-dark: #0a0e17;
-            --nasa-card: rgba(11, 61, 145, 0.15);
-            --nasa-border: rgba(253, 184, 19, 0.15);
-            --glow-blue: 0 0 30px rgba(11, 61, 145, 0.3);
-            --glow-gold: 0 0 30px rgba(253, 184, 19, 0.2);
-            --font-display: 'Orbitron', monospace;
-            --font-body: 'Rajdhani', sans-serif;
+            --pioneer-bg: #0a0a0a;
+            --pioneer-surface: #121212;
+            --pioneer-card: #1a1a1a;
+            --pioneer-border: #2a2a2a;
+            --pioneer-text: #ffffff;
+            --pioneer-text-secondary: #888888;
+            --pioneer-text-dim: #555555;
+            --pioneer-orange: #ff5500;
+            --pioneer-orange-dim: rgba(255, 85, 0, 0.15);
+            --pioneer-orange-glow: 0 0 30px rgba(255, 85, 0, 0.15);
+            --pioneer-blue: #00aaff;
+            --pioneer-blue-dim: rgba(0, 170, 255, 0.1);
+            --pioneer-green: #00ff88;
+            --pioneer-green-dim: rgba(0, 255, 136, 0.1);
+            --pioneer-red: #ff2244;
+            --pioneer-red-dim: rgba(255, 34, 68, 0.1);
+            --pioneer-gradient: linear-gradient(135deg, #ff5500, #ff7700);
+            --font-display: 'Inter', sans-serif;
+            --font-body: 'Inter', sans-serif;
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; }
 
         body {
-            background: var(--nasa-dark);
-            color: var(--nasa-white);
+            background: var(--pioneer-bg);
+            color: var(--pioneer-text);
             font-family: var(--font-body);
             min-height: 100vh;
-            padding: 20px;
+            padding: 16px;
             overflow-x: hidden;
         }
 
-        /* ===== ЗВЁЗДНОЕ НЕБО ===== */
-        .stars {
+        /* ===== ФОН С ЭФФЕКТОМ ВИНИЛА ===== */
+        .vinyl-bg {
             position: fixed;
             top: 0;
             left: 0;
@@ -52,11 +58,12 @@
             height: 100%;
             pointer-events: none;
             z-index: 0;
-            background: radial-gradient(ellipse at 20% 50%, rgba(11, 61, 145, 0.1) 0%, transparent 60%),
-                        radial-gradient(ellipse at 80% 80%, rgba(253, 184, 19, 0.05) 0%, transparent 50%);
+            background: 
+                radial-gradient(ellipse at 30% 40%, rgba(255, 85, 0, 0.03) 0%, transparent 60%),
+                radial-gradient(ellipse at 70% 60%, rgba(0, 170, 255, 0.02) 0%, transparent 50%);
         }
 
-        .stars::before {
+        .vinyl-bg::before {
             content: '';
             position: absolute;
             top: 0;
@@ -64,63 +71,17 @@
             width: 100%;
             height: 100%;
             background-image: 
-                radial-gradient(2px 2px at 20px 30px, #eee, transparent),
-                radial-gradient(2px 2px at 40px 70px, rgba(255,255,255,0.8), transparent),
-                radial-gradient(2px 2px at 50px 160px, #ddd, transparent),
-                radial-gradient(2px 2px at 90px 40px, rgba(255,255,255,0.6), transparent),
-                radial-gradient(2px 2px at 130px 80px, #fff, transparent),
-                radial-gradient(2px 2px at 160px 30px, rgba(255,255,255,0.7), transparent);
-            background-size: 200px 200px;
+                radial-gradient(circle at 20% 30%, rgba(255,255,255,0.01) 0%, transparent 1%),
+                radial-gradient(circle at 80% 70%, rgba(255,255,255,0.01) 0%, transparent 1%),
+                radial-gradient(circle at 50% 50%, rgba(255,255,255,0.005) 0%, transparent 2%);
+            background-size: 200px 200px, 300px 300px, 400px 400px;
             background-repeat: repeat;
-            opacity: 0.6;
-            animation: twinkle 4s ease-in-out infinite alternate;
+            animation: vinylShimmer 30s linear infinite;
         }
 
-        .stars::after {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-image: 
-                radial-gradient(1px 1px at 10px 10px, #eee, transparent),
-                radial-gradient(1px 1px at 20px 20px, rgba(255,255,255,0.5), transparent),
-                radial-gradient(1px 1px at 30px 30px, #ddd, transparent),
-                radial-gradient(1px 1px at 40px 40px, rgba(255,255,255,0.7), transparent),
-                radial-gradient(1px 1px at 50px 50px, #fff, transparent);
-            background-size: 100px 100px;
-            background-repeat: repeat;
-            opacity: 0.4;
-            animation: twinkle 6s ease-in-out infinite alternate-reverse;
-        }
-
-        @keyframes twinkle {
-            0% { opacity: 0.3; }
-            100% { opacity: 0.8; }
-        }
-
-        /* ===== АНИМАЦИЯ ПАРЯЩИХ ЭЛЕМЕНТОВ ===== */
-        .float-element {
-            position: fixed;
-            pointer-events: none;
-            z-index: 0;
-            opacity: 0.03;
-            font-size: 120px;
-            color: var(--nasa-blue);
-            animation: floatSpace 20s ease-in-out infinite;
-        }
-
-        .float-element:nth-child(1) { top: 10%; left: 5%; animation-delay: 0s; font-size: 80px; }
-        .float-element:nth-child(2) { top: 60%; right: 8%; animation-delay: -5s; font-size: 60px; color: var(--nasa-gold); }
-        .float-element:nth-child(3) { bottom: 20%; left: 20%; animation-delay: -10s; font-size: 100px; }
-        .float-element:nth-child(4) { top: 30%; right: 25%; animation-delay: -15s; font-size: 50px; color: var(--nasa-red); }
-
-        @keyframes floatSpace {
-            0%, 100% { transform: translate(0, 0) rotate(0deg) scale(1); }
-            25% { transform: translate(30px, -40px) rotate(5deg) scale(1.05); }
-            50% { transform: translate(-20px, 20px) rotate(-3deg) scale(0.95); }
-            75% { transform: translate(40px, 30px) rotate(4deg) scale(1.02); }
+        @keyframes vinylShimmer {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
         }
 
         /* ============================================================
@@ -134,74 +95,50 @@
         }
 
         /* ============================================================
-           МЕНЮ НАВИГАЦИИ — СТИЛЬ NASA
+           МЕНЮ НАВИГАЦИИ — PIONEER STYLE
            ============================================================ */
         .nav-menu {
             display: flex;
-            gap: 6px;
-            background: rgba(10, 14, 23, 0.85);
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
-            border: 1px solid rgba(253, 184, 19, 0.15);
-            border-radius: 12px;
-            padding: 6px;
-            margin-bottom: 24px;
+            gap: 4px;
+            background: var(--pioneer-surface);
+            border: 1px solid var(--pioneer-border);
+            border-radius: 10px;
+            padding: 4px;
+            margin-bottom: 20px;
             overflow-x: auto;
             flex-wrap: nowrap;
-            box-shadow: var(--glow-blue);
         }
 
         .nav-link {
             display: flex;
             align-items: center;
             gap: 8px;
-            padding: 10px 22px;
+            padding: 10px 20px;
             border-radius: 8px;
-            color: var(--nasa-gray);
+            color: var(--pioneer-text-secondary);
             text-decoration: none;
             font-family: var(--font-display);
             font-size: 12px;
-            font-weight: 400;
-            letter-spacing: 1.5px;
+            font-weight: 500;
+            letter-spacing: 0.5px;
             text-transform: uppercase;
             transition: all 0.3s ease;
             white-space: nowrap;
             background: transparent;
             border: none;
             cursor: pointer;
-            position: relative;
-        }
-
-        .nav-link::before {
-            content: '';
-            position: absolute;
-            bottom: 4px;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 0;
-            height: 2px;
-            background: var(--nasa-gold);
-            transition: width 0.3s ease;
-        }
-
-        .nav-link:hover::before {
-            width: 60%;
         }
 
         .nav-link:hover {
-            color: var(--nasa-white);
+            color: var(--pioneer-text);
+            background: rgba(255, 255, 255, 0.03);
             text-decoration: none;
-            background: rgba(253, 184, 19, 0.05);
         }
 
         .nav-link.active {
-            background: rgba(253, 184, 19, 0.1);
-            color: var(--nasa-gold);
-            box-shadow: inset 0 0 30px rgba(253, 184, 19, 0.05);
-        }
-
-        .nav-link.active::before {
-            width: 60%;
+            background: var(--pioneer-orange-dim);
+            color: var(--pioneer-orange);
+            box-shadow: inset 0 0 20px rgba(255, 85, 0, 0.05);
         }
 
         .nav-link i {
@@ -211,116 +148,90 @@
         @media (max-width: 768px) {
             .nav-link {
                 font-size: 10px;
-                padding: 8px 14px;
-                letter-spacing: 1px;
+                padding: 8px 12px;
             }
             .nav-link i { font-size: 14px; }
             .nav-link span { display: none; }
         }
 
         /* ============================================================
-           ШАПКА — СТИЛЬ NASA
+           ШАПКА — PIONEER STYLE
            ============================================================ */
         .header {
-            background: rgba(10, 14, 23, 0.85);
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
-            border: 1px solid rgba(253, 184, 19, 0.1);
-            border-radius: 12px;
-            padding: 16px 28px;
-            margin-bottom: 24px;
+            background: var(--pioneer-surface);
+            border: 1px solid var(--pioneer-border);
+            border-radius: 10px;
+            padding: 14px 24px;
+            margin-bottom: 20px;
             display: flex;
             justify-content: space-between;
             align-items: center;
             flex-wrap: wrap;
             gap: 12px;
-            box-shadow: var(--glow-blue);
         }
 
         .header-brand {
             display: flex;
             align-items: center;
-            gap: 14px;
+            gap: 12px;
         }
 
         .header-brand .logo-icon {
-            width: 44px;
-            height: 44px;
-            background: linear-gradient(135deg, #0b3d91, #1a5bb5);
-            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            background: var(--pioneer-gradient);
+            border-radius: 8px;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 22px;
-            color: var(--nasa-gold);
-            border: 1px solid rgba(253, 184, 19, 0.2);
-            box-shadow: 0 0 30px rgba(11, 61, 145, 0.3);
-            position: relative;
-        }
-
-        .header-brand .logo-icon::after {
-            content: '';
-            position: absolute;
-            inset: -3px;
-            border-radius: 50%;
-            border: 1px solid rgba(253, 184, 19, 0.1);
-            animation: pulseRing 3s ease-in-out infinite;
-        }
-
-        @keyframes pulseRing {
-            0%, 100% { transform: scale(1); opacity: 1; }
-            50% { transform: scale(1.1); opacity: 0.5; }
+            font-size: 20px;
+            color: var(--pioneer-text);
+            box-shadow: var(--pioneer-orange-glow);
         }
 
         .header-brand h1 {
             font-family: var(--font-display);
             font-size: 18px;
             font-weight: 700;
-            letter-spacing: 2px;
-            text-transform: uppercase;
-            color: var(--nasa-white);
+            letter-spacing: 1px;
             margin: 0;
-            background: linear-gradient(90deg, var(--nasa-white), var(--nasa-gold));
-            -webkit-background-clip: text;
-            background-clip: text;
-            -webkit-text-fill-color: transparent;
-            color: transparent;
+            color: var(--pioneer-text);
         }
 
         .header-brand .subtitle {
             font-size: 11px;
-            color: var(--nasa-gray);
-            font-weight: 300;
-            letter-spacing: 2px;
+            color: var(--pioneer-text-secondary);
+            font-weight: 400;
+            letter-spacing: 1px;
             text-transform: uppercase;
         }
 
         .header-actions {
             display: flex;
-            gap: 10px;
+            gap: 8px;
             flex-wrap: wrap;
             align-items: center;
         }
 
         .badge-status {
-            background: rgba(16, 185, 129, 0.1);
-            color: #34d399;
-            padding: 6px 14px;
+            background: var(--pioneer-green-dim);
+            color: var(--pioneer-green);
+            padding: 4px 12px;
             border-radius: 40px;
-            font-size: 11px;
-            border: 1px solid rgba(52, 211, 153, 0.15);
+            font-size: 10px;
+            border: 1px solid rgba(0, 255, 136, 0.1);
             display: flex;
             align-items: center;
             gap: 6px;
-            font-family: var(--font-display);
-            letter-spacing: 1px;
+            font-weight: 500;
             text-transform: uppercase;
+            letter-spacing: 0.5px;
         }
 
         .badge-status .pulse {
             width: 6px;
             height: 6px;
-            background: #34d399;
+            background: var(--pioneer-green);
             border-radius: 50%;
             animation: pulseDot 2s ease-in-out infinite;
             display: inline-block;
@@ -331,161 +242,144 @@
             50% { opacity: 0.3; transform: scale(0.6); }
         }
 
-        .btn-nasa {
+        .btn-pioneer {
             background: transparent;
-            border: 1px solid rgba(253, 184, 19, 0.2);
-            color: var(--nasa-gray);
-            padding: 6px 16px;
-            border-radius: 8px;
+            border: 1px solid var(--pioneer-border);
+            color: var(--pioneer-text-secondary);
+            padding: 6px 14px;
+            border-radius: 6px;
             font-family: var(--font-display);
             font-size: 11px;
-            font-weight: 400;
-            letter-spacing: 1.5px;
+            font-weight: 500;
             text-transform: uppercase;
             transition: all 0.3s ease;
             cursor: pointer;
             text-decoration: none;
+            letter-spacing: 0.5px;
         }
 
-        .btn-nasa:hover {
-            background: rgba(253, 184, 19, 0.05);
-            border-color: var(--nasa-gold);
-            color: var(--nasa-white);
+        .btn-pioneer:hover {
+            background: rgba(255, 255, 255, 0.03);
+            border-color: var(--pioneer-text-secondary);
+            color: var(--pioneer-text);
             text-decoration: none;
         }
 
-        .btn-nasa-danger {
+        .btn-pioneer-danger {
             background: transparent;
-            border: 1px solid rgba(252, 61, 33, 0.2);
-            color: #fc6b5a;
-            padding: 6px 16px;
-            border-radius: 8px;
+            border: 1px solid var(--pioneer-red-dim);
+            color: var(--pioneer-red);
+            padding: 6px 14px;
+            border-radius: 6px;
             font-family: var(--font-display);
             font-size: 11px;
-            font-weight: 400;
-            letter-spacing: 1.5px;
+            font-weight: 500;
             text-transform: uppercase;
             transition: all 0.3s ease;
             cursor: pointer;
             text-decoration: none;
+            letter-spacing: 0.5px;
         }
 
-        .btn-nasa-danger:hover {
-            background: rgba(252, 61, 33, 0.1);
-            border-color: var(--nasa-red);
-            color: var(--nasa-white);
+        .btn-pioneer-danger:hover {
+            background: var(--pioneer-red-dim);
+            border-color: var(--pioneer-red);
+            color: var(--pioneer-text);
             text-decoration: none;
         }
 
-        .btn-nasa-primary {
-            background: linear-gradient(135deg, #0b3d91, #1a5bb5);
+        .btn-pioneer-primary {
+            background: var(--pioneer-gradient);
             border: none;
-            color: var(--nasa-white);
-            padding: 6px 18px;
-            border-radius: 8px;
+            color: var(--pioneer-text);
+            padding: 6px 16px;
+            border-radius: 6px;
             font-family: var(--font-display);
             font-size: 11px;
             font-weight: 600;
-            letter-spacing: 1px;
             text-transform: uppercase;
             transition: all 0.3s ease;
             cursor: pointer;
             text-decoration: none;
-            box-shadow: 0 0 20px rgba(11, 61, 145, 0.2);
+            letter-spacing: 0.5px;
         }
 
-        .btn-nasa-primary:hover {
+        .btn-pioneer-primary:hover {
             transform: translateY(-2px);
-            box-shadow: 0 0 40px rgba(11, 61, 145, 0.4);
-            color: var(--nasa-white);
+            box-shadow: var(--pioneer-orange-glow);
+            color: var(--pioneer-text);
             text-decoration: none;
         }
 
         .user-email {
-            color: var(--nasa-gray);
+            color: var(--pioneer-text-secondary);
             font-size: 12px;
-            font-weight: 300;
-            letter-spacing: 0.5px;
+            font-weight: 400;
         }
 
         /* ============================================================
-           СТАТИСТИКА — NASA CARDS
+           СТАТИСТИКА — PIONEER CARDS
            ============================================================ */
         .stats-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
-            gap: 16px;
-            margin-bottom: 24px;
+            grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+            gap: 14px;
+            margin-bottom: 20px;
         }
 
         .stat-card {
-            background: rgba(10, 14, 23, 0.8);
-            backdrop-filter: blur(10px);
-            -webkit-backdrop-filter: blur(10px);
-            border: 1px solid rgba(253, 184, 19, 0.08);
-            border-radius: 12px;
-            padding: 18px 20px;
+            background: var(--pioneer-surface);
+            border: 1px solid var(--pioneer-border);
+            border-radius: 10px;
+            padding: 16px 18px;
             transition: all 0.4s ease;
             position: relative;
             overflow: hidden;
         }
 
-        .stat-card::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            height: 2px;
-            background: linear-gradient(90deg, transparent, var(--nasa-gold), transparent);
-            opacity: 0.3;
-        }
-
         .stat-card:hover {
-            transform: translateY(-4px);
-            border-color: rgba(253, 184, 19, 0.2);
-            box-shadow: var(--glow-gold);
+            border-color: var(--pioneer-orange);
+            box-shadow: var(--pioneer-orange-glow);
+            transform: translateY(-2px);
         }
 
         .stat-card .stat-header {
             display: flex;
             align-items: center;
             justify-content: space-between;
-            margin-bottom: 8px;
+            margin-bottom: 6px;
         }
 
         .stat-card .icon {
-            width: 36px;
-            height: 36px;
-            border-radius: 50%;
+            width: 32px;
+            height: 32px;
+            border-radius: 6px;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 16px;
-            border: 1px solid rgba(253, 184, 19, 0.1);
+            font-size: 14px;
         }
 
         .stat-card .icon.purple { background: rgba(102, 126, 234, 0.1); color: #a5b4fc; }
-        .stat-card .icon.green { background: rgba(52, 211, 153, 0.1); color: #34d399; }
-        .stat-card .icon.blue { background: rgba(96, 165, 250, 0.1); color: #60a5fa; }
-        .stat-card .icon.orange { background: rgba(251, 191, 36, 0.1); color: #fbbf24; }
+        .stat-card .icon.green { background: var(--pioneer-green-dim); color: var(--pioneer-green); }
+        .stat-card .icon.blue { background: var(--pioneer-blue-dim); color: var(--pioneer-blue); }
+        .stat-card .icon.orange { background: var(--pioneer-orange-dim); color: var(--pioneer-orange); }
         .stat-card .icon.pink { background: rgba(244, 114, 182, 0.1); color: #f472b6; }
 
         .stat-card .stat-label {
-            color: var(--nasa-gray);
-            font-size: 11px;
-            font-weight: 300;
+            color: var(--pioneer-text-secondary);
+            font-size: 10px;
+            font-weight: 500;
             text-transform: uppercase;
-            letter-spacing: 1.5px;
-            font-family: var(--font-display);
+            letter-spacing: 0.5px;
         }
 
         .stat-card .number {
             font-family: var(--font-display);
-            font-size: 28px;
+            font-size: 26px;
             font-weight: 700;
-            color: var(--nasa-white);
-            letter-spacing: 1px;
+            color: var(--pioneer-text);
+            letter-spacing: 0.5px;
         }
 
         .stat-card .change {
@@ -493,47 +387,43 @@
             padding: 2px 10px;
             border-radius: 20px;
             display: inline-block;
-            font-family: var(--font-display);
-            letter-spacing: 0.5px;
+            font-weight: 500;
         }
 
-        .stat-card .change.up { background: rgba(52, 211, 153, 0.1); color: #34d399; }
-        .stat-card .change.down { background: rgba(248, 113, 113, 0.1); color: #f87171; }
+        .stat-card .change.up { background: var(--pioneer-green-dim); color: var(--pioneer-green); }
+        .stat-card .change.down { background: var(--pioneer-red-dim); color: var(--pioneer-red); }
 
         /* ============================================================
-           КАРТОЧКИ — NASA STYLE
+           КАРТОЧКИ — PIONEER STYLE
            ============================================================ */
         .card-glass {
-            background: rgba(10, 14, 23, 0.8);
-            backdrop-filter: blur(10px);
-            -webkit-backdrop-filter: blur(10px);
-            border: 1px solid rgba(253, 184, 19, 0.08);
-            border-radius: 12px;
-            padding: 20px;
+            background: var(--pioneer-surface);
+            border: 1px solid var(--pioneer-border);
+            border-radius: 10px;
+            padding: 18px 20px;
             transition: all 0.4s ease;
             height: 100%;
         }
 
         .card-glass:hover {
-            border-color: rgba(253, 184, 19, 0.15);
-            box-shadow: var(--glow-gold);
+            border-color: rgba(255, 85, 0, 0.2);
         }
 
         .card-title {
             font-family: var(--font-display);
             font-size: 13px;
             font-weight: 600;
-            margin-bottom: 14px;
+            margin-bottom: 12px;
             display: flex;
             align-items: center;
             gap: 10px;
-            color: var(--nasa-white);
-            letter-spacing: 1px;
+            color: var(--pioneer-text);
+            letter-spacing: 0.5px;
             text-transform: uppercase;
         }
 
         .card-title i {
-            color: var(--nasa-gold);
+            color: var(--pioneer-orange);
             font-size: 16px;
         }
 
@@ -557,34 +447,33 @@
         }
 
         .playlist-item .info .color {
-            width: 8px;
-            height: 8px;
+            width: 6px;
+            height: 6px;
             border-radius: 50%;
             flex-shrink: 0;
         }
 
         .playlist-item .info .name {
-            color: var(--nasa-white);
+            color: var(--pioneer-text);
             font-weight: 400;
             font-size: 13px;
         }
 
         .playlist-item .info .count {
-            color: var(--nasa-gray);
+            color: var(--pioneer-text-secondary);
             font-size: 11px;
         }
 
         .playlist-item .status {
-            padding: 2px 12px;
+            padding: 2px 10px;
             border-radius: 40px;
             font-size: 9px;
-            font-weight: 500;
-            font-family: var(--font-display);
-            letter-spacing: 0.5px;
+            font-weight: 600;
             text-transform: uppercase;
+            letter-spacing: 0.5px;
         }
 
-        .playlist-item .status.public { background: rgba(52, 211, 153, 0.1); color: #34d399; }
+        .playlist-item .status.public { background: var(--pioneer-green-dim); color: var(--pioneer-green); }
         .playlist-item .status.private { background: rgba(251, 191, 36, 0.1); color: #fbbf24; }
 
         /* ============================================================
@@ -592,100 +481,96 @@
            ============================================================ */
         .system-status {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(110px, 1fr));
             gap: 8px;
-            margin-top: 12px;
+            margin-top: 10px;
         }
 
         .status-item {
             display: flex;
             align-items: center;
-            gap: 10px;
-            padding: 8px 12px;
+            gap: 8px;
+            padding: 6px 10px;
             background: rgba(255, 255, 255, 0.02);
-            border-radius: 8px;
+            border-radius: 6px;
             border: 1px solid rgba(255, 255, 255, 0.03);
         }
 
         .status-item .dot {
-            width: 6px;
-            height: 6px;
+            width: 5px;
+            height: 5px;
             border-radius: 50%;
             flex-shrink: 0;
         }
 
-        .status-item .dot.green { background: #34d399; box-shadow: 0 0 12px rgba(52, 211, 153, 0.2); }
-        .status-item .dot.yellow { background: #fbbf24; box-shadow: 0 0 12px rgba(251, 191, 36, 0.2); }
-        .status-item .dot.red { background: #f87171; box-shadow: 0 0 12px rgba(248, 113, 113, 0.2); }
+        .status-item .dot.green { background: var(--pioneer-green); box-shadow: 0 0 10px rgba(0, 255, 136, 0.2); }
+        .status-item .dot.yellow { background: #fbbf24; box-shadow: 0 0 10px rgba(251, 191, 36, 0.2); }
+        .status-item .dot.red { background: var(--pioneer-red); box-shadow: 0 0 10px rgba(255, 34, 68, 0.2); }
 
         .status-item .label {
-            color: var(--nasa-gray);
+            color: var(--pioneer-text-secondary);
             font-size: 10px;
-            font-weight: 300;
-            letter-spacing: 0.5px;
+            font-weight: 400;
         }
 
         .status-item .value {
-            color: var(--nasa-white);
+            color: var(--pioneer-text);
             font-size: 10px;
             font-weight: 500;
         }
 
         /* ============================================================
-           ТАБЛИЦА — NASA STYLE
+           ТАБЛИЦА — PIONEER STYLE
            ============================================================ */
         .table-wrapper {
             overflow-x: auto;
             margin: 0 -4px;
         }
 
-        .table-nasa {
+        .table-pioneer {
             width: 100%;
             border-collapse: collapse;
             font-size: 13px;
-            color: var(--nasa-gray);
+            color: var(--pioneer-text-secondary);
             min-width: 600px;
         }
 
-        .table-nasa thead th {
-            font-family: var(--font-display);
+        .table-pioneer thead th {
             font-size: 10px;
-            font-weight: 400;
-            letter-spacing: 1.5px;
+            font-weight: 600;
             text-transform: uppercase;
-            color: var(--nasa-gray);
-            border-bottom: 1px solid rgba(253, 184, 19, 0.08);
-            padding: 10px 12px;
+            letter-spacing: 0.5px;
+            color: var(--pioneer-text-secondary);
+            border-bottom: 1px solid var(--pioneer-border);
+            padding: 8px 12px;
             text-align: left;
             white-space: nowrap;
         }
 
-        .table-nasa tbody td {
-            padding: 10px 12px;
+        .table-pioneer tbody td {
+            padding: 8px 12px;
             border-bottom: 1px solid rgba(255, 255, 255, 0.03);
             vertical-align: middle;
         }
 
-        .table-nasa tbody tr:hover td {
-            background: rgba(253, 184, 19, 0.02);
+        .table-pioneer tbody tr:hover td {
+            background: rgba(255, 255, 255, 0.02);
         }
 
-        .table-nasa .track-name {
-            color: var(--nasa-white);
+        .table-pioneer .track-name {
+            color: var(--pioneer-text);
             font-weight: 500;
         }
 
         .badge-tag {
-            background: rgba(253, 184, 19, 0.08);
-            color: var(--nasa-gold);
-            padding: 2px 12px;
+            background: var(--pioneer-orange-dim);
+            color: var(--pioneer-orange);
+            padding: 2px 10px;
             border-radius: 40px;
             font-size: 10px;
-            font-weight: 400;
+            font-weight: 500;
             display: inline-block;
             white-space: nowrap;
-            font-family: var(--font-display);
-            letter-spacing: 0.5px;
         }
 
         /* ============================================================
@@ -695,19 +580,17 @@
             position: fixed;
             bottom: 30px;
             right: 30px;
-            background: rgba(10, 14, 23, 0.95);
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
-            border: 1px solid rgba(253, 184, 19, 0.15);
-            border-radius: 12px;
+            background: var(--pioneer-surface);
+            border: 1px solid var(--pioneer-orange);
+            border-radius: 10px;
             padding: 14px 22px;
-            color: var(--nasa-white);
-            box-shadow: var(--glow-gold);
+            color: var(--pioneer-text);
+            box-shadow: var(--pioneer-orange-glow);
             display: none;
             z-index: 9999;
             max-width: 400px;
             font-size: 13px;
-            border-left: 3px solid var(--nasa-gold);
+            border-left: 3px solid var(--pioneer-orange);
             font-family: var(--font-body);
         }
 
@@ -722,7 +605,7 @@
             .header {
                 flex-direction: column;
                 align-items: flex-start;
-                padding: 14px 18px;
+                padding: 12px 16px;
             }
             .header-actions {
                 width: 100%;
@@ -733,93 +616,88 @@
                 flex: 1;
                 justify-content: center;
                 font-size: 10px;
-                padding: 6px 12px;
+                padding: 6px 10px;
                 min-width: 60px;
             }
             .stats-grid {
                 grid-template-columns: repeat(2, 1fr);
-                gap: 12px;
+                gap: 10px;
             }
-            .stat-card { padding: 14px; }
-            .stat-card .number { font-size: 22px; }
-            .stat-card .icon { width: 30px; height: 30px; font-size: 14px; }
+            .stat-card { padding: 12px 14px; }
+            .stat-card .number { font-size: 20px; }
+            .stat-card .icon { width: 28px; height: 28px; font-size: 12px; }
             .card-glass { padding: 14px; }
             .system-status { grid-template-columns: 1fr 1fr; }
             .nav-link span { display: none; }
-            .table-nasa { font-size: 12px; min-width: 480px; }
-            .table-nasa thead th, .table-nasa tbody td { padding: 8px 8px; }
+            .table-pioneer { font-size: 12px; min-width: 480px; }
+            .table-pioneer thead th, .table-pioneer tbody td { padding: 6px 8px; }
             .header-brand h1 { font-size: 15px; }
             .header-brand .subtitle { font-size: 9px; }
+            .header-brand .logo-icon { width: 34px; height: 34px; font-size: 16px; }
         }
 
         @media (max-width: 480px) {
             .stats-grid { grid-template-columns: 1fr 1fr; }
             .stat-card .number { font-size: 18px; }
             .stat-card .stat-label { font-size: 9px; }
-            .table-nasa { font-size: 11px; min-width: 400px; }
-            .table-nasa thead th, .table-nasa tbody td { padding: 6px 6px; }
-            .badge-tag { font-size: 9px; padding: 1px 8px; }
+            .table-pioneer { font-size: 11px; min-width: 400px; }
+            .table-pioneer thead th, .table-pioneer tbody td { padding: 4px 6px; }
+            .badge-tag { font-size: 8px; padding: 1px 6px; }
         }
 
         .fade-in {
-            animation: fadeInUp 0.8s ease-out;
+            animation: fadeInUp 0.6s ease-out;
         }
 
         @keyframes fadeInUp {
-            from { opacity: 0; transform: translateY(30px); }
+            from { opacity: 0; transform: translateY(20px); }
             to { opacity: 1; transform: translateY(0); }
         }
 
-        ::-webkit-scrollbar { width: 6px; height: 6px; }
-        ::-webkit-scrollbar-track { background: rgba(255, 255, 255, 0.02); border-radius: 10px; }
-        ::-webkit-scrollbar-thumb { background: rgba(253, 184, 19, 0.2); border-radius: 10px; }
-        ::-webkit-scrollbar-thumb:hover { background: rgba(253, 184, 19, 0.3); }
+        ::-webkit-scrollbar { width: 5px; height: 5px; }
+        ::-webkit-scrollbar-track { background: var(--pioneer-surface); }
+        ::-webkit-scrollbar-thumb { background: var(--pioneer-border); border-radius: 10px; }
+        ::-webkit-scrollbar-thumb:hover { background: var(--pioneer-orange); }
     </style>
 </head>
 <body>
 
-    <!-- ===== ЗВЁЗДНОЕ НЕБО ===== -->
-    <div class="stars"></div>
-    
-    <!-- ===== ПАРЯЩИЕ ЭЛЕМЕНТЫ ===== -->
-    <div class="float-element">🚀</div>
-    <div class="float-element">🛸</div>
-    <div class="float-element">⭐</div>
-    <div class="float-element">🌌</div>
+    <!-- ===== ФОН С ЭФФЕКТОМ ВИНИЛА ===== -->
+    <div class="vinyl-bg"></div>
 
     <div class="main-container fade-in">
         
         <!-- ===== МЕНЮ ===== -->
         <nav class="nav-menu">
             <a href="/" class="nav-link active">
-                <i class="bi bi-grid-1x2-fill"></i> <span>Миссия</span>
+                <i class="bi bi-grid-1x2-fill"></i> <span>Mission</span>
             </a>
             <a href="/import" class="nav-link">
-                <i class="bi bi-file-earmark-spreadsheet"></i> <span>Загрузка треков</span>
+                <i class="bi bi-file-earmark-spreadsheet"></i> <span>Upload</span>
             </a>
             <a href="/import-contacts" class="nav-link">
-                <i class="bi bi-people-fill"></i> <span>Контакты</span>
+                <i class="bi bi-people-fill"></i> <span>Contacts</span>
             </a>
         </nav>
 
         <!-- ===== ШАПКА ===== -->
         <header class="header">
             <div class="header-brand">
-                <div class="logo-icon"><i class="bi bi-rocket-takeoff"></i></div>
+                <div class="logo-icon"><i class="bi bi-sliders"></i></div>
                 <div>
-                    <h1>NASA Music</h1>
-                    <span class="subtitle">Space Mission Control · v2.4.1</span>
+                    <h1>FUNDOZA Music CRM</h1>
+                    <span class="subtitle">Pioneer Edition · v1.0</span>
                 </div>
             </div>
             <div class="header-actions">
                 <div class="badge-status">
-                    <span class="pulse"></span> Online
+                    <span class="pulse"></span> Ready
                 </div>
-                <span class="user-email" id="userEmail">astronaut@nasa.gov</span>
-                <button class="btn-nasa" onclick="refreshData()">
+                <span class="user-email" id="userEmail">dj@fundoza.com</span>
+                <button class="btn-pioneer" onclick="refreshData()">
                     <i class="bi bi-arrow-clockwise"></i> Sync
                 </button>
-                <button class="btn-nasa-danger" onclick="logout()">
+                <button class="btn-pioneer-danger" onclick="logout()">
                     <i class="bi bi-box-arrow-right"></i> Exit
                 </button>
             </div>
@@ -833,7 +711,7 @@
                     <span class="change up">+12%</span>
                 </div>
                 <div class="number" id="statTracks">0</div>
-                <div class="stat-label">Треков в базе</div>
+                <div class="stat-label">Tracks</div>
             </div>
 
             <div class="stat-card">
@@ -842,7 +720,7 @@
                     <span class="change up">+8%</span>
                 </div>
                 <div class="number" id="statContacts">0</div>
-                <div class="stat-label">Контактов</div>
+                <div class="stat-label">Contacts</div>
             </div>
 
             <div class="stat-card">
@@ -851,7 +729,7 @@
                     <span class="change up">+3</span>
                 </div>
                 <div class="number" id="statPlaylists">0</div>
-                <div class="stat-label">Плейлистов</div>
+                <div class="stat-label">Playlists</div>
             </div>
 
             <div class="stat-card">
@@ -860,7 +738,7 @@
                     <span class="change up">+156</span>
                 </div>
                 <div class="number" id="statSent">0</div>
-                <div class="stat-label">Отправлено</div>
+                <div class="stat-label">Sent</div>
             </div>
 
             <div class="stat-card">
@@ -869,7 +747,7 @@
                     <span class="change up">+23%</span>
                 </div>
                 <div class="number" id="statPlays">0</div>
-                <div class="stat-label">Прослушиваний</div>
+                <div class="stat-label">Plays</div>
             </div>
         </div>
 
@@ -880,16 +758,16 @@
             <div class="col-lg-5">
                 <div class="card-glass">
                     <div class="card-title">
-                        <i class="bi bi-list-ul"></i> Плейлисты
-                        <span class="badge" style="background: rgba(253,184,19,0.1); color: var(--nasa-gold); margin-left: auto; font-size: 10px; font-family: var(--font-display); letter-spacing: 0.5px;">6</span>
+                        <i class="bi bi-list-ul"></i> Playlists
+                        <span class="badge" style="background: var(--pioneer-orange-dim); color: var(--pioneer-orange); margin-left: auto; font-size: 10px; font-weight: 600; padding: 2px 10px; border-radius: 40px;">6</span>
                     </div>
                     <div id="playlistContainer">
                         <div class="playlist-item">
                             <div class="info">
                                 <div class="color" style="background: #667eea;"></div>
                                 <div>
-                                    <div class="name">Основной микс</div>
-                                    <div class="count">18 треков</div>
+                                    <div class="name">Main Mix</div>
+                                    <div class="count">18 tracks</div>
                                 </div>
                             </div>
                             <span class="status public">Public</span>
@@ -900,7 +778,7 @@
                                 <div class="color" style="background: #34d399;"></div>
                                 <div>
                                     <div class="name">Chill & Lo-fi</div>
-                                    <div class="count">9 треков</div>
+                                    <div class="count">9 tracks</div>
                                 </div>
                             </div>
                             <span class="status public">Public</span>
@@ -910,8 +788,8 @@
                             <div class="info">
                                 <div class="color" style="background: #fbbf24;"></div>
                                 <div>
-                                    <div class="name">В работе</div>
-                                    <div class="count">4 трека</div>
+                                    <div class="name">In Progress</div>
+                                    <div class="count">4 tracks</div>
                                 </div>
                             </div>
                             <span class="status private">Draft</span>
@@ -922,7 +800,7 @@
                                 <div class="color" style="background: #f472b6;"></div>
                                 <div>
                                     <div class="name">Synthwave</div>
-                                    <div class="count">12 треков</div>
+                                    <div class="count">12 tracks</div>
                                 </div>
                             </div>
                             <span class="status public">Public</span>
@@ -933,7 +811,7 @@
                                 <div class="color" style="background: #60a5fa;"></div>
                                 <div>
                                     <div class="name">Ambient Dreams</div>
-                                    <div class="count">7 треков</div>
+                                    <div class="count">7 tracks</div>
                                 </div>
                             </div>
                             <span class="status private">Draft</span>
@@ -944,7 +822,7 @@
                                 <div class="color" style="background: #f87171;"></div>
                                 <div>
                                     <div class="name">Party Hits</div>
-                                    <div class="count">15 треков</div>
+                                    <div class="count">15 tracks</div>
                                 </div>
                             </div>
                             <span class="status public">Public</span>
@@ -957,8 +835,8 @@
             <div class="col-lg-7">
                 <div class="card-glass mb-4">
                     <div class="card-title">
-                        <i class="bi bi-hdd-stack"></i> Системный статус
-                        <span class="badge" style="background: rgba(52,211,153,0.1); color: #34d399; margin-left: auto; font-size: 10px; font-family: var(--font-display); letter-spacing: 0.5px;">
+                        <i class="bi bi-hdd-stack"></i> System Status
+                        <span class="badge" style="background: var(--pioneer-green-dim); color: var(--pioneer-green); margin-left: auto; font-size: 10px; font-weight: 600; padding: 2px 10px; border-radius: 40px;">
                             <i class="bi bi-check-circle"></i> All systems go
                         </span>
                     </div>
@@ -1003,7 +881,7 @@
                             <div class="dot green"></div>
                             <div>
                                 <div class="label">Version</div>
-                                <div class="value">v2.4.1</div>
+                                <div class="value">v1.0</div>
                             </div>
                         </div>
                     </div>
@@ -1012,21 +890,21 @@
                 <!-- Быстрые действия -->
                 <div class="card-glass">
                     <div class="card-title">
-                        <i class="bi bi-lightning-fill"></i> Быстрые действия
+                        <i class="bi bi-lightning-fill"></i> Quick Actions
                     </div>
 
                     <div class="d-flex flex-wrap gap-2">
-                        <a href="/import" class="btn-nasa-primary" style="flex: 1; min-width: 120px; text-align: center; padding: 10px 16px; text-decoration: none;">
-                            <i class="bi bi-file-earmark-spreadsheet"></i> Загрузить треки
+                        <a href="/import" class="btn-pioneer-primary" style="flex: 1; min-width: 120px; text-align: center; padding: 10px 16px; text-decoration: none;">
+                            <i class="bi bi-file-earmark-spreadsheet"></i> Upload Tracks
                         </a>
-                        <a href="/import-contacts" class="btn-nasa-primary" style="flex: 1; min-width: 120px; text-align: center; padding: 10px 16px; text-decoration: none;">
-                            <i class="bi bi-people"></i> Контакты
+                        <a href="/import-contacts" class="btn-pioneer-primary" style="flex: 1; min-width: 120px; text-align: center; padding: 10px 16px; text-decoration: none;">
+                            <i class="bi bi-people"></i> Contacts
                         </a>
-                        <a href="#" class="btn-nasa" style="flex: 1; min-width: 120px; text-align: center; padding: 10px 16px; text-decoration: none;" onclick="showToast('🚀 Рассылка запущена', 'success')">
-                            <i class="bi bi-send"></i> Рассылка
+                        <a href="#" class="btn-pioneer" style="flex: 1; min-width: 120px; text-align: center; padding: 10px 16px; text-decoration: none;" onclick="showToast('🚀 Mailing started', 'success')">
+                            <i class="bi bi-send"></i> Mailing
                         </a>
-                        <a href="#" class="btn-nasa" style="flex: 1; min-width: 120px; text-align: center; padding: 10px 16px; text-decoration: none;" onclick="showToast('📊 Отчет сформирован', 'success')">
-                            <i class="bi bi-file-text"></i> Отчет
+                        <a href="#" class="btn-pioneer" style="flex: 1; min-width: 120px; text-align: center; padding: 10px 16px; text-decoration: none;" onclick="showToast('📊 Report generated', 'success')">
+                            <i class="bi bi-file-text"></i> Report
                         </a>
                     </div>
                 </div>
@@ -1038,20 +916,20 @@
             <div class="col-12">
                 <div class="card-glass">
                     <div class="card-title">
-                        <i class="bi bi-clock-history"></i> Последние поступления
-                        <span class="badge" style="background: rgba(253,184,19,0.1); color: var(--nasa-gold); margin-left: auto; font-size: 10px; font-family: var(--font-display); letter-spacing: 0.5px;">5</span>
+                        <i class="bi bi-clock-history"></i> Recent Tracks
+                        <span class="badge" style="background: var(--pioneer-orange-dim); color: var(--pioneer-orange); margin-left: auto; font-size: 10px; font-weight: 600; padding: 2px 10px; border-radius: 40px;">5</span>
                     </div>
 
                     <div class="table-wrapper">
-                        <table class="table-nasa">
+                        <table class="table-pioneer">
                             <thead>
                                 <tr>
                                     <th style="width: 40px;">#</th>
-                                    <th style="min-width: 160px;">Название</th>
-                                    <th style="min-width: 140px;">Исполнитель</th>
-                                    <th style="min-width: 100px;">Жанр</th>
-                                    <th style="width: 100px;">Прослушиваний</th>
-                                    <th style="min-width: 130px;">Дата</th>
+                                    <th style="min-width: 160px;">Title</th>
+                                    <th style="min-width: 140px;">Artist</th>
+                                    <th style="min-width: 100px;">Genre</th>
+                                    <th style="width: 100px;">Plays</th>
+                                    <th style="min-width: 130px;">Date</th>
                                 </tr>
                             </thead>
                             <tbody id="recentTracks">
@@ -1061,7 +939,7 @@
                                     <td>Synthwave Band</td>
                                     <td><span class="badge-tag">Electronic</span></td>
                                     <td>156</td>
-                                    <td>Сегодня, 14:32</td>
+                                    <td>Today, 14:32</td>
                                 </tr>
                                 <tr>
                                     <td>2</td>
@@ -1069,7 +947,7 @@
                                     <td>Night Riders</td>
                                     <td><span class="badge-tag">Synthwave</span></td>
                                     <td>89</td>
-                                    <td>Сегодня, 12:15</td>
+                                    <td>Today, 12:15</td>
                                 </tr>
                                 <tr>
                                     <td>3</td>
@@ -1077,7 +955,7 @@
                                     <td>Ambient Masters</td>
                                     <td><span class="badge-tag">Ambient</span></td>
                                     <td>234</td>
-                                    <td>Вчера, 22:40</td>
+                                    <td>Yesterday, 22:40</td>
                                 </tr>
                                 <tr>
                                     <td>4</td>
@@ -1085,7 +963,7 @@
                                     <td>Space Sounds</td>
                                     <td><span class="badge-tag">House</span></td>
                                     <td>412</td>
-                                    <td>Вчера, 18:20</td>
+                                    <td>Yesterday, 18:20</td>
                                 </tr>
                                 <tr>
                                     <td>5</td>
@@ -1093,7 +971,7 @@
                                     <td>Oceanic</td>
                                     <td><span class="badge-tag">Downtempo</span></td>
                                     <td>78</td>
-                                    <td>2 дня назад</td>
+                                    <td>2 days ago</td>
                                 </tr>
                             </tbody>
                         </table>
@@ -1103,8 +981,8 @@
         </div>
 
         <!-- ===== ФУТЕР ===== -->
-        <div class="text-center mt-4" style="font-size: 11px; color: rgba(255,255,255,0.15); font-family: var(--font-display); letter-spacing: 2px; border-top: 1px solid rgba(253,184,19,0.05); padding-top: 20px;">
-            <i class="bi bi-rocket"></i> NASA MUSIC CRM · MISSION CONTROL v2.4.1 · © 2026
+        <div class="text-center mt-4" style="font-size: 10px; color: var(--pioneer-text-dim); font-weight: 400; letter-spacing: 1px; border-top: 1px solid var(--pioneer-border); padding-top: 16px;">
+            <i class="bi bi-sliders"></i> FUNDOZA Music CRM · Pioneer Edition · © 2026
         </div>
     </div>
 
@@ -1161,9 +1039,9 @@
             
             toastMessage.textContent = `${icons[type] || '📌'} ${message}`;
             toast.style.display = 'block';
-            toast.style.borderLeftColor = type === 'success' ? '#34d399' : 
-                                          type === 'error' ? '#f87171' : 
-                                          type === 'warning' ? '#fbbf24' : '#fdb813';
+            toast.style.borderLeftColor = type === 'success' ? '#00ff88' : 
+                                          type === 'error' ? '#ff2244' : 
+                                          type === 'warning' ? '#fbbf24' : '#ff5500';
             
             clearTimeout(window.toastTimeout);
             window.toastTimeout = setTimeout(() => {
@@ -1202,9 +1080,9 @@
         // ============================================================
 
         window.refreshData = function() {
-            showToast('🔄 Синхронизация...', 'info');
+            showToast('🔄 Syncing...', 'info');
             loadStats();
-            setTimeout(() => showToast('✅ Данные обновлены', 'success'), 1000);
+            setTimeout(() => showToast('✅ Data updated', 'success'), 1000);
         };
 
         // ============================================================
@@ -1214,7 +1092,7 @@
         document.addEventListener('DOMContentLoaded', async function() {
             await checkAuth();
             loadStats();
-            console.log('🚀 NASA Music CRM загружен');
+            console.log('🎛️ FUNDOZA Music CRM — Pioneer Edition loaded');
             
             setInterval(() => loadStats(), 60000);
         });
