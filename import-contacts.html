@@ -8,10 +8,16 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" />
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" />
     
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-    <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
+    <!-- ===== ВАЖНО: XLSX загружаем ПЕРВЫМ ===== -->
+    <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js">
+    </script>
+    
+    <!-- Supabase Auth -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2">
+    </script>
     
     <style>
+        /* ... ВСЕ СТИЛИ ОСТАЮТСЯ ТЕМИ ЖЕ ... */
         :root {
             --primary-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             --success-gradient: linear-gradient(135deg, #34d399 0%, #059669 100%);
@@ -1116,9 +1122,10 @@
     <!-- ===== СКРИПТЫ ===== -->
     <script>
         // ============================================================
-        // 1. НАСТРОЙКИ
+        // 1. НАСТРОЙКИ SUPABASE
         // ============================================================
 
+        // ⚠️ ЗАМЕНИТЕ НА СВОИ ДАННЫЕ ⚠️
         const SUPABASE_URL = 'https://ваш-проект.supabase.co';
         const SUPABASE_ANON_KEY = 'ваш-anon-ключ';
         const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
@@ -1133,7 +1140,7 @@
         const CACHE_KEY = 'music_crm_contacts_cache';
 
         // ============================================================
-        // 3. ВСЕ ПОЛЯ
+        // 3. ВСЕ ПОЛЯ (38 полей)
         // ============================================================
 
         const ALL_FIELDS = [
@@ -1149,7 +1156,30 @@
         ];
 
         // ============================================================
-        // 4. TOAST
+        // 4. ПРОВЕРКА ЗАГРУЗКИ XLSX
+        // ============================================================
+
+        // Проверяем, загрузилась ли библиотека XLSX
+        if (typeof XLSX === 'undefined') {
+            console.error('❌ XLSX библиотека не загружена!');
+            // Пытаемся загрузить её динамически
+            const script = document.createElement('script');
+            script.src = 'https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js';
+            script.onload = function() {
+                console.log('✅ XLSX библиотека загружена динамически');
+                showToast('✅ Библиотека XLSX загружена', 'success');
+            };
+            script.onerror = function() {
+                console.error('❌ Не удалось загрузить XLSX');
+                showToast('❌ Ошибка загрузки XLSX библиотеки', 'error');
+            };
+            document.head.appendChild(script);
+        } else {
+            console.log('✅ XLSX библиотека уже загружена');
+        }
+
+        // ============================================================
+        // 5. TOAST
         // ============================================================
 
         function showToast(message, type = 'info') {
@@ -1171,7 +1201,7 @@
         }
 
         // ============================================================
-        // 5. КЭШИРОВАНИЕ
+        // 6. КЭШИРОВАНИЕ
         // ============================================================
 
         function saveToCache() {
@@ -1249,12 +1279,16 @@
         }
 
         // ============================================================
-        // 6. ЗАГРУЗКА ФАЙЛА
+        // 7. ЗАГРУЗКА ФАЙЛА (ОСНОВНАЯ ЛОГИКА)
         // ============================================================
 
         document.getElementById('fileInput').addEventListener('change', function(e) {
             const file = e.target.files[0];
-            if (file) handleFile(file);
+            if (!file) {
+                showToast('Файл не выбран', 'warning');
+                return;
+            }
+            handleFile(file);
         });
 
         const uploadZone = document.getElementById('uploadZone');
@@ -1275,7 +1309,29 @@
             }
         });
 
+        // Основная функция обработки файла
         function handleFile(file) {
+            // Проверяем, загружена ли XLSX библиотека
+            if (typeof XLSX === 'undefined') {
+                showToast('⏳ Загрузка XLSX библиотеки...', 'info');
+                // Ждём загрузки и пробуем снова
+                const checkInterval = setInterval(() => {
+                    if (typeof XLSX !== 'undefined') {
+                        clearInterval(checkInterval);
+                        showToast('✅ XLSX загружена, повторяем...', 'success');
+                        handleFile(file);
+                    }
+                }, 500);
+                // Таймаут через 10 секунд
+                setTimeout(() => {
+                    clearInterval(checkInterval);
+                    if (typeof XLSX === 'undefined') {
+                        showToast('❌ XLSX не загружена. Проверьте интернет.', 'error');
+                    }
+                }, 10000);
+                return;
+            }
+
             showToast(`📄 Загружается: ${file.name}`, 'info');
             
             const reader = new FileReader();
@@ -1295,6 +1351,7 @@
                     contactsRows = json;
                     currentFileName = file.name;
                     
+                    // Обновляем UI
                     document.getElementById('fileInfo').style.display = 'block';
                     document.getElementById('fileName').textContent = file.name;
                     document.getElementById('fileSize').textContent = (file.size / 1024).toFixed(1) + ' KB';
@@ -1304,10 +1361,12 @@
                     document.getElementById('statRows').textContent = json.length;
                     document.getElementById('statColumns').textContent = contactsHeaders.length;
                     
+                    // Проверяем наличие email
                     const hasEmail = contactsHeaders.some(h => h.toLowerCase() === 'email');
                     const validContacts = hasEmail ? json.filter(row => row.email && row.email.includes('@')) : [];
                     document.getElementById('statValid').textContent = validContacts.length;
                     
+                    // Подсчёт дубликатов
                     const emails = validContacts.map(row => row.email);
                     const duplicates = emails.length - new Set(emails).size;
                     document.getElementById('statDuplicates').textContent = duplicates;
@@ -1316,19 +1375,25 @@
                     document.getElementById('previewSection').style.display = 'block';
                     document.getElementById('actionButtons').style.display = 'flex';
                     
+                    // Автосохранение в кэш
                     saveToCache();
                     
                     showToast(`✅ Загружено ${json.length} контактов`, 'success');
                 } catch (error) {
-                    console.error('Ошибка:', error);
-                    showToast('Ошибка чтения файла: ' + error.message, 'error');
+                    console.error('Ошибка чтения файла:', error);
+                    showToast('❌ Ошибка чтения файла: ' + error.message, 'error');
                 }
             };
+            
+            reader.onerror = function() {
+                showToast('❌ Ошибка чтения файла', 'error');
+            };
+            
             reader.readAsArrayBuffer(file);
         }
 
         // ============================================================
-        // 7. ПРЕДПРОСМОТР
+        // 8. ПРЕДПРОСМОТР
         // ============================================================
 
         function showPreview(rows) {
@@ -1407,7 +1472,7 @@
         }
 
         // ============================================================
-        // 8. ИМПОРТ В SQL
+        // 9. ИМПОРТ В SQL
         // ============================================================
 
         async function importContacts() {
@@ -1418,7 +1483,7 @@
                     return;
                 }
                 
-                // Подготовка данных - маппинг всех полей
+                // Подготовка данных
                 const contacts = contactsRows
                     .filter(row => row.email && row.email.includes('@'))
                     .map(row => {
@@ -1458,6 +1523,7 @@
                 
                 showToast(`⏳ Импорт ${contacts.length} контактов в SQL...`, 'info');
                 
+                // Прогресс
                 const progressContainer = document.getElementById('progressContainer');
                 const progressBar = document.getElementById('progressBar');
                 const progressText = document.getElementById('progressText');
@@ -1495,7 +1561,7 @@
         }
 
         // ============================================================
-        // 9. ОЧИСТКА
+        // 10. ОЧИСТКА
         // ============================================================
 
         function clearFile() {
@@ -1516,7 +1582,7 @@
         }
 
         // ============================================================
-        // 10. АВТОРИЗАЦИЯ
+        // 11. АВТОРИЗАЦИЯ
         // ============================================================
 
         async function checkAuth() {
@@ -1532,7 +1598,7 @@
         }
 
         // ============================================================
-        // 11. ИНИЦИАЛИЗАЦИЯ
+        // 12. ИНИЦИАЛИЗАЦИЯ
         // ============================================================
 
         document.addEventListener('DOMContentLoaded', async function() {
@@ -1540,8 +1606,8 @@
             loadFromCache();
             console.log('📇 Страница импорта контактов загружена');
             console.log('📋 Всего полей:', ALL_FIELDS.length);
-            console.log('📦 XLSX:', typeof XLSX !== 'undefined' ? '✅' : '❌');
-            console.log('💾 Кэш:', localStorage.getItem(CACHE_KEY) ? '✅' : '❌');
+            console.log('📦 XLSX:', typeof XLSX !== 'undefined' ? '✅ Загружена' : '❌ Не загружена');
+            console.log('💾 Кэш:', localStorage.getItem(CACHE_KEY) ? '✅ Есть данные' : '❌ Пусто');
         });
     </script>
 </body>
