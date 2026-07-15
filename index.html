@@ -3,63 +3,129 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>🎵 Music CRM — Дашборд</title>
+    <title>🚀 NASA Music CRM — Дашборд</title>
     
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" />
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" />
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;700;900&family=Rajdhani:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
     
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     
     <style>
+        /* ============================================================
+           NASA STYLE — КОСМИЧЕСКИЙ ДИЗАЙН
+           ============================================================ */
+        
         :root {
-            --primary-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            --success-gradient: linear-gradient(135deg, #34d399 0%, #059669 100%);
-            --warning-gradient: linear-gradient(135deg, #fbbf24 0%, #d97706 100%);
-            --danger-gradient: linear-gradient(135deg, #f87171 0%, #dc2626 100%);
-            --info-gradient: linear-gradient(135deg, #60a5fa 0%, #2563eb 100%);
-            --bg-dark: #0f0e17;
-            --bg-card: #1a1a2e;
-            --text-primary: #fffffe;
-            --text-secondary: #a7a9be;
-            --text-muted: #6b7280;
+            --nasa-blue: #0b3d91;
+            --nasa-red: #fc3d21;
+            --nasa-orange: #f5793b;
+            --nasa-gold: #fdb813;
+            --nasa-white: #ffffff;
+            --nasa-gray: #a0a8b0;
+            --nasa-dark: #0a0e17;
+            --nasa-card: rgba(11, 61, 145, 0.15);
+            --nasa-border: rgba(253, 184, 19, 0.15);
+            --glow-blue: 0 0 30px rgba(11, 61, 145, 0.3);
+            --glow-gold: 0 0 30px rgba(253, 184, 19, 0.2);
+            --font-display: 'Orbitron', monospace;
+            --font-body: 'Rajdhani', sans-serif;
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; }
 
         body {
-            background: var(--bg-dark);
-            color: var(--text-primary);
-            font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: var(--nasa-dark);
+            color: var(--nasa-white);
+            font-family: var(--font-body);
             min-height: 100vh;
             padding: 20px;
+            overflow-x: hidden;
         }
 
-        .bg-animation {
+        /* ===== ЗВЁЗДНОЕ НЕБО ===== */
+        .stars {
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            background: var(--bg-dark);
-            z-index: -1;
+            pointer-events: none;
+            z-index: 0;
+            background: radial-gradient(ellipse at 20% 50%, rgba(11, 61, 145, 0.1) 0%, transparent 60%),
+                        radial-gradient(ellipse at 80% 80%, rgba(253, 184, 19, 0.05) 0%, transparent 50%);
         }
-        
-        .bg-animation::before {
+
+        .stars::before {
             content: '';
             position: absolute;
-            width: 200%;
-            height: 200%;
-            background: radial-gradient(circle at 30% 50%, rgba(102, 126, 234, 0.03) 0%, transparent 50%),
-                        radial-gradient(circle at 70% 80%, rgba(118, 75, 162, 0.03) 0%, transparent 50%);
-            animation: float 20s ease-in-out infinite;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                radial-gradient(2px 2px at 20px 30px, #eee, transparent),
+                radial-gradient(2px 2px at 40px 70px, rgba(255,255,255,0.8), transparent),
+                radial-gradient(2px 2px at 50px 160px, #ddd, transparent),
+                radial-gradient(2px 2px at 90px 40px, rgba(255,255,255,0.6), transparent),
+                radial-gradient(2px 2px at 130px 80px, #fff, transparent),
+                radial-gradient(2px 2px at 160px 30px, rgba(255,255,255,0.7), transparent);
+            background-size: 200px 200px;
+            background-repeat: repeat;
+            opacity: 0.6;
+            animation: twinkle 4s ease-in-out infinite alternate;
         }
 
-        @keyframes float {
-            0%, 100% { transform: translate(0, 0) rotate(0deg); }
-            33% { transform: translate(2%, -2%) rotate(1deg); }
-            66% { transform: translate(-2%, 2%) rotate(-1deg); }
+        .stars::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                radial-gradient(1px 1px at 10px 10px, #eee, transparent),
+                radial-gradient(1px 1px at 20px 20px, rgba(255,255,255,0.5), transparent),
+                radial-gradient(1px 1px at 30px 30px, #ddd, transparent),
+                radial-gradient(1px 1px at 40px 40px, rgba(255,255,255,0.7), transparent),
+                radial-gradient(1px 1px at 50px 50px, #fff, transparent);
+            background-size: 100px 100px;
+            background-repeat: repeat;
+            opacity: 0.4;
+            animation: twinkle 6s ease-in-out infinite alternate-reverse;
         }
 
+        @keyframes twinkle {
+            0% { opacity: 0.3; }
+            100% { opacity: 0.8; }
+        }
+
+        /* ===== АНИМАЦИЯ ПАРЯЩИХ ЭЛЕМЕНТОВ ===== */
+        .float-element {
+            position: fixed;
+            pointer-events: none;
+            z-index: 0;
+            opacity: 0.03;
+            font-size: 120px;
+            color: var(--nasa-blue);
+            animation: floatSpace 20s ease-in-out infinite;
+        }
+
+        .float-element:nth-child(1) { top: 10%; left: 5%; animation-delay: 0s; font-size: 80px; }
+        .float-element:nth-child(2) { top: 60%; right: 8%; animation-delay: -5s; font-size: 60px; color: var(--nasa-gold); }
+        .float-element:nth-child(3) { bottom: 20%; left: 20%; animation-delay: -10s; font-size: 100px; }
+        .float-element:nth-child(4) { top: 30%; right: 25%; animation-delay: -15s; font-size: 50px; color: var(--nasa-red); }
+
+        @keyframes floatSpace {
+            0%, 100% { transform: translate(0, 0) rotate(0deg) scale(1); }
+            25% { transform: translate(30px, -40px) rotate(5deg) scale(1.05); }
+            50% { transform: translate(-20px, 20px) rotate(-3deg) scale(0.95); }
+            75% { transform: translate(40px, 30px) rotate(4deg) scale(1.02); }
+        }
+
+        /* ============================================================
+           ОСНОВНОЙ КОНТЕЙНЕР
+           ============================================================ */
         .main-container {
             position: relative;
             z-index: 1;
@@ -67,62 +133,100 @@
             margin: 0 auto;
         }
 
-        /* ===== МЕНЮ ===== */
+        /* ============================================================
+           МЕНЮ НАВИГАЦИИ — СТИЛЬ NASA
+           ============================================================ */
         .nav-menu {
             display: flex;
-            gap: 8px;
-            background: rgba(26, 26, 46, 0.6);
-            backdrop-filter: blur(10px);
-            -webkit-backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 255, 255, 0.05);
-            border-radius: 16px;
+            gap: 6px;
+            background: rgba(10, 14, 23, 0.85);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(253, 184, 19, 0.15);
+            border-radius: 12px;
             padding: 6px;
             margin-bottom: 24px;
             overflow-x: auto;
             flex-wrap: nowrap;
+            box-shadow: var(--glow-blue);
         }
 
         .nav-link {
             display: flex;
             align-items: center;
             gap: 8px;
-            padding: 10px 20px;
-            border-radius: 12px;
-            color: var(--text-secondary);
+            padding: 10px 22px;
+            border-radius: 8px;
+            color: var(--nasa-gray);
             text-decoration: none;
-            font-size: 14px;
-            font-weight: 500;
+            font-family: var(--font-display);
+            font-size: 12px;
+            font-weight: 400;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
             transition: all 0.3s ease;
             white-space: nowrap;
+            background: transparent;
+            border: none;
+            cursor: pointer;
+            position: relative;
+        }
+
+        .nav-link::before {
+            content: '';
+            position: absolute;
+            bottom: 4px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 0;
+            height: 2px;
+            background: var(--nasa-gold);
+            transition: width 0.3s ease;
+        }
+
+        .nav-link:hover::before {
+            width: 60%;
         }
 
         .nav-link:hover {
-            background: rgba(255, 255, 255, 0.05);
-            color: var(--text-primary);
+            color: var(--nasa-white);
             text-decoration: none;
+            background: rgba(253, 184, 19, 0.05);
         }
 
         .nav-link.active {
-            background: var(--primary-gradient);
-            color: white;
-            box-shadow: 0 4px 16px rgba(102, 126, 234, 0.3);
+            background: rgba(253, 184, 19, 0.1);
+            color: var(--nasa-gold);
+            box-shadow: inset 0 0 30px rgba(253, 184, 19, 0.05);
         }
 
-        .nav-link i { font-size: 18px; }
+        .nav-link.active::before {
+            width: 60%;
+        }
+
+        .nav-link i {
+            font-size: 16px;
+        }
 
         @media (max-width: 768px) {
-            .nav-link { font-size: 12px; padding: 8px 14px; }
+            .nav-link {
+                font-size: 10px;
+                padding: 8px 14px;
+                letter-spacing: 1px;
+            }
             .nav-link i { font-size: 14px; }
             .nav-link span { display: none; }
         }
 
-        /* ===== ШАПКА ===== */
+        /* ============================================================
+           ШАПКА — СТИЛЬ NASA
+           ============================================================ */
         .header {
-            background: rgba(26, 26, 46, 0.8);
+            background: rgba(10, 14, 23, 0.85);
             backdrop-filter: blur(20px);
             -webkit-backdrop-filter: blur(20px);
-            border: 1px solid rgba(255, 255, 255, 0.05);
-            border-radius: 24px;
+            border: 1px solid rgba(253, 184, 19, 0.1);
+            border-radius: 12px;
             padding: 16px 28px;
             margin-bottom: 24px;
             display: flex;
@@ -130,7 +234,7 @@
             align-items: center;
             flex-wrap: wrap;
             gap: 12px;
-            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+            box-shadow: var(--glow-blue);
         }
 
         .header-brand {
@@ -140,31 +244,55 @@
         }
 
         .header-brand .logo-icon {
-            width: 42px;
-            height: 42px;
-            background: var(--primary-gradient);
-            border-radius: 12px;
+            width: 44px;
+            height: 44px;
+            background: linear-gradient(135deg, #0b3d91, #1a5bb5);
+            border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 20px;
-            box-shadow: 0 4px 20px rgba(102, 126, 234, 0.3);
+            font-size: 22px;
+            color: var(--nasa-gold);
+            border: 1px solid rgba(253, 184, 19, 0.2);
+            box-shadow: 0 0 30px rgba(11, 61, 145, 0.3);
+            position: relative;
+        }
+
+        .header-brand .logo-icon::after {
+            content: '';
+            position: absolute;
+            inset: -3px;
+            border-radius: 50%;
+            border: 1px solid rgba(253, 184, 19, 0.1);
+            animation: pulseRing 3s ease-in-out infinite;
+        }
+
+        @keyframes pulseRing {
+            0%, 100% { transform: scale(1); opacity: 1; }
+            50% { transform: scale(1.1); opacity: 0.5; }
         }
 
         .header-brand h1 {
-            font-size: 20px;
+            font-family: var(--font-display);
+            font-size: 18px;
             font-weight: 700;
-            background: var(--primary-gradient);
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            color: var(--nasa-white);
+            margin: 0;
+            background: linear-gradient(90deg, var(--nasa-white), var(--nasa-gold));
             -webkit-background-clip: text;
             background-clip: text;
             -webkit-text-fill-color: transparent;
             color: transparent;
-            margin: 0;
         }
 
         .header-brand .subtitle {
-            font-size: 12px;
-            color: var(--text-secondary);
+            font-size: 11px;
+            color: var(--nasa-gray);
+            font-weight: 300;
+            letter-spacing: 2px;
+            text-transform: uppercase;
         }
 
         .header-actions {
@@ -175,15 +303,18 @@
         }
 
         .badge-status {
-            background: rgba(16, 185, 129, 0.15);
+            background: rgba(16, 185, 129, 0.1);
             color: #34d399;
             padding: 6px 14px;
             border-radius: 40px;
-            font-size: 12px;
-            border: 1px solid rgba(52, 211, 153, 0.2);
+            font-size: 11px;
+            border: 1px solid rgba(52, 211, 153, 0.15);
             display: flex;
             align-items: center;
             gap: 6px;
+            font-family: var(--font-display);
+            letter-spacing: 1px;
+            text-transform: uppercase;
         }
 
         .badge-status .pulse {
@@ -191,175 +322,230 @@
             height: 6px;
             background: #34d399;
             border-radius: 50%;
-            animation: pulse 2s ease-in-out infinite;
+            animation: pulseDot 2s ease-in-out infinite;
             display: inline-block;
         }
 
-        @keyframes pulse {
+        @keyframes pulseDot {
             0%, 100% { opacity: 1; transform: scale(1); }
-            50% { opacity: 0.5; transform: scale(0.8); }
+            50% { opacity: 0.3; transform: scale(0.6); }
         }
 
-        .btn-outline-glass {
-            background: rgba(255, 255, 255, 0.05);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            color: var(--text-secondary);
+        .btn-nasa {
+            background: transparent;
+            border: 1px solid rgba(253, 184, 19, 0.2);
+            color: var(--nasa-gray);
             padding: 6px 16px;
-            border-radius: 10px;
-            font-weight: 500;
+            border-radius: 8px;
+            font-family: var(--font-display);
+            font-size: 11px;
+            font-weight: 400;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
             transition: all 0.3s ease;
+            cursor: pointer;
             text-decoration: none;
-            font-size: 13px;
+        }
+
+        .btn-nasa:hover {
+            background: rgba(253, 184, 19, 0.05);
+            border-color: var(--nasa-gold);
+            color: var(--nasa-white);
+            text-decoration: none;
+        }
+
+        .btn-nasa-danger {
+            background: transparent;
+            border: 1px solid rgba(252, 61, 33, 0.2);
+            color: #fc6b5a;
+            padding: 6px 16px;
+            border-radius: 8px;
+            font-family: var(--font-display);
+            font-size: 11px;
+            font-weight: 400;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            transition: all 0.3s ease;
             cursor: pointer;
+            text-decoration: none;
         }
 
-        .btn-outline-glass:hover {
-            background: rgba(255, 255, 255, 0.1);
-            border-color: rgba(255, 255, 255, 0.2);
-            color: var(--text-primary);
+        .btn-nasa-danger:hover {
+            background: rgba(252, 61, 33, 0.1);
+            border-color: var(--nasa-red);
+            color: var(--nasa-white);
+            text-decoration: none;
         }
 
-        .btn-gradient {
-            background: var(--primary-gradient);
+        .btn-nasa-primary {
+            background: linear-gradient(135deg, #0b3d91, #1a5bb5);
             border: none;
-            color: white;
-            padding: 6px 16px;
-            border-radius: 10px;
+            color: var(--nasa-white);
+            padding: 6px 18px;
+            border-radius: 8px;
+            font-family: var(--font-display);
+            font-size: 11px;
             font-weight: 600;
+            letter-spacing: 1px;
+            text-transform: uppercase;
             transition: all 0.3s ease;
-            font-size: 13px;
             cursor: pointer;
+            text-decoration: none;
+            box-shadow: 0 0 20px rgba(11, 61, 145, 0.2);
         }
 
-        .btn-gradient:hover {
+        .btn-nasa-primary:hover {
             transform: translateY(-2px);
-            box-shadow: 0 8px 32px rgba(102, 126, 234, 0.4);
-            color: white;
+            box-shadow: 0 0 40px rgba(11, 61, 145, 0.4);
+            color: var(--nasa-white);
+            text-decoration: none;
         }
 
-        .btn-danger-outline {
-            background: rgba(248, 113, 113, 0.1);
-            border: 1px solid rgba(248, 113, 113, 0.2);
-            color: #f87171;
-            padding: 6px 16px;
-            border-radius: 10px;
-            font-weight: 500;
-            transition: all 0.3s ease;
-            font-size: 13px;
-            cursor: pointer;
+        .user-email {
+            color: var(--nasa-gray);
+            font-size: 12px;
+            font-weight: 300;
+            letter-spacing: 0.5px;
         }
 
-        .btn-danger-outline:hover {
-            background: rgba(248, 113, 113, 0.2);
-            border-color: rgba(248, 113, 113, 0.3);
-            color: #fca5a5;
-        }
-
-        /* ===== СТАТИСТИКА ===== */
+        /* ============================================================
+           СТАТИСТИКА — NASA CARDS
+           ============================================================ */
         .stats-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
             gap: 16px;
             margin-bottom: 24px;
         }
 
         .stat-card {
-            background: rgba(26, 26, 46, 0.7);
+            background: rgba(10, 14, 23, 0.8);
             backdrop-filter: blur(10px);
             -webkit-backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 255, 255, 0.06);
-            border-radius: 16px;
-            padding: 20px;
-            transition: all 0.3s ease;
+            border: 1px solid rgba(253, 184, 19, 0.08);
+            border-radius: 12px;
+            padding: 18px 20px;
+            transition: all 0.4s ease;
             position: relative;
             overflow: hidden;
         }
 
+        .stat-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, var(--nasa-gold), transparent);
+            opacity: 0.3;
+        }
+
         .stat-card:hover {
             transform: translateY(-4px);
-            border-color: rgba(102, 126, 234, 0.3);
-            box-shadow: 0 12px 40px rgba(0, 0, 0, 0.3);
+            border-color: rgba(253, 184, 19, 0.2);
+            box-shadow: var(--glow-gold);
+        }
+
+        .stat-card .stat-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 8px;
         }
 
         .stat-card .icon {
-            width: 40px;
-            height: 40px;
-            border-radius: 12px;
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 18px;
-            margin-bottom: 10px;
+            font-size: 16px;
+            border: 1px solid rgba(253, 184, 19, 0.1);
         }
 
-        .stat-card .icon.purple { background: rgba(102, 126, 234, 0.15); color: #a5b4fc; }
-        .stat-card .icon.green { background: rgba(52, 211, 153, 0.15); color: #34d399; }
-        .stat-card .icon.blue { background: rgba(96, 165, 250, 0.15); color: #60a5fa; }
-        .stat-card .icon.orange { background: rgba(251, 191, 36, 0.15); color: #fbbf24; }
-        .stat-card .icon.pink { background: rgba(244, 114, 182, 0.15); color: #f472b6; }
+        .stat-card .icon.purple { background: rgba(102, 126, 234, 0.1); color: #a5b4fc; }
+        .stat-card .icon.green { background: rgba(52, 211, 153, 0.1); color: #34d399; }
+        .stat-card .icon.blue { background: rgba(96, 165, 250, 0.1); color: #60a5fa; }
+        .stat-card .icon.orange { background: rgba(251, 191, 36, 0.1); color: #fbbf24; }
+        .stat-card .icon.pink { background: rgba(244, 114, 182, 0.1); color: #f472b6; }
+
+        .stat-card .stat-label {
+            color: var(--nasa-gray);
+            font-size: 11px;
+            font-weight: 300;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            font-family: var(--font-display);
+        }
 
         .stat-card .number {
-            font-size: 26px;
+            font-family: var(--font-display);
+            font-size: 28px;
             font-weight: 700;
-            color: var(--text-primary);
-            margin-bottom: 2px;
-        }
-
-        .stat-card .label {
-            color: var(--text-secondary);
-            font-size: 13px;
+            color: var(--nasa-white);
+            letter-spacing: 1px;
         }
 
         .stat-card .change {
-            font-size: 12px;
+            font-size: 10px;
             padding: 2px 10px;
             border-radius: 20px;
             display: inline-block;
-            margin-top: 6px;
+            font-family: var(--font-display);
+            letter-spacing: 0.5px;
         }
 
-        .stat-card .change.up { background: rgba(52, 211, 153, 0.15); color: #34d399; }
-        .stat-card .change.down { background: rgba(248, 113, 113, 0.15); color: #f87171; }
+        .stat-card .change.up { background: rgba(52, 211, 153, 0.1); color: #34d399; }
+        .stat-card .change.down { background: rgba(248, 113, 113, 0.1); color: #f87171; }
 
-        /* ===== КАРТОЧКИ ===== */
+        /* ============================================================
+           КАРТОЧКИ — NASA STYLE
+           ============================================================ */
         .card-glass {
-            background: rgba(26, 26, 46, 0.7);
+            background: rgba(10, 14, 23, 0.8);
             backdrop-filter: blur(10px);
             -webkit-backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 255, 255, 0.06);
-            border-radius: 16px;
+            border: 1px solid rgba(253, 184, 19, 0.08);
+            border-radius: 12px;
             padding: 20px;
-            transition: all 0.3s ease;
+            transition: all 0.4s ease;
             height: 100%;
         }
 
         .card-glass:hover {
-            border-color: rgba(102, 126, 234, 0.2);
-            box-shadow: 0 8px 40px rgba(0, 0, 0, 0.3);
+            border-color: rgba(253, 184, 19, 0.15);
+            box-shadow: var(--glow-gold);
         }
 
         .card-title {
-            font-size: 16px;
+            font-family: var(--font-display);
+            font-size: 13px;
             font-weight: 600;
             margin-bottom: 14px;
             display: flex;
             align-items: center;
             gap: 10px;
-            color: var(--text-primary);
+            color: var(--nasa-white);
+            letter-spacing: 1px;
+            text-transform: uppercase;
         }
 
         .card-title i {
-            color: #667eea;
-            font-size: 20px;
+            color: var(--nasa-gold);
+            font-size: 16px;
         }
 
-        /* ===== ПЛЕЙЛИСТЫ ===== */
+        /* ============================================================
+           ПЛЕЙЛИСТЫ
+           ============================================================ */
         .playlist-item {
             display: flex;
             align-items: center;
             justify-content: space-between;
             padding: 8px 0;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.03);
         }
 
         .playlist-item:last-child { border-bottom: none; }
@@ -371,38 +557,43 @@
         }
 
         .playlist-item .info .color {
-            width: 10px;
-            height: 10px;
-            border-radius: 4px;
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
             flex-shrink: 0;
         }
 
         .playlist-item .info .name {
-            color: var(--text-primary);
-            font-weight: 500;
-            font-size: 14px;
+            color: var(--nasa-white);
+            font-weight: 400;
+            font-size: 13px;
         }
 
         .playlist-item .info .count {
-            color: var(--text-secondary);
-            font-size: 12px;
+            color: var(--nasa-gray);
+            font-size: 11px;
         }
 
         .playlist-item .status {
             padding: 2px 12px;
             border-radius: 40px;
-            font-size: 11px;
+            font-size: 9px;
             font-weight: 500;
+            font-family: var(--font-display);
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
         }
 
-        .playlist-item .status.public { background: rgba(52, 211, 153, 0.15); color: #34d399; }
-        .playlist-item .status.private { background: rgba(251, 191, 36, 0.15); color: #fbbf24; }
+        .playlist-item .status.public { background: rgba(52, 211, 153, 0.1); color: #34d399; }
+        .playlist-item .status.private { background: rgba(251, 191, 36, 0.1); color: #fbbf24; }
 
-        /* ===== СИСТЕМНЫЙ СТАТУС ===== */
+        /* ============================================================
+           СИСТЕМНЫЙ СТАТУС
+           ============================================================ */
         .system-status {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
-            gap: 10px;
+            grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+            gap: 8px;
             margin-top: 12px;
         }
 
@@ -412,93 +603,117 @@
             gap: 10px;
             padding: 8px 12px;
             background: rgba(255, 255, 255, 0.02);
-            border-radius: 10px;
+            border-radius: 8px;
+            border: 1px solid rgba(255, 255, 255, 0.03);
         }
 
         .status-item .dot {
-            width: 8px;
-            height: 8px;
+            width: 6px;
+            height: 6px;
             border-radius: 50%;
             flex-shrink: 0;
         }
 
-        .status-item .dot.green { background: #34d399; box-shadow: 0 0 12px rgba(52, 211, 153, 0.3); }
-        .status-item .dot.yellow { background: #fbbf24; box-shadow: 0 0 12px rgba(251, 191, 36, 0.3); }
-        .status-item .dot.red { background: #f87171; box-shadow: 0 0 12px rgba(248, 113, 113, 0.3); }
+        .status-item .dot.green { background: #34d399; box-shadow: 0 0 12px rgba(52, 211, 153, 0.2); }
+        .status-item .dot.yellow { background: #fbbf24; box-shadow: 0 0 12px rgba(251, 191, 36, 0.2); }
+        .status-item .dot.red { background: #f87171; box-shadow: 0 0 12px rgba(248, 113, 113, 0.2); }
 
         .status-item .label {
-            color: var(--text-secondary);
-            font-size: 12px;
+            color: var(--nasa-gray);
+            font-size: 10px;
+            font-weight: 300;
+            letter-spacing: 0.5px;
         }
 
         .status-item .value {
-            color: var(--text-primary);
-            font-size: 12px;
+            color: var(--nasa-white);
+            font-size: 10px;
             font-weight: 500;
         }
 
-        /* ===== ТАБЛИЦА ===== */
-        .table {
-            color: var(--text-secondary);
-            margin-bottom: 0;
-            font-size: 13px;
+        /* ============================================================
+           ТАБЛИЦА — NASA STYLE
+           ============================================================ */
+        .table-wrapper {
+            overflow-x: auto;
+            margin: 0 -4px;
         }
 
-        .table th {
-            color: var(--text-secondary);
-            font-weight: 500;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
-            font-size: 12px;
-            padding: 10px 8px;
+        .table-nasa {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 13px;
+            color: var(--nasa-gray);
+            min-width: 600px;
         }
 
-        .table td {
-            border-bottom: 1px solid rgba(255, 255, 255, 0.04);
-            padding: 10px 8px;
-            font-size: 13px;
+        .table-nasa thead th {
+            font-family: var(--font-display);
+            font-size: 10px;
+            font-weight: 400;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            color: var(--nasa-gray);
+            border-bottom: 1px solid rgba(253, 184, 19, 0.08);
+            padding: 10px 12px;
+            text-align: left;
+            white-space: nowrap;
+        }
+
+        .table-nasa tbody td {
+            padding: 10px 12px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.03);
             vertical-align: middle;
         }
 
-        .table tr:hover td {
-            background: rgba(255, 255, 255, 0.02);
+        .table-nasa tbody tr:hover td {
+            background: rgba(253, 184, 19, 0.02);
         }
 
-        .table .track-name {
-            color: var(--text-primary);
+        .table-nasa .track-name {
+            color: var(--nasa-white);
             font-weight: 500;
         }
 
         .badge-tag {
-            background: rgba(102, 126, 234, 0.15);
-            color: #a5b4fc;
+            background: rgba(253, 184, 19, 0.08);
+            color: var(--nasa-gold);
             padding: 2px 12px;
             border-radius: 40px;
-            font-size: 11px;
-            font-weight: 500;
+            font-size: 10px;
+            font-weight: 400;
             display: inline-block;
+            white-space: nowrap;
+            font-family: var(--font-display);
+            letter-spacing: 0.5px;
         }
 
-        /* ===== TOAST ===== */
+        /* ============================================================
+           TOAST
+           ============================================================ */
         #toast {
             position: fixed;
             bottom: 30px;
             right: 30px;
-            background: rgba(26, 26, 46, 0.95);
+            background: rgba(10, 14, 23, 0.95);
             backdrop-filter: blur(20px);
             -webkit-backdrop-filter: blur(20px);
-            border: 1px solid rgba(255,255,255,0.1);
-            border-radius: 16px;
+            border: 1px solid rgba(253, 184, 19, 0.15);
+            border-radius: 12px;
             padding: 14px 22px;
-            color: white;
-            box-shadow: 0 20px 60px rgba(0,0,0,0.6);
+            color: var(--nasa-white);
+            box-shadow: var(--glow-gold);
             display: none;
             z-index: 9999;
             max-width: 400px;
-            font-size: 14px;
-            border-left: 4px solid #667eea;
+            font-size: 13px;
+            border-left: 3px solid var(--nasa-gold);
+            font-family: var(--font-body);
         }
 
-        /* ===== АДАПТИВНОСТЬ ===== */
+        /* ============================================================
+           АДАПТИВНОСТЬ
+           ============================================================ */
         @media (max-width: 992px) {
             .stats-grid { grid-template-columns: repeat(3, 1fr); }
         }
@@ -517,7 +732,7 @@
             .header-actions .btn {
                 flex: 1;
                 justify-content: center;
-                font-size: 12px;
+                font-size: 10px;
                 padding: 6px 12px;
                 min-width: 60px;
             }
@@ -526,78 +741,86 @@
                 gap: 12px;
             }
             .stat-card { padding: 14px; }
-            .stat-card .number { font-size: 20px; }
-            .stat-card .icon { width: 32px; height: 32px; font-size: 14px; }
+            .stat-card .number { font-size: 22px; }
+            .stat-card .icon { width: 30px; height: 30px; font-size: 14px; }
             .card-glass { padding: 14px; }
             .system-status { grid-template-columns: 1fr 1fr; }
             .nav-link span { display: none; }
-            .table { font-size: 12px; }
-            .table th, .table td { padding: 6px 4px; }
-            .table .track-name { font-size: 12px; }
+            .table-nasa { font-size: 12px; min-width: 480px; }
+            .table-nasa thead th, .table-nasa tbody td { padding: 8px 8px; }
+            .header-brand h1 { font-size: 15px; }
+            .header-brand .subtitle { font-size: 9px; }
         }
 
         @media (max-width: 480px) {
             .stats-grid { grid-template-columns: 1fr 1fr; }
             .stat-card .number { font-size: 18px; }
-            .stat-card .label { font-size: 11px; }
-            .table { font-size: 11px; }
-            .table th, .table td { padding: 4px 3px; }
+            .stat-card .stat-label { font-size: 9px; }
+            .table-nasa { font-size: 11px; min-width: 400px; }
+            .table-nasa thead th, .table-nasa tbody td { padding: 6px 6px; }
             .badge-tag { font-size: 9px; padding: 1px 8px; }
         }
 
         .fade-in {
-            animation: fadeInUp 0.6s ease-out;
+            animation: fadeInUp 0.8s ease-out;
         }
 
         @keyframes fadeInUp {
-            from { opacity: 0; transform: translateY(20px); }
+            from { opacity: 0; transform: translateY(30px); }
             to { opacity: 1; transform: translateY(0); }
         }
 
         ::-webkit-scrollbar { width: 6px; height: 6px; }
         ::-webkit-scrollbar-track { background: rgba(255, 255, 255, 0.02); border-radius: 10px; }
-        ::-webkit-scrollbar-thumb { background: rgba(102, 126, 234, 0.3); border-radius: 10px; }
-        ::-webkit-scrollbar-thumb:hover { background: rgba(102, 126, 234, 0.5); }
+        ::-webkit-scrollbar-thumb { background: rgba(253, 184, 19, 0.2); border-radius: 10px; }
+        ::-webkit-scrollbar-thumb:hover { background: rgba(253, 184, 19, 0.3); }
     </style>
 </head>
 <body>
 
-    <div class="bg-animation"></div>
+    <!-- ===== ЗВЁЗДНОЕ НЕБО ===== -->
+    <div class="stars"></div>
+    
+    <!-- ===== ПАРЯЩИЕ ЭЛЕМЕНТЫ ===== -->
+    <div class="float-element">🚀</div>
+    <div class="float-element">🛸</div>
+    <div class="float-element">⭐</div>
+    <div class="float-element">🌌</div>
 
     <div class="main-container fade-in">
         
         <!-- ===== МЕНЮ ===== -->
         <nav class="nav-menu">
             <a href="/" class="nav-link active">
-                <i class="bi bi-grid-1x2-fill"></i> <span>Дашборд</span>
+                <i class="bi bi-grid-1x2-fill"></i> <span>Миссия</span>
             </a>
             <a href="/import" class="nav-link">
-                <i class="bi bi-file-earmark-spreadsheet"></i> <span>Импорт треков</span>
+                <i class="bi bi-file-earmark-spreadsheet"></i> <span>Загрузка треков</span>
             </a>
             <a href="/import-contacts" class="nav-link">
-                <i class="bi bi-people-fill"></i> <span>Импорт контактов</span>
+                <i class="bi bi-people-fill"></i> <span>Контакты</span>
             </a>
         </nav>
 
         <!-- ===== ШАПКА ===== -->
         <header class="header">
             <div class="header-brand">
-                <div class="logo-icon"><i class="bi bi-headphones"></i></div>
+                <div class="logo-icon"><i class="bi bi-rocket-takeoff"></i></div>
                 <div>
-                    <h1>Music CRM</h1>
-                    <span class="subtitle">Дашборд управления музыкой</span>
+                    <h1>NASA Music</h1>
+                    <span class="subtitle">Space Mission Control · v2.4.1</span>
                 </div>
             </div>
             <div class="header-actions">
                 <div class="badge-status">
-                    <span class="pulse"></span> Система активна
+                    <span class="pulse"></span> Online
                 </div>
-                <span class="user-email" id="userEmail" style="color: var(--text-secondary); font-size: 13px;">user@example.com</span>
-                <button class="btn-outline-glass" onclick="refreshData()">
-                    <i class="bi bi-arrow-clockwise"></i>
+                <span class="user-email" id="userEmail">astronaut@nasa.gov</span>
+                <button class="btn-nasa" onclick="refreshData()">
+                    <i class="bi bi-arrow-clockwise"></i> Sync
                 </button>
-                <button class="btn-danger-outline" onclick="logout()">
-                    <i class="bi bi-box-arrow-right"></i> Выйти
+                <button class="btn-nasa-danger" onclick="logout()">
+                    <i class="bi bi-box-arrow-right"></i> Exit
                 </button>
             </div>
         </header>
@@ -605,38 +828,48 @@
         <!-- ===== СТАТИСТИКА ===== -->
         <div class="stats-grid">
             <div class="stat-card">
-                <div class="icon purple"><i class="bi bi-music-note-beamed"></i></div>
+                <div class="stat-header">
+                    <div class="icon purple"><i class="bi bi-music-note-beamed"></i></div>
+                    <span class="change up">+12%</span>
+                </div>
                 <div class="number" id="statTracks">0</div>
-                <div class="label">Всего треков</div>
-                <div class="change up">↑ 12% за месяц</div>
+                <div class="stat-label">Треков в базе</div>
             </div>
 
             <div class="stat-card">
-                <div class="icon green"><i class="bi bi-people"></i></div>
+                <div class="stat-header">
+                    <div class="icon green"><i class="bi bi-people"></i></div>
+                    <span class="change up">+8%</span>
+                </div>
                 <div class="number" id="statContacts">0</div>
-                <div class="label">Контактов</div>
-                <div class="change up">↑ 8% за месяц</div>
+                <div class="stat-label">Контактов</div>
             </div>
 
             <div class="stat-card">
-                <div class="icon blue"><i class="bi bi-list-ul"></i></div>
+                <div class="stat-header">
+                    <div class="icon blue"><i class="bi bi-list-ul"></i></div>
+                    <span class="change up">+3</span>
+                </div>
                 <div class="number" id="statPlaylists">0</div>
-                <div class="label">Плейлистов</div>
-                <div class="change up">↑ 3 новых</div>
+                <div class="stat-label">Плейлистов</div>
             </div>
 
             <div class="stat-card">
-                <div class="icon orange"><i class="bi bi-send"></i></div>
+                <div class="stat-header">
+                    <div class="icon orange"><i class="bi bi-send"></i></div>
+                    <span class="change up">+156</span>
+                </div>
                 <div class="number" id="statSent">0</div>
-                <div class="label">Отправлено писем</div>
-                <div class="change up">↑ 156 за неделю</div>
+                <div class="stat-label">Отправлено</div>
             </div>
 
             <div class="stat-card">
-                <div class="icon pink"><i class="bi bi-graph-up"></i></div>
+                <div class="stat-header">
+                    <div class="icon pink"><i class="bi bi-graph-up"></i></div>
+                    <span class="change up">+23%</span>
+                </div>
                 <div class="number" id="statPlays">0</div>
-                <div class="label">Всего прослушиваний</div>
-                <div class="change up">↑ 23% за месяц</div>
+                <div class="stat-label">Прослушиваний</div>
             </div>
         </div>
 
@@ -647,8 +880,8 @@
             <div class="col-lg-5">
                 <div class="card-glass">
                     <div class="card-title">
-                        <i class="bi bi-list-ul"></i> Плейлисты по стилям
-                        <span class="badge" style="background: rgba(102,126,234,0.15); color: #a5b4fc; margin-left: auto; font-size: 11px;">6</span>
+                        <i class="bi bi-list-ul"></i> Плейлисты
+                        <span class="badge" style="background: rgba(253,184,19,0.1); color: var(--nasa-gold); margin-left: auto; font-size: 10px; font-family: var(--font-display); letter-spacing: 0.5px;">6</span>
                     </div>
                     <div id="playlistContainer">
                         <div class="playlist-item">
@@ -659,7 +892,7 @@
                                     <div class="count">18 треков</div>
                                 </div>
                             </div>
-                            <span class="status public">Публичный</span>
+                            <span class="status public">Public</span>
                         </div>
 
                         <div class="playlist-item">
@@ -670,7 +903,7 @@
                                     <div class="count">9 треков</div>
                                 </div>
                             </div>
-                            <span class="status public">Публичный</span>
+                            <span class="status public">Public</span>
                         </div>
 
                         <div class="playlist-item">
@@ -681,18 +914,18 @@
                                     <div class="count">4 трека</div>
                                 </div>
                             </div>
-                            <span class="status private">Черновик</span>
+                            <span class="status private">Draft</span>
                         </div>
 
                         <div class="playlist-item">
                             <div class="info">
                                 <div class="color" style="background: #f472b6;"></div>
                                 <div>
-                                    <div class="name">Synthwave Collection</div>
+                                    <div class="name">Synthwave</div>
                                     <div class="count">12 треков</div>
                                 </div>
                             </div>
-                            <span class="status public">Публичный</span>
+                            <span class="status public">Public</span>
                         </div>
 
                         <div class="playlist-item">
@@ -703,7 +936,7 @@
                                     <div class="count">7 треков</div>
                                 </div>
                             </div>
-                            <span class="status private">Черновик</span>
+                            <span class="status private">Draft</span>
                         </div>
 
                         <div class="playlist-item">
@@ -714,7 +947,7 @@
                                     <div class="count">15 треков</div>
                                 </div>
                             </div>
-                            <span class="status public">Публичный</span>
+                            <span class="status public">Public</span>
                         </div>
                     </div>
                 </div>
@@ -725,8 +958,8 @@
                 <div class="card-glass mb-4">
                     <div class="card-title">
                         <i class="bi bi-hdd-stack"></i> Системный статус
-                        <span class="badge" style="background: rgba(52,211,153,0.15); color: #34d399; margin-left: auto; font-size: 11px;">
-                            <i class="bi bi-check-circle"></i> Все системы работают
+                        <span class="badge" style="background: rgba(52,211,153,0.1); color: #34d399; margin-left: auto; font-size: 10px; font-family: var(--font-display); letter-spacing: 0.5px;">
+                            <i class="bi bi-check-circle"></i> All systems go
                         </span>
                     </div>
 
@@ -734,42 +967,42 @@
                         <div class="status-item">
                             <div class="dot green"></div>
                             <div>
-                                <div class="label">База данных</div>
-                                <div class="value">Подключена</div>
+                                <div class="label">Database</div>
+                                <div class="value">Online</div>
                             </div>
                         </div>
                         <div class="status-item">
                             <div class="dot green"></div>
                             <div>
                                 <div class="label">Supabase</div>
-                                <div class="value">Доступен</div>
+                                <div class="value">Available</div>
                             </div>
                         </div>
                         <div class="status-item">
                             <div class="dot green"></div>
                             <div>
-                                <div class="label">SMTP сервер</div>
-                                <div class="value">Готов к отправке</div>
+                                <div class="label">SMTP</div>
+                                <div class="value">Ready</div>
                             </div>
                         </div>
                         <div class="status-item">
                             <div class="dot green"></div>
                             <div>
-                                <div class="label">Хранилище</div>
-                                <div class="value">2.4 GB / 10 GB</div>
+                                <div class="label">Storage</div>
+                                <div class="value">2.4 / 10 GB</div>
                             </div>
                         </div>
                         <div class="status-item">
                             <div class="dot yellow"></div>
                             <div>
-                                <div class="label">Очередь рассылок</div>
-                                <div class="value">3 письма</div>
+                                <div class="label">Queue</div>
+                                <div class="value">3 pending</div>
                             </div>
                         </div>
                         <div class="status-item">
                             <div class="dot green"></div>
                             <div>
-                                <div class="label">Версия</div>
+                                <div class="label">Version</div>
                                 <div class="value">v2.4.1</div>
                             </div>
                         </div>
@@ -783,16 +1016,16 @@
                     </div>
 
                     <div class="d-flex flex-wrap gap-2">
-                        <a href="/import" class="btn-gradient" style="flex: 1; min-width: 120px; text-align: center; padding: 10px 16px; text-decoration: none;">
-                            <i class="bi bi-file-earmark-spreadsheet"></i> Импорт треков
+                        <a href="/import" class="btn-nasa-primary" style="flex: 1; min-width: 120px; text-align: center; padding: 10px 16px; text-decoration: none;">
+                            <i class="bi bi-file-earmark-spreadsheet"></i> Загрузить треки
                         </a>
-                        <a href="/import-contacts" class="btn-gradient" style="flex: 1; min-width: 120px; text-align: center; padding: 10px 16px; text-decoration: none;">
-                            <i class="bi bi-people"></i> Импорт контактов
+                        <a href="/import-contacts" class="btn-nasa-primary" style="flex: 1; min-width: 120px; text-align: center; padding: 10px 16px; text-decoration: none;">
+                            <i class="bi bi-people"></i> Контакты
                         </a>
-                        <a href="#" class="btn-outline-glass" style="flex: 1; min-width: 120px; text-align: center; padding: 10px 16px; text-decoration: none;" onclick="showToast('📧 Рассылка запущена', 'success')">
+                        <a href="#" class="btn-nasa" style="flex: 1; min-width: 120px; text-align: center; padding: 10px 16px; text-decoration: none;" onclick="showToast('🚀 Рассылка запущена', 'success')">
                             <i class="bi bi-send"></i> Рассылка
                         </a>
-                        <a href="#" class="btn-outline-glass" style="flex: 1; min-width: 120px; text-align: center; padding: 10px 16px; text-decoration: none;" onclick="showToast('📊 Отчет сформирован', 'success')">
+                        <a href="#" class="btn-nasa" style="flex: 1; min-width: 120px; text-align: center; padding: 10px 16px; text-decoration: none;" onclick="showToast('📊 Отчет сформирован', 'success')">
                             <i class="bi bi-file-text"></i> Отчет
                         </a>
                     </div>
@@ -800,17 +1033,17 @@
             </div>
         </div>
 
-        <!-- ===== ПОСЛЕДНИЕ ТРЕКИ (ИСПРАВЛЕНО) ===== -->
-        <div class="row g-4 mt-3">
+        <!-- ===== ПОСЛЕДНИЕ ТРЕКИ ===== -->
+        <div class="row mt-4">
             <div class="col-12">
                 <div class="card-glass">
                     <div class="card-title">
-                        <i class="bi bi-clock-history"></i> Последние добавленные треки
-                        <span class="badge" style="background: rgba(102,126,234,0.15); color: #a5b4fc; margin-left: auto; font-size: 11px;">6</span>
+                        <i class="bi bi-clock-history"></i> Последние поступления
+                        <span class="badge" style="background: rgba(253,184,19,0.1); color: var(--nasa-gold); margin-left: auto; font-size: 10px; font-family: var(--font-display); letter-spacing: 0.5px;">5</span>
                     </div>
 
-                    <div style="overflow-x: auto;">
-                        <table class="table">
+                    <div class="table-wrapper">
+                        <table class="table-nasa">
                             <thead>
                                 <tr>
                                     <th style="width: 40px;">#</th>
@@ -868,6 +1101,11 @@
                 </div>
             </div>
         </div>
+
+        <!-- ===== ФУТЕР ===== -->
+        <div class="text-center mt-4" style="font-size: 11px; color: rgba(255,255,255,0.15); font-family: var(--font-display); letter-spacing: 2px; border-top: 1px solid rgba(253,184,19,0.05); padding-top: 20px;">
+            <i class="bi bi-rocket"></i> NASA MUSIC CRM · MISSION CONTROL v2.4.1 · © 2026
+        </div>
     </div>
 
     <!-- ===== TOAST ===== -->
@@ -875,7 +1113,9 @@
         <div id="toastMessage"></div>
     </div>
 
-    <!-- ===== СКРИПТЫ ===== -->
+    <!-- ============================================================
+    СКРИПТЫ
+    ============================================================ -->
     <script>
         // ============================================================
         // 1. SUPABASE
@@ -923,7 +1163,7 @@
             toast.style.display = 'block';
             toast.style.borderLeftColor = type === 'success' ? '#34d399' : 
                                           type === 'error' ? '#f87171' : 
-                                          type === 'warning' ? '#fbbf24' : '#667eea';
+                                          type === 'warning' ? '#fbbf24' : '#fdb813';
             
             clearTimeout(window.toastTimeout);
             window.toastTimeout = setTimeout(() => {
@@ -962,7 +1202,7 @@
         // ============================================================
 
         window.refreshData = function() {
-            showToast('🔄 Обновление...', 'info');
+            showToast('🔄 Синхронизация...', 'info');
             loadStats();
             setTimeout(() => showToast('✅ Данные обновлены', 'success'), 1000);
         };
@@ -974,7 +1214,7 @@
         document.addEventListener('DOMContentLoaded', async function() {
             await checkAuth();
             loadStats();
-            console.log('📊 Дашборд загружен');
+            console.log('🚀 NASA Music CRM загружен');
             
             setInterval(() => loadStats(), 60000);
         });
