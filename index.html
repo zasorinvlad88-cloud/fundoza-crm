@@ -347,7 +347,7 @@
             font-weight: 400;
         }
 
-        /* ===== БЫСТРЫЕ ДЕЙСТВИЯ (НАВЕРХУ) ===== */
+        /* ===== БЫСТРЫЕ ДЕЙСТВИЯ ===== */
         .quick-actions {
             background: var(--vip-surface);
             border: 1px solid var(--vip-border);
@@ -637,51 +637,7 @@
             color: var(--vip-text-secondary);
         }
 
-        /* ===== ВИДЖЕТ ГЛОБАЛЬНОЙ СЕТИ ===== */
-        .network-widget {
-            background: rgba(0, 255, 136, 0.02);
-            border: 1px solid rgba(0, 255, 136, 0.08);
-            border-radius: 8px;
-            padding: 10px 14px;
-            margin-top: 8px;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            flex-wrap: wrap;
-            gap: 8px;
-        }
-
-        .network-widget .label {
-            color: var(--vip-text-secondary);
-            font-size: 10px;
-            font-weight: 400;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-        }
-
-        .network-widget .value {
-            color: var(--vip-lime);
-            font-size: 13px;
-            font-weight: 700;
-        }
-
-        .network-widget .status-dot {
-            width: 6px;
-            height: 6px;
-            border-radius: 50%;
-            background: var(--vip-lime);
-            animation: pulseDot 2s ease-in-out infinite;
-            display: inline-block;
-            margin-right: 6px;
-        }
-
-        .network-widget .source {
-            color: var(--vip-text-dim);
-            font-size: 8px;
-            letter-spacing: 0.5px;
-        }
-
-        /* ===== СЧЁТЧИК РАДИОСИГНАЛА (В СТАТУСЕ СИСТЕМЫ) ===== */
+        /* ===== СЧЁТЧИК РАДИОСИГНАЛА ===== */
         .signal-status-item {
             display: flex;
             align-items: center;
@@ -734,6 +690,50 @@
                 text-align: left;
                 width: 100%;
             }
+        }
+
+        /* ===== ВИДЖЕТ ГЛОБАЛЬНОЙ СЕТИ ===== */
+        .network-widget {
+            background: rgba(0, 255, 136, 0.02);
+            border: 1px solid rgba(0, 255, 136, 0.08);
+            border-radius: 8px;
+            padding: 10px 14px;
+            margin-top: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+
+        .network-widget .label {
+            color: var(--vip-text-secondary);
+            font-size: 10px;
+            font-weight: 400;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .network-widget .value {
+            color: var(--vip-lime);
+            font-size: 13px;
+            font-weight: 700;
+        }
+
+        .network-widget .status-dot {
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background: var(--vip-lime);
+            animation: pulseDot 2s ease-in-out infinite;
+            display: inline-block;
+            margin-right: 6px;
+        }
+
+        .network-widget .source {
+            color: var(--vip-text-dim);
+            font-size: 8px;
+            letter-spacing: 0.5px;
         }
 
         /* ===== ТАБЛИЦА ===== */
@@ -922,7 +922,7 @@
             </div>
         </header>
 
-        <!-- ===== БЫСТРЫЕ ДЕЙСТВИЯ (НАВЕРХУ) ===== -->
+        <!-- ===== БЫСТРЫЕ ДЕЙСТВИЯ ===== -->
         <div class="quick-actions">
             <span class="label"><i class="bi bi-lightning-fill" style="color: var(--vip-lime);"></i> Быстрые действия</span>
             <div class="actions">
@@ -1069,7 +1069,7 @@
                 </div>
             </div>
 
-            <!-- ===== СТАТУС СИСТЕМЫ (СО СЧЁТЧИКОМ РАДИОСИГНАЛА) ===== -->
+            <!-- ===== СТАТУС СИСТЕМЫ ===== -->
             <div class="col-lg-7">
                 <div class="card-vip mb-4">
                     <div class="card-title">
@@ -1160,11 +1160,11 @@
                             </div>
                         </div>
 
-                        <!-- ===== СЧЁТЧИК РАДИОСИГНАЛА (В СТАТУСЕ) ===== -->
+                        <!-- ===== СЧЁТЧИК РАДИОСИГНАЛА ===== -->
                         <div class="signal-status-item">
                             <div class="dot"></div>
                             <div>
-                                <div class="label">📡 Расстояние первого радиосигнала</div>
+                                <div class="label">📡 Первый радиосигнал от Земли</div>
                             </div>
                             <div class="value">
                                 <span id="signalDistance">0</span> <span class="sub">км</span>
