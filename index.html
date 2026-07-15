@@ -1270,377 +1270,382 @@
         <div id="toastMessage"></div>
     </div>
 
-    <!-- ============================================================
-    СКРИПТЫ
-    ============================================================ -->
-    <script>
-        // ============================================================
-        // 1. SUPABASE
-        // ============================================================
+ <script>
+    // ============================================================
+    // 1. SUPABASE
+    // ============================================================
 
-        // ⚠️ ЗАМЕНИТЕ НА СВОИ ДАННЫЕ ⚠️
-        const SUPABASE_URL = 'https://ваш-проект.supabase.co';
-        const SUPABASE_ANON_KEY = 'ваш-anon-ключ';
-        const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+    // ⚠️ ЗАМЕНИТЕ НА СВОИ ДАННЫЕ ⚠️
+    const SUPABASE_URL = 'https://ваш-проект.supabase.co';
+    const SUPABASE_ANON_KEY = 'ваш-anon-ключ';
+    const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
-        // ============================================================
-        // 2. АВТОРИЗАЦИЯ
-        // ============================================================
+    // ============================================================
+    // 2. АВТОРИЗАЦИЯ
+    // ============================================================
 
-        async function checkAuth() {
-            try {
-                const { data: { session } } = await supabase.auth.getSession();
-                if (!session) {
-                    window.location.href = '/login.html';
-                    return;
-                }
-                document.getElementById('userEmail').textContent = session.user.email;
-            } catch (error) {
-                console.error('Ошибка авторизации:', error);
+    async function checkAuth() {
+        try {
+            const { data: { session } } = await supabase.auth.getSession();
+            if (!session) {
                 window.location.href = '/login.html';
+                return;
             }
-        }
-
-        window.logout = async function() {
-            await supabase.auth.signOut();
+            document.getElementById('userEmail').textContent = session.user.email;
+        } catch (error) {
+            console.error('Ошибка авторизации:', error);
             window.location.href = '/login.html';
-        };
-
-        // ============================================================
-        // 3. TOAST
-        // ============================================================
-
-        function showToast(message, type = 'info') {
-            const toast = document.getElementById('toast');
-            const toastMessage = document.getElementById('toastMessage');
-            
-            const icons = { info: '📌', success: '✅', error: '❌', warning: '⚠️' };
-            
-            toastMessage.textContent = `${icons[type] || '📌'} ${message}`;
-            toast.style.display = 'block';
-            toast.style.borderLeftColor = type === 'success' ? '#00ff88' : 
-                                          type === 'error' ? '#ff2244' : 
-                                          type === 'warning' ? '#fbbf24' : '#00ff88';
-            
-            clearTimeout(window.toastTimeout);
-            window.toastTimeout = setTimeout(() => {
-                toast.style.display = 'none';
-            }, 3500);
         }
+    }
 
-        // ============================================================
-        // 4. СТАТИСТИКА CRM
-        // ============================================================
+    window.logout = async function() {
+        await supabase.auth.signOut();
+        window.location.href = '/login.html';
+    };
 
-        async function loadStats() {
-            try {
-                const response = await fetch('/api/stats');
-                const result = await response.json();
-                
-                if (result.success) {
-                    document.getElementById('statTracks').textContent = result.totalTracks || 0;
-                    document.getElementById('statContacts').textContent = result.totalContacts || 0;
-                    document.getElementById('statPlaylists').textContent = result.totalPlaylists || 0;
-                    document.getElementById('statSent').textContent = result.totalMailingsSent || 0;
-                    document.getElementById('statPlays').textContent = result.totalPlays || 0;
-                }
-            } catch (error) {
-                console.error('Ошибка загрузки статистики:', error);
-                document.getElementById('statTracks').textContent = '24';
-                document.getElementById('statContacts').textContent = '156';
-                document.getElementById('statPlaylists').textContent = '6';
-                document.getElementById('statSent').textContent = '342';
-                document.getElementById('statPlays').textContent = '1.2K';
+    // ============================================================
+    // 3. TOAST
+    // ============================================================
+
+    function showToast(message, type = 'info') {
+        const toast = document.getElementById('toast');
+        const toastMessage = document.getElementById('toastMessage');
+        
+        const icons = { info: '📌', success: '✅', error: '❌', warning: '⚠️' };
+        
+        toastMessage.textContent = `${icons[type] || '📌'} ${message}`;
+        toast.style.display = 'block';
+        toast.style.borderLeftColor = type === 'success' ? '#00ff88' : 
+                                      type === 'error' ? '#ff2244' : 
+                                      type === 'warning' ? '#fbbf24' : '#00ff88';
+        
+        clearTimeout(window.toastTimeout);
+        window.toastTimeout = setTimeout(() => {
+            toast.style.display = 'none';
+        }, 3500);
+    }
+
+    // ============================================================
+    // 4. СТАТИСТИКА CRM
+    // ============================================================
+
+    async function loadStats() {
+        try {
+            const response = await fetch('/api/stats');
+            const result = await response.json();
+            
+            if (result.success) {
+                document.getElementById('statTracks').textContent = result.totalTracks || 0;
+                document.getElementById('statContacts').textContent = result.totalContacts || 0;
+                document.getElementById('statPlaylists').textContent = result.totalPlaylists || 0;
+                document.getElementById('statSent').textContent = result.totalMailingsSent || 0;
+                document.getElementById('statPlays').textContent = result.totalPlays || 0;
             }
+        } catch (error) {
+            console.error('Ошибка загрузки статистики:', error);
+            document.getElementById('statTracks').textContent = '24';
+            document.getElementById('statContacts').textContent = '156';
+            document.getElementById('statPlaylists').textContent = '6';
+            document.getElementById('statSent').textContent = '342';
+            document.getElementById('statPlays').textContent = '1.2K';
         }
+    }
 
-        // ============================================================
-        // 5. СТАТУС ГЛОБАЛЬНОЙ СЕТИ (Cloudflare Radar)
-        // ============================================================
+    // ============================================================
+    // 5. СТАТУС ГЛОБАЛЬНОЙ СЕТИ (Cloudflare Radar)
+    // ============================================================
 
-        async function fetchNetworkStatus() {
-            try {
-                const response = await fetch('https://api.cloudflare.com/client/v4/radar/quality/iq?format=json');
+    async function fetchNetworkStatus() {
+        try {
+            const response = await fetch('https://api.cloudflare.com/client/v4/radar/quality/iq?format=json');
+            
+            if (!response.ok) {
+                updateNetworkWidget('🟢 Стабильно', 'данные в реальном времени');
+                return;
+            }
+            
+            const data = await response.json();
+            
+            if (data && data.result) {
+                const quality = data.result.quality || 0;
                 
-                if (!response.ok) {
-                    updateNetworkWidget('🟢 Стабильно', 'данные в реальном времени');
-                    return;
-                }
-                
-                const data = await response.json();
-                
-                if (data && data.result) {
-                    const quality = data.result.quality || 0;
-                    
-                    if (quality > 80) {
-                        updateNetworkWidget('🟢 Отлично', 'глобальная сеть стабильна');
-                    } else if (quality > 50) {
-                        updateNetworkWidget('🟡 Средне', 'возможны задержки');
-                    } else {
-                        updateNetworkWidget('🔴 Нестабильно', 'наблюдаются проблемы');
-                    }
+                if (quality > 80) {
+                    updateNetworkWidget('🟢 Отлично', 'глобальная сеть стабильна');
+                } else if (quality > 50) {
+                    updateNetworkWidget('🟡 Средне', 'возможны задержки');
                 } else {
-                    updateNetworkWidget('🟢 Стабильно', 'данные в реальном времени');
+                    updateNetworkWidget('🔴 Нестабильно', 'наблюдаются проблемы');
                 }
-            } catch (error) {
-                console.warn('Не удалось получить статус сети от Cloudflare Radar:', error);
+            } else {
                 updateNetworkWidget('🟢 Стабильно', 'данные в реальном времени');
             }
+        } catch (error) {
+            console.warn('Не удалось получить статус сети от Cloudflare Radar:', error);
+            updateNetworkWidget('🟢 Стабильно', 'данные в реальном времени');
         }
+    }
 
-        function updateNetworkWidget(status, source) {
-            const el = document.getElementById('networkStatus');
-            if (el) {
-                el.textContent = status;
-            }
-            const sourceEl = document.querySelector('.network-widget .source');
-            if (sourceEl) {
-                sourceEl.textContent = `· Cloudflare Radar · ${source}`;
-            }
+    function updateNetworkWidget(status, source) {
+        const el = document.getElementById('networkStatus');
+        if (el) {
+            el.textContent = status;
         }
+        const sourceEl = document.querySelector('.network-widget .source');
+        if (sourceEl) {
+            sourceEl.textContent = `· Cloudflare Radar · ${source}`;
+        }
+    }
 
-        // ============================================================
-        // 6. СТАТИСТИКА РАДИОСТАНЦИЙ (Radio Browser API)
-        // ============================================================
+    // ============================================================
+    // 6. СТАТИСТИКА РАДИОСТАНЦИЙ (Radio Browser API)
+    // ============================================================
 
-        async function fetchRadioStats() {
-            try {
-                const mirrors = [
-                    'https://de1.api.radio-browser.info',
-                    'https://at1.api.radio-browser.info',
-                    'https://nl1.api.radio-browser.info',
-                    'https://fr1.api.radio-browser.info',
-                    'https://pl1.api.radio-browser.info'
-                ];
-                
-                let stats = null;
-                
-                for (const mirror of mirrors) {
-                    try {
-                        const response = await fetch(`${mirror}/json/stats`, {
-                            headers: {
-                                'User-Agent': 'FUNDOZA-CRM/1.0'
-                            }
-                        });
-                        
-                        if (response.ok) {
-                            stats = await response.json();
-                            break;
+    async function fetchRadioStats() {
+        try {
+            const mirrors = [
+                'https://de1.api.radio-browser.info',
+                'https://at1.api.radio-browser.info',
+                'https://nl1.api.radio-browser.info',
+                'https://fr1.api.radio-browser.info',
+                'https://pl1.api.radio-browser.info'
+            ];
+            
+            let stats = null;
+            
+            for (const mirror of mirrors) {
+                try {
+                    const response = await fetch(`${mirror}/json/stats`, {
+                        headers: {
+                            'User-Agent': 'FUNDOZA-CRM/1.0'
                         }
-                    } catch (e) {
-                        console.warn(`Зеркало ${mirror} недоступно`);
-                        continue;
-                    }
-                }
-                
-                if (stats) {
-                    const stationCount = stats.stations || 0;
-                    const countries = stats.countries || 0;
-                    const timestamp = new Date().toLocaleTimeString('ru-RU', {
-                        hour: '2-digit',
-                        minute: '2-digit'
                     });
                     
-                    animateCounter('stationNumber', stationCount);
-                    document.getElementById('stationUpdateTime').textContent = `обновлено ${timestamp}`;
-                    
-                    if (countries > 0) {
-                        document.getElementById('countryCount').textContent = countries;
+                    if (response.ok) {
+                        stats = await response.json();
+                        break;
                     }
-                    
-                    console.log(`📻 Радиостанций: ${stationCount}, Стран: ${countries}`);
-                } else {
-                    document.getElementById('stationNumber').textContent = '44 000';
-                    document.getElementById('stationUpdateTime').textContent = 
-                        `по данным ЮНЕСКО · ${new Date().toLocaleTimeString('ru-RU', {hour:'2-digit', minute:'2-digit'})}`;
+                } catch (e) {
+                    console.warn(`Зеркало ${mirror} недоступно`);
+                    continue;
                 }
-            } catch (error) {
-                console.warn('Ошибка получения статистики радиостанций:', error);
+            }
+            
+            if (stats) {
+                const stationCount = stats.stations || 0;
+                const countries = stats.countries || 0;
+                const timestamp = new Date().toLocaleTimeString('ru-RU', {
+                    hour: '2-digit',
+                    minute: '2-digit'
+                });
+                
+                animateCounter('stationNumber', stationCount);
+                document.getElementById('stationUpdateTime').textContent = `обновлено ${timestamp}`;
+                
+                if (countries > 0) {
+                    document.getElementById('countryCount').textContent = countries;
+                }
+                
+                console.log(`📻 Радиостанций: ${stationCount}, Стран: ${countries}`);
+            } else {
                 document.getElementById('stationNumber').textContent = '44 000';
                 document.getElementById('stationUpdateTime').textContent = 
                     `по данным ЮНЕСКО · ${new Date().toLocaleTimeString('ru-RU', {hour:'2-digit', minute:'2-digit'})}`;
             }
+        } catch (error) {
+            console.warn('Ошибка получения статистики радиостанций:', error);
+            document.getElementById('stationNumber').textContent = '44 000';
+            document.getElementById('stationUpdateTime').textContent = 
+                `по данным ЮНЕСКО · ${new Date().toLocaleTimeString('ru-RU', {hour:'2-digit', minute:'2-digit'})}`;
         }
+    }
 
-        // ============================================================
-        // 7. СТАТИСТИКА САМОЛЁТОВ В НЕБЕ (OpenSky Network)
-        // ============================================================
+    // ============================================================
+    // 7. СТАТИСТИКА САМОЛЁТОВ В НЕБЕ (OpenSky Network)
+    // ============================================================
 
-        async function fetchPlaneStats() {
-            try {
-                const response = await fetch('https://opensky-network.org/api/states/all', {
-                    headers: {
-                        'User-Agent': 'FUNDOZA-CRM/1.0'
-                    }
+    async function fetchPlaneStats() {
+        try {
+            const response = await fetch('https://opensky-network.org/api/states/all', {
+                headers: {
+                    'User-Agent': 'FUNDOZA-CRM/1.0'
+                }
+            });
+            
+            if (!response.ok) {
+                throw new Error(`HTTP ${response.status}`);
+            }
+            
+            const data = await response.json();
+            
+            if (data && data.states) {
+                const totalPlanes = data.states.length;
+                const timestamp = new Date().toLocaleTimeString('ru-RU', {
+                    hour: '2-digit',
+                    minute: '2-digit',
+                    second: '2-digit'
                 });
                 
-                if (!response.ok) {
-                    throw new Error(`HTTP ${response.status}`);
-                }
+                animateCounter('planeNumber', totalPlanes);
+                document.getElementById('planeUpdateTime').textContent = `обновлено ${timestamp}`;
                 
-                const data = await response.json();
-                
-                if (data && data.states) {
-                    const totalPlanes = data.states.length;
-                    const timestamp = new Date().toLocaleTimeString('ru-RU', {
-                        hour: '2-digit',
-                        minute: '2-digit',
-                        second: '2-digit'
-                    });
-                    
-                    animateCounter('planeNumber', totalPlanes);
-                    document.getElementById('planeUpdateTime').textContent = `обновлено ${timestamp}`;
-                    
-                    console.log(`🛩️ Самолётов в небе: ${totalPlanes}`);
-                } else {
-                    throw new Error('Нет данных от OpenSky');
-                }
-            } catch (error) {
-                console.warn('Ошибка получения данных о самолётах:', error);
-                const fallbackNumber = Math.floor(Math.random() * 5000) + 11000;
-                document.getElementById('planeNumber').textContent = fallbackNumber;
-                document.getElementById('planeUpdateTime').textContent = 
-                    `по оценке · ${new Date().toLocaleTimeString('ru-RU', {hour:'2-digit', minute:'2-digit'})}`;
+                console.log(`🛩️ Самолётов в небе: ${totalPlanes}`);
+            } else {
+                throw new Error('Нет данных от OpenSky');
             }
+        } catch (error) {
+            console.warn('Ошибка получения данных о самолётах:', error);
+            const fallbackNumber = Math.floor(Math.random() * 5000) + 11000;
+            document.getElementById('planeNumber').textContent = fallbackNumber;
+            document.getElementById('planeUpdateTime').textContent = 
+                `по оценке · ${new Date().toLocaleTimeString('ru-RU', {hour:'2-digit', minute:'2-digit'})}`;
         }
+    }
 
-        // ============================================================
-        // 8. АНИМАЦИЯ СЧЁТЧИКА
-        // ============================================================
+    // ============================================================
+    // 8. АНИМАЦИЯ СЧЁТЧИКА
+    // ============================================================
 
-        function animateCounter(elementId, targetValue) {
-            const el = document.getElementById(elementId);
-            if (!el) return;
-            
-            const start = parseInt(el.textContent.replace(/\s/g, '')) || 0;
-            const duration = 1500;
-            const startTime = performance.now();
-            
-            const formatNumber = (num) => {
-                return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ' ');
-            };
-            
-            function updateCounter(currentTime) {
-                const elapsed = currentTime - startTime;
-                const progress = Math.min(elapsed / duration, 1);
-                const eased = 1 - Math.pow(1 - progress, 3);
-                const current = Math.round(start + (targetValue - start) * eased);
-                
-                el.textContent = formatNumber(current);
-                
-                if (progress < 1) {
-                    requestAnimationFrame(updateCounter);
-                } else {
-                    el.textContent = formatNumber(targetValue);
-                }
-            }
-            
-            requestAnimationFrame(updateCounter);
-        }
-
-        // ============================================================
-        // 9. СЧЁТЧИК РАССТОЯНИЯ РАДИОСИГНАЛА
-        // ============================================================
-
-        // Дата старта: 7 мая 1895 года — первая демонстрация радио А.С. Поповым
-        const SIGNAL_START = new Date('1895-05-07T00:00:00Z');
-
-        function formatNumberWithSpaces(num) {
-            return Math.round(num).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ' ');
-        }
-
-        function padZero(num) {
-            return num.toString().padStart(2, '0');
-        }
-
-        function updateSignalCounter() {
-            const now = new Date();
-            const elapsedMs = now - SIGNAL_START;
-            
-            if (elapsedMs < 0) {
-                document.getElementById('signalDistance').textContent = '0';
-                document.getElementById('signalTime').textContent = '--:--:--';
-                return;
-            }
-            
-            // Расчёт времени в пути
-            const totalSeconds = Math.floor(elapsedMs / 1000);
-            const hours = Math.floor(totalSeconds / 3600);
-            const minutes = Math.floor((totalSeconds % 3600) / 60);
-            const seconds = totalSeconds % 60;
-            document.getElementById('signalTime').textContent = 
-                `${padZero(hours)}:${padZero(minutes)}:${padZero(seconds)}`;
-            
-            // Расчёт расстояния в километрах
-            const speedKmPerSec = 299792.458;
-            const distanceKm = (elapsedMs / 1000) * speedKmPerSec;
-            document.getElementById('signalDistance').textContent = formatNumberWithSpaces(distanceKm);
-        }
-
-        let signalInterval = null;
-
-        function startSignalCounter() {
-            updateSignalCounter();
-            if (signalInterval) clearInterval(signalInterval);
-            signalInterval = setInterval(updateSignalCounter, 1000);
-        }
-
-        function stopSignalCounter() {
-            if (signalInterval) {
-                clearInterval(signalInterval);
-                signalInterval = null;
-            }
-        }
-
-        // ============================================================
-        // 10. ОБНОВЛЕНИЕ ДАННЫХ
-        // ============================================================
-
-        window.refreshData = function() {
-            showToast('🔄 Синхронизация...', 'info');
-            loadStats();
-            fetchNetworkStatus();
-            fetchRadioStats();
-            fetchPlaneStats();
-            setTimeout(() => showToast('✅ Данные обновлены', 'success'), 1000);
+    function animateCounter(elementId, targetValue) {
+        const el = document.getElementById(elementId);
+        if (!el) return;
+        
+        const start = parseInt(el.textContent.replace(/\s/g, '')) || 0;
+        const duration = 1500;
+        const startTime = performance.now();
+        
+        const formatNumber = (num) => {
+            return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ' ');
         };
+        
+        function updateCounter(currentTime) {
+            const elapsed = currentTime - startTime;
+            const progress = Math.min(elapsed / duration, 1);
+            const eased = 1 - Math.pow(1 - progress, 3);
+            const current = Math.round(start + (targetValue - start) * eased);
+            
+            el.textContent = formatNumber(current);
+            
+            if (progress < 1) {
+                requestAnimationFrame(updateCounter);
+            } else {
+                el.textContent = formatNumber(targetValue);
+            }
+        }
+        
+        requestAnimationFrame(updateCounter);
+    }
 
-        // ============================================================
-        // 11. ИНИЦИАЛИЗАЦИЯ
-        // ============================================================
+    // ============================================================
+    // 9. СЧЁТЧИК РАССТОЯНИЯ РАДИОСИГНАЛА (ИСПРАВЛЕННЫЙ)
+    // ============================================================
 
-        document.addEventListener('DOMContentLoaded', async function() {
-            await checkAuth();
+    // Дата старта: 7 мая 1895 года — первая демонстрация радио А.С. Поповым
+    const SIGNAL_START = new Date(1895, 4, 7, 0, 0, 0);
+
+    function formatNumberWithSpaces(num) {
+        return Math.round(num).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ' ');
+    }
+
+    function padZero(num) {
+        return num.toString().padStart(2, '0');
+    }
+
+    function updateSignalCounter() {
+        const now = new Date();
+        const elapsedMs = now.getTime() - SIGNAL_START.getTime();
+        
+        if (elapsedMs < 0) {
+            document.getElementById('signalDistance').textContent = '0';
+            document.getElementById('signalTime').textContent = '--:--:--';
+            return;
+        }
+        
+        // Расчёт времени в пути
+        const totalSeconds = Math.floor(elapsedMs / 1000);
+        const hours = Math.floor(totalSeconds / 3600);
+        const minutes = Math.floor((totalSeconds % 3600) / 60);
+        const seconds = totalSeconds % 60;
+        
+        document.getElementById('signalTime').textContent = 
+            `${padZero(hours)}:${padZero(minutes)}:${padZero(seconds)}`;
+        
+        // Расчёт расстояния в километрах
+        const speedKmPerSec = 299792.458;
+        const distanceKm = (elapsedMs / 1000) * speedKmPerSec;
+        document.getElementById('signalDistance').textContent = formatNumberWithSpaces(distanceKm);
+    }
+
+    let signalInterval = null;
+
+    function startSignalCounter() {
+        // Проверяем, есть ли элементы
+        if (!document.getElementById('signalDistance') || !document.getElementById('signalTime')) {
+            console.error('❌ Элементы счётчика не найдены');
+            return;
+        }
+        
+        updateSignalCounter();
+        if (signalInterval) clearInterval(signalInterval);
+        signalInterval = setInterval(updateSignalCounter, 1000);
+        console.log('✅ Счётчик радиосигнала запущен');
+    }
+
+    function stopSignalCounter() {
+        if (signalInterval) {
+            clearInterval(signalInterval);
+            signalInterval = null;
+        }
+    }
+
+    // ============================================================
+    // 10. ОБНОВЛЕНИЕ ДАННЫХ
+    // ============================================================
+
+    window.refreshData = function() {
+        showToast('🔄 Синхронизация...', 'info');
+        loadStats();
+        fetchNetworkStatus();
+        fetchRadioStats();
+        fetchPlaneStats();
+        setTimeout(() => showToast('✅ Данные обновлены', 'success'), 1000);
+    };
+
+    // ============================================================
+    // 11. ИНИЦИАЛИЗАЦИЯ
+    // ============================================================
+
+    document.addEventListener('DOMContentLoaded', async function() {
+        await checkAuth();
+        loadStats();
+        fetchNetworkStatus();
+        fetchRadioStats();
+        fetchPlaneStats();
+        startSignalCounter();
+        console.log('🎛️ FUNDOZA Music CRM — VIP EXPERT EDITION загружена');
+        
+        // Анимация счётчика стран
+        const countryEl = document.getElementById('countryCount');
+        if (countryEl) {
+            let count = 0;
+            const target = 195;
+            const interval = setInterval(() => {
+                count += Math.ceil(target / 35);
+                if (count >= target) {
+                    count = target;
+                    clearInterval(interval);
+                }
+                countryEl.textContent = count;
+            }, 50);
+        }
+        
+        // Обновление данных каждые 60 секунд
+        setInterval(() => {
             loadStats();
             fetchNetworkStatus();
             fetchRadioStats();
             fetchPlaneStats();
-            startSignalCounter();
-            console.log('🎛️ FUNDOZA Music CRM — VIP EXPERT EDITION загружена');
-            
-            // Анимация счётчика стран (195 стран ООН)
-            const countryEl = document.getElementById('countryCount');
-            if (countryEl) {
-                let count = 0;
-                const target = 195;
-                const interval = setInterval(() => {
-                    count += Math.ceil(target / 35);
-                    if (count >= target) {
-                        count = target;
-                        clearInterval(interval);
-                    }
-                    countryEl.textContent = count;
-                }, 50);
-            }
-            
-            // Обновляем все данные каждые 60 секунд
-            setInterval(() => {
-                loadStats();
-                fetchNetworkStatus();
-                fetchRadioStats();
-                fetchPlaneStats();
-            }, 60000);
-        });
-    </script>
+        }, 60000);
+    });
+</script>
 </body>
 </html>
