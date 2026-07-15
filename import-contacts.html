@@ -5,12 +5,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>📇 Импорт контактов — Music CRM</title>
     
-    <!-- Bootstrap 5 -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" />
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" />
     
-    <!-- XLSX -->
+    <!-- Supabase Auth -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
+    
     <style>
         :root {
             --primary-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
@@ -19,7 +20,6 @@
             --danger-gradient: linear-gradient(135deg, #f87171 0%, #dc2626 100%);
             --bg-dark: #0f0e17;
             --bg-card: #1a1a2e;
-            --bg-card-hover: #16213e;
             --text-primary: #fffffe;
             --text-secondary: #a7a9be;
             --text-muted: #6b7280;
@@ -64,47 +64,96 @@
         .main-container {
             position: relative;
             z-index: 1;
-            max-width: 1400px;
+            max-width: 1440px;
             margin: 0 auto;
         }
 
-        /* ШАПКА */
+        /* ===== МЕНЮ ===== */
+        .nav-menu {
+            display: flex;
+            gap: 8px;
+            background: rgba(26, 26, 46, 0.6);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 16px;
+            padding: 6px;
+            margin-bottom: 24px;
+            overflow-x: auto;
+            flex-wrap: nowrap;
+        }
+
+        .nav-link {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 10px 20px;
+            border-radius: 12px;
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            white-space: nowrap;
+        }
+
+        .nav-link:hover {
+            background: rgba(255, 255, 255, 0.05);
+            color: var(--text-primary);
+            text-decoration: none;
+        }
+
+        .nav-link.active {
+            background: var(--primary-gradient);
+            color: white;
+            box-shadow: 0 4px 16px rgba(102, 126, 234, 0.3);
+        }
+
+        .nav-link i { font-size: 18px; }
+
+        @media (max-width: 768px) {
+            .nav-link { font-size: 12px; padding: 8px 14px; }
+            .nav-link i { font-size: 14px; }
+            .nav-link span { display: none; }
+        }
+
+        /* ===== ШАПКА ===== */
         .header {
             background: rgba(26, 26, 46, 0.8);
             backdrop-filter: blur(20px);
             -webkit-backdrop-filter: blur(20px);
             border: 1px solid rgba(255, 255, 255, 0.05);
             border-radius: 24px;
-            padding: 20px 32px;
-            margin-bottom: 32px;
+            padding: 16px 28px;
+            margin-bottom: 24px;
             display: flex;
             justify-content: space-between;
             align-items: center;
             flex-wrap: wrap;
-            gap: 16px;
+            gap: 12px;
             box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
         }
 
         .header-brand {
             display: flex;
             align-items: center;
-            gap: 16px;
+            gap: 14px;
         }
 
         .header-brand .logo-icon {
-            width: 48px;
-            height: 48px;
+            width: 42px;
+            height: 42px;
             background: var(--primary-gradient);
-            border-radius: 14px;
+            border-radius: 12px;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 24px;
+            font-size: 20px;
             box-shadow: 0 4px 20px rgba(102, 126, 234, 0.3);
         }
 
         .header-brand h1 {
-            font-size: 24px;
+            font-size: 20px;
             font-weight: 700;
             background: var(--primary-gradient);
             -webkit-background-clip: text;
@@ -115,22 +164,23 @@
         }
 
         .header-brand .subtitle {
-            font-size: 13px;
+            font-size: 12px;
             color: var(--text-secondary);
         }
 
         .header-actions {
             display: flex;
-            gap: 12px;
+            gap: 10px;
             flex-wrap: wrap;
+            align-items: center;
         }
 
         .badge-status {
             background: rgba(16, 185, 129, 0.15);
             color: #34d399;
-            padding: 8px 16px;
+            padding: 6px 14px;
             border-radius: 40px;
-            font-size: 13px;
+            font-size: 12px;
             border: 1px solid rgba(52, 211, 153, 0.2);
             display: flex;
             align-items: center;
@@ -138,8 +188,8 @@
         }
 
         .badge-status .pulse {
-            width: 8px;
-            height: 8px;
+            width: 6px;
+            height: 6px;
             background: #34d399;
             border-radius: 50%;
             animation: pulse 2s ease-in-out infinite;
@@ -151,54 +201,42 @@
             50% { opacity: 0.5; transform: scale(0.8); }
         }
 
-        /* КАРТОЧКИ */
-        .card-glass {
-            background: rgba(26, 26, 46, 0.7);
-            backdrop-filter: blur(10px);
-            -webkit-backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 255, 255, 0.06);
-            border-radius: 20px;
-            padding: 28px;
+        .btn-outline-glass {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            color: var(--text-secondary);
+            padding: 6px 16px;
+            border-radius: 10px;
+            font-weight: 500;
             transition: all 0.3s ease;
-            box-shadow: 0 4px 24px rgba(0, 0, 0, 0.2);
+            text-decoration: none;
+            font-size: 13px;
         }
 
-        .card-glass:hover {
-            border-color: rgba(102, 126, 234, 0.2);
-            box-shadow: 0 8px 40px rgba(0, 0, 0, 0.3);
-        }
-
-        .card-title {
-            font-size: 18px;
-            font-weight: 600;
-            margin-bottom: 24px;
-            display: flex;
-            align-items: center;
-            gap: 12px;
+        .btn-outline-glass:hover {
+            background: rgba(255, 255, 255, 0.1);
+            border-color: rgba(255, 255, 255, 0.2);
             color: var(--text-primary);
+            text-decoration: none;
         }
 
-        .card-title i {
-            color: #667eea;
-            font-size: 22px;
-        }
-
-        /* КНОПКИ */
         .btn-gradient {
             background: var(--primary-gradient);
             border: none;
             color: white;
-            padding: 10px 24px;
-            border-radius: 12px;
+            padding: 6px 16px;
+            border-radius: 10px;
             font-weight: 600;
             transition: all 0.3s ease;
-            box-shadow: 0 4px 16px rgba(102, 126, 234, 0.3);
+            font-size: 13px;
+            text-decoration: none;
         }
 
         .btn-gradient:hover {
             transform: translateY(-2px);
             box-shadow: 0 8px 32px rgba(102, 126, 234, 0.4);
             color: white;
+            text-decoration: none;
         }
 
         .btn-success {
@@ -209,7 +247,6 @@
             border-radius: 12px;
             font-weight: 600;
             transition: all 0.3s ease;
-            box-shadow: 0 4px 16px rgba(52, 211, 153, 0.3);
         }
 
         .btn-success:hover {
@@ -218,63 +255,65 @@
             color: white;
         }
 
-        .btn-danger {
-            background: var(--danger-gradient);
-            border: none;
-            color: white;
-            padding: 10px 24px;
-            border-radius: 12px;
-            font-weight: 600;
-            transition: all 0.3s ease;
-        }
-
-        .btn-danger:hover {
-            transform: translateY(-2px);
-            color: white;
-        }
-
-        .btn-outline-glass {
-            background: rgba(255, 255, 255, 0.05);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            color: var(--text-secondary);
-            padding: 10px 24px;
-            border-radius: 12px;
+        .btn-danger-outline {
+            background: rgba(248, 113, 113, 0.1);
+            border: 1px solid rgba(248, 113, 113, 0.2);
+            color: #f87171;
+            padding: 6px 16px;
+            border-radius: 10px;
             font-weight: 500;
             transition: all 0.3s ease;
+            font-size: 13px;
         }
 
-        .btn-outline-glass:hover {
-            background: rgba(255, 255, 255, 0.1);
-            border-color: rgba(255, 255, 255, 0.2);
+        .btn-danger-outline:hover {
+            background: rgba(248, 113, 113, 0.2);
+            border-color: rgba(248, 113, 113, 0.3);
+            color: #fca5a5;
+        }
+
+        /* ===== КАРТОЧКИ ===== */
+        .card-glass {
+            background: rgba(26, 26, 46, 0.7);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            border-radius: 20px;
+            padding: 24px;
+            transition: all 0.3s ease;
+            height: 100%;
+        }
+
+        .card-glass:hover {
+            border-color: rgba(102, 126, 234, 0.2);
+            box-shadow: 0 8px 40px rgba(0, 0, 0, 0.3);
+        }
+
+        .card-title {
+            font-size: 16px;
+            font-weight: 600;
+            margin-bottom: 16px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
             color: var(--text-primary);
         }
 
-        .btn-outline-success {
-            background: rgba(52, 211, 153, 0.1);
-            border: 1px solid rgba(52, 211, 153, 0.2);
-            color: #34d399;
-            padding: 10px 24px;
-            border-radius: 12px;
-            font-weight: 500;
-            transition: all 0.3s ease;
+        .card-title i {
+            color: #667eea;
+            font-size: 20px;
         }
 
-        .btn-outline-success:hover {
-            background: rgba(52, 211, 153, 0.2);
-            border-color: rgba(52, 211, 153, 0.3);
-            color: #6ee7b7;
-        }
-
-        /* ЗОНА ЗАГРУЗКИ */
+        /* ===== UPLOAD ZONE ===== */
         .upload-zone {
             border: 2px dashed rgba(255, 255, 255, 0.1);
             border-radius: 16px;
-            padding: 50px 20px;
+            padding: 40px 20px;
             text-align: center;
             transition: all 0.3s ease;
             background: rgba(255, 255, 255, 0.02);
             cursor: pointer;
-            margin-bottom: 24px;
+            margin-bottom: 20px;
         }
 
         .upload-zone:hover {
@@ -289,7 +328,7 @@
         }
 
         .upload-zone i {
-            font-size: 56px;
+            font-size: 48px;
             color: #667eea;
             margin-bottom: 12px;
             display: block;
@@ -297,130 +336,18 @@
 
         .upload-zone .text {
             color: var(--text-secondary);
-            font-size: 15px;
+            font-size: 14px;
         }
 
         .upload-zone .text strong {
             color: var(--text-primary);
         }
 
-        .upload-progress {
-            height: 4px;
-            background: rgba(255, 255, 255, 0.05);
-            border-radius: 4px;
-            margin-top: 16px;
-            overflow: hidden;
-            display: none;
-        }
-
-        .upload-progress .progress-bar {
-            height: 100%;
-            background: var(--primary-gradient);
-            width: 0%;
-            transition: width 0.3s ease;
-        }
-
-        /* ФОРМЫ */
-        .form-control-glass {
-            background: rgba(255, 255, 255, 0.05);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            color: var(--text-primary);
-            border-radius: 12px;
-            padding: 12px 16px;
-        }
-
-        .form-control-glass:focus {
-            background: rgba(255, 255, 255, 0.08);
-            border-color: #667eea;
-            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
-            color: var(--text-primary);
-        }
-
-        .form-control-glass::placeholder {
-            color: var(--text-muted);
-        }
-
-        .form-select-glass {
-            background: rgba(255, 255, 255, 0.05);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 12px;
-            color: var(--text-primary);
-            padding: 12px 16px;
-            transition: all 0.3s ease;
-            cursor: pointer;
-        }
-
-        .form-select-glass:focus {
-            background: rgba(255, 255, 255, 0.08);
-            border-color: #667eea;
-            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
-            color: var(--text-primary);
-        }
-
-        .form-select-glass option {
-            background: #1a1a2e;
-            color: var(--text-primary);
-        }
-
-        /* ТАБЛИЦА */
-        .table-container {
-            max-height: 400px;
-            overflow-y: auto;
-            margin-top: 16px;
-        }
-
-        .table-container table {
-            width: 100%;
-            border-collapse: collapse;
-        }
-
-        .table-container th {
-            position: sticky;
-            top: 0;
-            background: #1a1a2e;
-            color: var(--text-secondary);
-            font-weight: 600;
-            padding: 12px;
-            border-bottom: 2px solid rgba(255, 255, 255, 0.05);
-            text-align: left;
-        }
-
-        .table-container td {
-            padding: 10px 12px;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.04);
-        }
-
-        .table-container tr:hover {
-            background: rgba(255, 255, 255, 0.02);
-        }
-
-        .table-container .status-badge {
-            padding: 4px 14px;
-            border-radius: 40px;
-            font-size: 12px;
-            font-weight: 500;
-        }
-
-        .status-badge.success {
-            background: rgba(52, 211, 153, 0.15);
-            color: #34d399;
-        }
-
-        .status-badge.pending {
-            background: rgba(251, 191, 36, 0.15);
-            color: #fbbf24;
-        }
-
-        .status-badge.error {
-            background: rgba(248, 113, 113, 0.15);
-            color: #f87171;
-        }
-
-        /* СТАТИСТИКА */
+        /* ===== СТАТИСТИКА ===== */
         .stats-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-            gap: 16px;
+            grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+            gap: 12px;
             margin: 16px 0;
         }
 
@@ -430,12 +357,12 @@
             -webkit-backdrop-filter: blur(10px);
             border: 1px solid rgba(255, 255, 255, 0.06);
             border-radius: 12px;
-            padding: 16px;
+            padding: 14px;
             text-align: center;
         }
 
         .stats-card .number {
-            font-size: 28px;
+            font-size: 24px;
             font-weight: 700;
             background: var(--primary-gradient);
             -webkit-background-clip: text;
@@ -446,69 +373,51 @@
 
         .stats-card .label {
             color: var(--text-secondary);
-            font-size: 13px;
-            margin-top: 4px;
-        }
-
-        .stats-card .change {
             font-size: 12px;
-            padding: 2px 10px;
-            border-radius: 20px;
-            display: inline-block;
-            margin-top: 6px;
+            margin-top: 2px;
         }
 
-        .stats-card .change.up {
-            background: rgba(52, 211, 153, 0.15);
-            color: #34d399;
+        /* ===== ТАБЛИЦА ===== */
+        .table-container {
+            max-height: 400px;
+            overflow-y: auto;
+            margin-top: 12px;
         }
 
-        .stats-card .change.down {
-            background: rgba(248, 113, 113, 0.15);
-            color: #f87171;
+        .table-container table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 13px;
         }
 
-        /* КОНТАКТЫ СПИСОК */
-        .contact-item {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 10px 12px;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        .table-container th {
+            position: sticky;
+            top: 0;
+            background: #1a1a2e;
+            color: var(--text-secondary);
+            font-weight: 600;
+            padding: 10px 8px;
+            border-bottom: 2px solid rgba(255, 255, 255, 0.05);
+            text-align: left;
+            font-size: 12px;
+            white-space: nowrap;
         }
 
-        .contact-item:hover {
+        .table-container td {
+            padding: 8px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+            font-size: 12px;
+            max-width: 150px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+
+        .table-container tr:hover td {
             background: rgba(255, 255, 255, 0.02);
         }
 
-        .contact-item .info {
-            display: flex;
-            flex-direction: column;
-            gap: 2px;
-        }
-
-        .contact-item .info .email {
-            color: var(--text-primary);
-            font-weight: 500;
-        }
-
-        .contact-item .info .phone {
-            color: var(--text-secondary);
-            font-size: 13px;
-        }
-
-        .contact-item .actions {
-            display: flex;
-            gap: 8px;
-        }
-
-        .contact-item .actions .btn-sm {
-            padding: 4px 10px;
-            font-size: 12px;
-            border-radius: 8px;
-        }
-
-        /* ТОСТ */
+        /* ===== TOAST ===== */
         #toast {
             position: fixed;
             bottom: 30px;
@@ -518,7 +427,7 @@
             -webkit-backdrop-filter: blur(20px);
             border: 1px solid rgba(255,255,255,0.1);
             border-radius: 16px;
-            padding: 16px 24px;
+            padding: 14px 22px;
             color: white;
             box-shadow: 0 20px 60px rgba(0,0,0,0.6);
             display: none;
@@ -528,76 +437,37 @@
             border-left: 4px solid #667eea;
         }
 
-        /* СЕЛЕКТОР ТРЕКОВ */
-        .track-selector {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 8px;
-            margin: 12px 0;
-        }
-
-        .track-chip {
-            background: rgba(255, 255, 255, 0.05);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 40px;
-            padding: 6px 16px;
-            font-size: 13px;
-            color: var(--text-secondary);
-            cursor: pointer;
-            transition: all 0.3s ease;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-
-        .track-chip:hover {
-            background: rgba(102, 126, 234, 0.1);
-            border-color: #667eea;
-        }
-
-        .track-chip.active {
-            background: rgba(102, 126, 234, 0.2);
-            border-color: #667eea;
-            color: #a5b4fc;
-        }
-
-        .track-chip .badge-count {
-            background: rgba(255, 255, 255, 0.1);
-            border-radius: 40px;
-            padding: 0 8px;
-            font-size: 11px;
-        }
-
-        /* МОДАЛКА */
-        .modal-glass {
-            background: rgba(26, 26, 46, 0.95);
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-        }
-
-        .modal-glass .modal-header {
-            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
-        }
-
-        .modal-glass .modal-footer {
-            border-top: 1px solid rgba(255, 255, 255, 0.05);
-        }
-
-        /* АДАПТИВНОСТЬ */
+        /* ===== АДАПТИВНОСТЬ ===== */
         @media (max-width: 768px) {
             .header {
                 flex-direction: column;
                 align-items: flex-start;
                 padding: 16px 20px;
             }
-            .header-actions { width: 100%; justify-content: stretch; }
-            .header-actions .btn { flex: 1; justify-content: center; font-size: 13px; }
+            .header-actions {
+                width: 100%;
+                justify-content: stretch;
+                flex-wrap: wrap;
+            }
+            .header-actions .btn {
+                flex: 1;
+                justify-content: center;
+                font-size: 12px;
+                padding: 6px 12px;
+                min-width: 60px;
+            }
             .card-glass { padding: 16px; }
             .upload-zone { padding: 24px 16px; }
+            .upload-zone i { font-size: 32px; }
             .stats-grid { grid-template-columns: repeat(2, 1fr); }
-            .track-selector { gap: 6px; }
-            .track-chip { font-size: 12px; padding: 4px 12px; }
+            .table-container { max-height: 300px; }
+            .table-container table { font-size: 11px; }
+            .table-container th, .table-container td { padding: 6px 4px; }
+        }
+
+        @media (max-width: 480px) {
+            .stats-grid { grid-template-columns: 1fr 1fr; }
+            .table-container table { font-size: 10px; }
         }
 
         .fade-in {
@@ -609,7 +479,7 @@
             to { opacity: 1; transform: translateY(0); }
         }
 
-        ::-webkit-scrollbar { width: 8px; height: 8px; }
+        ::-webkit-scrollbar { width: 6px; height: 6px; }
         ::-webkit-scrollbar-track { background: rgba(255, 255, 255, 0.02); border-radius: 10px; }
         ::-webkit-scrollbar-thumb { background: rgba(102, 126, 234, 0.3); border-radius: 10px; }
         ::-webkit-scrollbar-thumb:hover { background: rgba(102, 126, 234, 0.5); }
@@ -621,7 +491,20 @@
 
     <div class="main-container fade-in">
         
-        <!-- ШАПКА -->
+        <!-- ===== МЕНЮ ===== -->
+        <nav class="nav-menu">
+            <a href="/" class="nav-link">
+                <i class="bi bi-grid-1x2-fill"></i> <span>Дашборд</span>
+            </a>
+            <a href="/import" class="nav-link">
+                <i class="bi bi-file-earmark-spreadsheet"></i> <span>Импорт треков</span>
+            </a>
+            <a href="/import-contacts" class="nav-link active">
+                <i class="bi bi-people-fill"></i> <span>Импорт контактов</span>
+            </a>
+        </nav>
+
+        <!-- ===== ШАПКА ===== -->
         <header class="header">
             <div class="header-brand">
                 <div class="logo-icon"><i class="bi bi-people"></i></div>
@@ -632,9 +515,15 @@
             </div>
             <div class="header-actions">
                 <div class="badge-status">
-                    <span class="pulse"></span> Система активна
+                    <span class="pulse"></span> Готов к импорту
                 </div>
-                <a href="/" class="btn btn-outline-glass">
+                <button class="btn-outline-glass" onclick="loadFromCache()" title="Восстановить из кэша">
+                    <i class="bi bi-arrow-counterclockwise"></i>
+                </button>
+                <button class="btn-outline-glass" onclick="clearCache()" title="Очистить кэш">
+                    <i class="bi bi-trash3"></i>
+                </button>
+                <a href="/" class="btn-outline-glass">
                     <i class="bi bi-arrow-left"></i> На главную
                 </a>
             </div>
@@ -642,12 +531,14 @@
 
         <div class="row g-4">
             
-            <!-- ЛЕВАЯ КОЛОНКА: ЗАГРУЗКА -->
-            <div class="col-lg-7">
+            <!-- ===== ЛЕВАЯ КОЛОНКА: ЗАГРУЗКА ===== -->
+            <div class="col-lg-8">
                 <div class="card-glass">
                     <div class="card-title">
-                        <i class="bi bi-file-spreadsheet"></i>
-                        Загрузка контактов из Excel
+                        <i class="bi bi-file-spreadsheet"></i> Загрузка контактов из Excel
+                        <span class="badge" style="background: rgba(102,126,234,0.15); color: #a5b4fc; margin-left: auto; font-size: 11px;">
+                            <i class="bi bi-database"></i> Кэш активен
+                        </span>
                     </div>
 
                     <!-- Зона загрузки -->
@@ -658,19 +549,19 @@
                             <small style="color: rgba(255,255,255,0.3);">Поддерживаются: .xlsx, .xls, .csv</small>
                         </div>
                         <input type="file" id="fileInput" accept=".xlsx,.xls,.csv" style="display:none;" />
-                        <div class="upload-progress" id="uploadProgress">
-                            <div class="progress-bar" id="progressBar"></div>
-                        </div>
                     </div>
 
                     <!-- Информация о файле -->
-                    <div class="file-info" id="fileInfo" style="display: none; background: rgba(102,126,234,0.08); border: 1px solid rgba(102,126,234,0.15); border-radius: 12px; padding: 12px 16px; margin-top: 12px;">
+                    <div class="file-info" id="fileInfo" style="display: none; background: rgba(102,126,234,0.08); border: 1px solid rgba(102,126,234,0.15); border-radius: 12px; padding: 12px 16px; margin-bottom: 12px;">
                         <div class="d-flex justify-content-between align-items-center">
                             <div>
                                 <span class="name" id="fileName" style="color: var(--text-primary); font-weight: 500;">file.xlsx</span>
                                 <span class="size" id="fileSize" style="color: var(--text-secondary); font-size: 13px;">0 KB</span>
+                                <span class="cached-badge" id="cachedBadge" style="background: rgba(251,191,36,0.15); color: #fbbf24; padding: 2px 10px; border-radius: 40px; font-size: 11px; margin-left: 8px; display: none;">
+                                    <i class="bi bi-database"></i> из кэша
+                                </span>
                             </div>
-                            <button class="btn btn-sm btn-danger" onclick="clearFile()">
+                            <button class="btn-danger-outline btn-sm" onclick="clearFile()">
                                 <i class="bi bi-x"></i> Очистить
                             </button>
                         </div>
@@ -687,6 +578,10 @@
                             <div class="label">Валидных</div>
                         </div>
                         <div class="stats-card">
+                            <div class="number" id="statColumns">0</div>
+                            <div class="label">Колонок</div>
+                        </div>
+                        <div class="stats-card">
                             <div class="number" id="statDuplicates">0</div>
                             <div class="label">Дубликатов</div>
                         </div>
@@ -694,7 +589,7 @@
 
                     <!-- Предпросмотр -->
                     <div id="previewSection" style="display: none;">
-                        <h5 class="mt-3 mb-3" style="color: var(--text-secondary);">
+                        <h5 class="mt-3 mb-2" style="color: var(--text-secondary); font-size: 14px;">
                             <i class="bi bi-eye"></i> Предпросмотр контактов
                         </h5>
                         <div class="table-container" id="previewContainer"></div>
@@ -705,108 +600,109 @@
                         <button class="btn btn-success" onclick="importContacts()">
                             <i class="bi bi-check2-circle"></i> Импортировать контакты
                         </button>
-                        <button class="btn btn-outline-glass" onclick="previewData()">
-                            <i class="bi bi-eye"></i> Полный предпросмотр
+                        <button class="btn-outline-glass" onclick="saveToCache()">
+                            <i class="bi bi-database"></i> Сохранить в кэш
+                        </button>
+                        <button class="btn-outline-glass" onclick="previewAllData()">
+                            <i class="bi bi-eye"></i> Все данные
                         </button>
                     </div>
                 </div>
             </div>
 
-            <!-- ПРАВАЯ КОЛОНКА: НАСТРОЙКИ РАССЫЛКИ -->
-            <div class="col-lg-5">
-                <!-- Выбор трека для рассылки -->
-                <div class="card-glass mb-4">
-                    <div class="card-title">
-                        <i class="bi bi-music-note"></i>
-                        Выбор трека для рассылки
-                    </div>
-
-                    <div class="track-selector" id="trackSelector">
-                        <!-- Загружается из API -->
-                        <div class="text-secondary" style="font-size: 14px;">Загрузка треков...</div>
-                    </div>
-
-                    <div class="mt-3">
-                        <button class="btn btn-gradient w-100" onclick="selectAllTracks()">
-                            <i class="bi bi-check-all"></i> Выбрать все треки
-                        </button>
-                    </div>
-                </div>
-
-                <!-- Информация о рассылке -->
+            <!-- ===== ПРАВАЯ КОЛОНКА: ИНФОРМАЦИЯ ===== -->
+            <div class="col-lg-4">
                 <div class="card-glass">
                     <div class="card-title">
-                        <i class="bi bi-send"></i>
-                        Конфигурация рассылки
+                        <i class="bi bi-info-circle"></i> Поля в Excel
                     </div>
 
-                    <div style="color: var(--text-secondary); font-size: 14px;">
-                        <div class="d-flex justify-content-between mb-2">
-                            <span>Выбрано контактов:</span>
-                            <span style="color: var(--text-primary); font-weight: 600;" id="selectedContactsCount">0</span>
-                        </div>
-                        <div class="d-flex justify-content-between mb-2">
-                            <span>Выбрано треков:</span>
-                            <span style="color: var(--text-primary); font-weight: 600;" id="selectedTracksCount">0</span>
-                        </div>
-                        <hr style="border-color: rgba(255,255,255,0.05);" />
-                        <div class="d-flex justify-content-between mb-2">
-                            <span>Всего получателей:</span>
-                            <span style="color: #34d399; font-weight: 600;" id="totalRecipients">0</span>
+                    <div style="color: var(--text-secondary); font-size: 13px; max-height: 500px; overflow-y: auto;">
+                        <p style="color: var(--text-primary); font-weight: 500;">Всего полей: <span id="fieldCount">40</span></p>
+                        <div id="fieldList" style="display: grid; grid-template-columns: 1fr 1fr; gap: 4px 12px; font-size: 12px;">
+                            <div><code>name</code></div>
+                            <div><code>contact_name</code></div>
+                            <div><code>email</code></div>
+                            <div><code>phone</code></div>
+                            <div><code>type</code></div>
+                            <div><code>platform</code></div>
+                            <div><code>genre</code></div>
+                            <div><code>genres</code></div>
+                            <div><code>country</code></div>
+                            <div><code>city</code></div>
+                            <div><code>language</code></div>
+                            <div><code>website</code></div>
+                            <div><code>submission_url</code></div>
+                            <div><code>contact_form</code></div>
+                            <div><code>spotify_url</code></div>
+                            <div><code>youtube_url</code></div>
+                            <div><code>instagram</code></div>
+                            <div><code>facebook</code></div>
+                            <div><code>x</code></div>
+                            <div><code>telegram</code></div>
+                            <div><code>tiktok</code></div>
+                            <div><code>soundcloud</code></div>
+                            <div><code>beatport</code></div>
+                            <div><code>followers</code></div>
+                            <div><code>monthly_listeners</code></div>
+                            <div><code>accepts_demo</code></div>
+                            <div><code>accepts_remix</code></div>
+                            <div><code>accepts_radio_edit</code></div>
+                            <div><code>accepts_extended</code></div>
+                            <div><code>preferred_format</code></div>
+                            <div><code>bpm_min</code></div>
+                            <div><code>bpm_max</code></div>
+                            <div><code>mood</code></div>
+                            <div><code>priority</code></div>
+                            <div><code>verified</code></div>
+                            <div><code>status</code></div>
+                            <div><code>last_contact</code></div>
+                            <div><code>notes</code></div>
+                            <div><code>source</code></div>
                         </div>
                     </div>
 
-                    <div class="mt-3">
-                        <button class="btn btn-success w-100" onclick="startMailing()">
-                            <i class="bi bi-broadcast"></i> Запустить рассылку
-                        </button>
-                    </div>
+                    <hr style="border-color: rgba(255,255,255,0.05); margin: 16px 0;" />
 
-                    <div class="mt-2 text-center" style="font-size: 12px; color: var(--text-muted);">
-                        <i class="bi bi-shield-check"></i> Рассылка через защищенный SMTP-шлюз
+                    <div style="background: rgba(52,211,153,0.08); border: 1px solid rgba(52,211,153,0.15); border-radius: 12px; padding: 12px; color: #34d399; font-size: 13px;">
+                        <i class="bi bi-check-circle"></i>
+                        <strong>Кэширование включено</strong><br />
+                        <small>Данные сохраняются в браузере и не пропадают при обновлении</small>
                     </div>
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- МОДАЛКА ПРЕДПРОСМОТРА -->
-    <div class="modal fade" id="previewModal" tabindex="-1">
-        <div class="modal-dialog modal-xl">
-            <div class="modal-content modal-glass">
-                <div class="modal-header">
-                    <h5 class="modal-title text-white">📊 Полный предпросмотр контактов</h5>
-                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
-                </div>
-                <div class="modal-body" style="background: #0f0e17;">
-                    <div id="modalPreviewContainer"></div>
-                    <div class="mt-3 text-secondary" id="modalPreviewInfo"></div>
-                </div>
-                <div class="modal-footer">
-                    <button class="btn btn-outline-glass" data-bs-dismiss="modal">Закрыть</button>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- TOAST -->
+    <!-- ===== TOAST ===== -->
     <div id="toast">
         <div id="toastMessage"></div>
     </div>
 
+    <!-- ===== СКРИПТЫ ===== -->
     <script>
         // ============================================================
-        // 1. ПЕРЕМЕННЫЕ
+        // 1. SUPABASE
+        // ============================================================
+
+        const SUPABASE_URL = 'https://ваш-проект.supabase.co';
+        const SUPABASE_ANON_KEY = 'ваш-anon-ключ';
+        const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+        // ============================================================
+        // 2. ПЕРЕМЕННЫЕ
         // ============================================================
 
         let contactsData = [];
         let contactsHeaders = [];
         let contactsRows = [];
-        let selectedTracks = [];
-        let allTracks = [];
+        let currentFileName = '';
+
+        // Ключ для кэша
+        const CACHE_KEY = 'music_crm_contacts_cache';
 
         // ============================================================
-        // 2. TOAST
+        // 3. TOAST
         // ============================================================
 
         function showToast(message, type = 'info') {
@@ -833,82 +729,87 @@
         }
 
         // ============================================================
-        // 3. ЗАГРУЗКА ТРЕКОВ
+        // 4. КЭШИРОВАНИЕ
         // ============================================================
 
-        async function loadTracks() {
-            try {
-                const response = await fetch('/api/tracks');
-                const result = await response.json();
-                
-                if (result.success) {
-                    allTracks = result.tracks || [];
-                    renderTrackSelector();
-                }
-            } catch (error) {
-                console.error('Ошибка загрузки треков:', error);
-                document.getElementById('trackSelector').innerHTML = `
-                    <div class="text-danger" style="font-size: 14px;">
-                        <i class="bi bi-exclamation-triangle"></i> Ошибка загрузки треков
-                    </div>
-                `;
-            }
-        }
-
-        function renderTrackSelector() {
-            const container = document.getElementById('trackSelector');
-            
-            if (!allTracks || allTracks.length === 0) {
-                container.innerHTML = `
-                    <div class="text-secondary" style="font-size: 14px;">
-                        <i class="bi bi-info-circle"></i> Нет доступных треков
-                    </div>
-                `;
+        function saveToCache() {
+            if (!contactsRows || contactsRows.length === 0) {
+                showToast('Нет данных для сохранения', 'warning');
                 return;
             }
-            
-            container.innerHTML = allTracks.map(track => `
-                <div class="track-chip" data-id="${track.id}" onclick="toggleTrack('${track.id}')">
-                    <i class="bi bi-music-note-beamed"></i>
-                    ${track.name}
-                    <span class="badge-count">${track.plays || 0}</span>
-                </div>
-            `).join('');
-            
-            updateSelectedTracksCount();
-        }
 
-        function toggleTrack(id) {
-            const chip = document.querySelector(`.track-chip[data-id="${id}"]`);
-            const index = selectedTracks.indexOf(id);
-            
-            if (index === -1) {
-                selectedTracks.push(id);
-                chip.classList.add('active');
-            } else {
-                selectedTracks.splice(index, 1);
-                chip.classList.remove('active');
+            try {
+                const cacheData = {
+                    headers: contactsHeaders,
+                    rows: contactsRows,
+                    fileName: currentFileName,
+                    timestamp: new Date().toISOString(),
+                    count: contactsRows.length
+                };
+                localStorage.setItem(CACHE_KEY, JSON.stringify(cacheData));
+                showToast(`💾 Сохранено ${contactsRows.length} контактов в кэш`, 'success');
+                
+                document.getElementById('cachedBadge').style.display = 'inline';
+            } catch (error) {
+                console.error('Ошибка сохранения кэша:', error);
+                showToast('❌ Ошибка сохранения в кэш', 'error');
             }
-            
-            updateSelectedTracksCount();
         }
 
-        function selectAllTracks() {
-            selectedTracks = allTracks.map(t => t.id);
-            document.querySelectorAll('.track-chip').forEach(el => {
-                el.classList.add('active');
-            });
-            updateSelectedTracksCount();
-            showToast(`Выбрано ${selectedTracks.length} треков`, 'success');
+        function loadFromCache() {
+            try {
+                const cached = localStorage.getItem(CACHE_KEY);
+                if (!cached) {
+                    showToast('Нет сохранённых данных в кэше', 'warning');
+                    return;
+                }
+
+                const data = JSON.parse(cached);
+                contactsHeaders = data.headers;
+                contactsRows = data.rows;
+                currentFileName = data.fileName || 'из кэша';
+
+                // Восстанавливаем UI
+                document.getElementById('fileInfo').style.display = 'block';
+                document.getElementById('fileName').textContent = currentFileName;
+                document.getElementById('fileSize').textContent = `${data.count} контактов`;
+                document.getElementById('cachedBadge').style.display = 'inline';
+                document.getElementById('cachedBadge').textContent = ' из кэша';
+
+                document.getElementById('statsGrid').style.display = 'grid';
+                document.getElementById('statRows').textContent = data.count;
+                document.getElementById('statColumns').textContent = contactsHeaders.length;
+                
+                const hasEmail = contactsHeaders.some(h => h.toLowerCase() === 'email');
+                const validContacts = hasEmail ? contactsRows.filter(row => row.email && row.email.includes('@')) : [];
+                document.getElementById('statValid').textContent = validContacts.length;
+                
+                const emails = validContacts.map(row => row.email);
+                const duplicates = emails.length - new Set(emails).size;
+                document.getElementById('statDuplicates').textContent = duplicates;
+
+                showPreview(contactsRows.slice(0, 10));
+                document.getElementById('previewSection').style.display = 'block';
+                document.getElementById('actionButtons').style.display = 'flex';
+
+                showToast(`📂 Загружено из кэша: ${data.count} контактов`, 'success');
+            } catch (error) {
+                console.error('Ошибка загрузки кэша:', error);
+                showToast('❌ Ошибка загрузки из кэша', 'error');
+            }
         }
 
-        function updateSelectedTracksCount() {
-            document.getElementById('selectedTracksCount').textContent = selectedTracks.length;
-            updateTotalRecipients();
+        function clearCache() {
+            if (confirm('Очистить кэш контактов?')) {
+                localStorage.removeItem(CACHE_KEY);
+                document.getElementById('cachedBadge').style.display = 'none';
+                showToast('🗑️ Кэш очищен', 'info');
+                clearFile();
+            }
         }
 
         // ============================================================
-        // 4. ЗАГРУЗКА ФАЙЛА
+        // 5. ЗАГРУЗКА ФАЙЛА
         // ============================================================
 
         document.getElementById('fileInput').addEventListener('change', function(e) {
@@ -952,33 +853,32 @@
                     
                     contactsHeaders = Object.keys(json[0]);
                     contactsRows = json;
-                    contactsData = json;
+                    currentFileName = file.name;
                     
-                    // Показываем информацию
-                    const info = document.getElementById('fileInfo');
-                    info.style.display = 'block';
+                    // Обновляем UI
+                    document.getElementById('fileInfo').style.display = 'block';
                     document.getElementById('fileName').textContent = file.name;
                     document.getElementById('fileSize').textContent = (file.size / 1024).toFixed(1) + ' KB';
+                    document.getElementById('cachedBadge').style.display = 'none';
                     
-                    // Показываем статистику
-                    const grid = document.getElementById('statsGrid');
-                    grid.style.display = 'grid';
-                    document.getElementById('statRows').textContent = rows.length;
+                    document.getElementById('statsGrid').style.display = 'grid';
+                    document.getElementById('statRows').textContent = json.length;
+                    document.getElementById('statColumns').textContent = contactsHeaders.length;
                     
-                    // Проверяем валидность (наличие email)
                     const hasEmail = contactsHeaders.some(h => h.toLowerCase() === 'email');
                     const validContacts = hasEmail ? json.filter(row => row.email && row.email.includes('@')) : [];
                     document.getElementById('statValid').textContent = validContacts.length;
                     
-                    // Проверяем дубликаты
                     const emails = validContacts.map(row => row.email);
                     const duplicates = emails.length - new Set(emails).size;
                     document.getElementById('statDuplicates').textContent = duplicates;
                     
-                    // Показываем предпросмотр
-                    showPreview(json.slice(0, 5));
-                    
+                    showPreview(json.slice(0, 10));
+                    document.getElementById('previewSection').style.display = 'block';
                     document.getElementById('actionButtons').style.display = 'flex';
+                    
+                    // Автоматически сохраняем в кэш
+                    saveToCache();
                     
                     showToast(`✅ Загружено ${json.length} контактов`, 'success');
                 } catch (error) {
@@ -990,30 +890,27 @@
         }
 
         // ============================================================
-        // 5. ПРЕДПРОСМОТР
+        // 6. ПРЕДПРОСМОТР
         // ============================================================
 
         function showPreview(rows) {
-            const section = document.getElementById('previewSection');
-            section.style.display = 'block';
-            
             const container = document.getElementById('previewContainer');
             
             if (!rows || rows.length === 0) {
-                container.innerHTML = '<div class="text-secondary">Нет данных для предпросмотра</div>';
+                container.innerHTML = '<div class="text-secondary text-center py-4">Нет данных</div>';
                 return;
             }
             
-            const headers = Object.keys(rows[0]);
-            let html = '<table class="table table-dark table-sm">';
-            html += '<thead><tr>';
-            headers.forEach(h => html += `<th>${h}</th>`);
+            const displayHeaders = contactsHeaders.slice(0, 8);
+            let html = '<table><thead><tr>';
+            displayHeaders.forEach(h => html += `<th>${h}</th>`);
             html += '</tr></thead><tbody>';
             
             rows.forEach(row => {
                 html += '<tr>';
-                headers.forEach(h => {
-                    html += `<td>${String(row[h] || '').substring(0, 30)}</td>`;
+                displayHeaders.forEach(h => {
+                    const val = String(row[h] || '').substring(0, 30);
+                    html += `<td>${val || '—'}</td>`;
                 });
                 html += '</tr>';
             });
@@ -1022,58 +919,87 @@
             container.innerHTML = html;
         }
 
-        function previewData() {
+        function previewAllData() {
             if (!contactsRows || contactsRows.length === 0) {
                 showToast('Нет данных для просмотра', 'warning');
                 return;
             }
             
-            const headers = Object.keys(contactsRows[0]);
-            let html = '<div class="table-container"><table class="table table-dark">';
-            html += '<thead><tr>';
-            headers.forEach(h => html += `<th>${h}</th>`);
-            html += '</tr></thead><tbody>';
+            console.log('📊 Все контакты:');
+            console.table(contactsRows);
             
-            contactsRows.forEach(row => {
-                html += '<tr>';
-                headers.forEach(h => {
-                    html += `<td>${String(row[h] || '').substring(0, 40)}</td>`;
-                });
-                html += '</tr>';
-            });
-            html += '</tbody></table></div>';
+            // Создаём модальное окно с полной таблицей
+            const modalHtml = `
+                <div class="modal fade" id="previewModal" tabindex="-1">
+                    <div class="modal-dialog modal-xl">
+                        <div class="modal-content" style="background: rgba(26,26,46,0.95); backdrop-filter: blur(20px); border: 1px solid rgba(255,255,255,0.1);">
+                            <div class="modal-header" style="border-bottom: 1px solid rgba(255,255,255,0.05);">
+                                <h5 class="modal-title text-white"><i class="bi bi-table"></i> Все контакты (${contactsRows.length})</h5>
+                                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                            </div>
+                            <div class="modal-body" style="background: #0f0e17; padding: 16px;">
+                                <div class="table-container" style="max-height: 500px;">
+                                    <table>
+                                        <thead><tr>
+                                            ${contactsHeaders.map(h => `<th>${h}</th>`).join('')}
+                                        </tr></thead>
+                                        <tbody>
+                                            ${contactsRows.map(row => `
+                                                <tr>
+                                                    ${contactsHeaders.map(h => `<td>${String(row[h] || '').substring(0, 40)}</td>`).join('')}
+                                                </tr>
+                                            `).join('')}
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                            <div class="modal-footer" style="border-top: 1px solid rgba(255,255,255,0.05);">
+                                <button class="btn-outline-glass" data-bs-dismiss="modal">Закрыть</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `;
             
-            document.getElementById('modalPreviewContainer').innerHTML = html;
-            document.getElementById('modalPreviewInfo').textContent = `Всего: ${contactsRows.length} контактов`;
+            // Удаляем старую модалку
+            const oldModal = document.getElementById('previewModal');
+            if (oldModal) oldModal.remove();
             
+            document.body.insertAdjacentHTML('beforeend', modalHtml);
             const modal = new bootstrap.Modal(document.getElementById('previewModal'));
             modal.show();
             
-            showToast('📊 Данные в модальном окне', 'info');
+            showToast(`📊 Показано ${contactsRows.length} контактов`, 'info');
         }
 
         // ============================================================
-        // 6. ИМПОРТ КОНТАКТОВ
+        // 7. ИМПОРТ КОНТАКТОВ
         // ============================================================
 
         async function importContacts() {
             try {
-                // Проверяем наличие email
                 const hasEmail = contactsHeaders.some(h => h.toLowerCase() === 'email');
                 if (!hasEmail) {
                     showToast('В файле нет колонки "email"', 'warning');
                     return;
                 }
                 
-                // Фильтруем контакты с email
                 const contacts = contactsRows
                     .filter(row => row.email && row.email.includes('@'))
                     .map(row => ({
                         email: row.email.trim(),
                         phone: row.phone || '',
-                        name: row.name || '',
-                        company: row.company || '',
-                        position: row.position || ''
+                        name: row.contact_name || row.name || '',
+                        company: row.platform || '',
+                        position: row.type || '',
+                        genre: row.genre || '',
+                        country: row.country || '',
+                        city: row.city || '',
+                        followers: parseInt(row.followers) || 0,
+                        monthly_listeners: parseInt(row.monthly_listeners) || 0,
+                        status: row.status || 'new',
+                        source: row.source || 'import',
+                        notes: row.notes || ''
                     }));
                 
                 if (contacts.length === 0) {
@@ -1094,8 +1020,6 @@
                 if (result.success) {
                     showToast(`✅ Импортировано ${result.imported} контактов`, 'success');
                     document.getElementById('statValid').textContent = contacts.length;
-                    updateTotalRecipients();
-                    setTimeout(() => clearFile(), 2000);
                 } else {
                     throw new Error(result.error || 'Ошибка импорта');
                 }
@@ -1106,81 +1030,59 @@
         }
 
         // ============================================================
-        // 7. РАССЫЛКА
+        // 8. ОЧИСТКА
         // ============================================================
-
-        async function startMailing() {
-            // Проверка: есть ли контакты
-            const contactsCount = parseInt(document.getElementById('statRows').textContent) || 0;
-            if (contactsCount === 0) {
-                showToast('Загрузите контакты для рассылки', 'warning');
-                return;
-            }
-            
-            // Проверка: выбраны ли треки
-            if (selectedTracks.length === 0) {
-                showToast('Выберите хотя бы один трек для рассылки', 'warning');
-                return;
-            }
-            
-            showToast(`⏳ Запуск рассылки для ${contactsCount} контактов...`, 'info');
-            
-            try {
-                const response = await fetch('/api/mailing/send', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({
-                        trackIds: selectedTracks,
-                        contacts: contactsRows.map(row => row.email).filter(e => e && e.includes('@'))
-                    })
-                });
-                
-                const result = await response.json();
-                
-                if (result.success) {
-                    showToast(`🚀 Рассылка запущена! Отправлено ${result.sent} писем`, 'success');
-                } else {
-                    throw new Error(result.error || 'Ошибка отправки');
-                }
-            } catch (error) {
-                console.error('Ошибка рассылки:', error);
-                showToast('❌ ' + error.message, 'error');
-            }
-        }
-
-        // ============================================================
-        // 8. ВСПОМОГАТЕЛЬНЫЕ
-        // ============================================================
-
-        function updateTotalRecipients() {
-            const contacts = parseInt(document.getElementById('statValid').textContent) || 0;
-            document.getElementById('totalRecipients').textContent = contacts;
-        }
 
         function clearFile() {
             contactsData = [];
             contactsHeaders = [];
             contactsRows = [];
+            currentFileName = '';
             
             document.getElementById('fileInfo').style.display = 'none';
             document.getElementById('statsGrid').style.display = 'none';
             document.getElementById('previewSection').style.display = 'none';
             document.getElementById('actionButtons').style.display = 'none';
             document.getElementById('fileInput').value = '';
+            document.getElementById('cachedBadge').style.display = 'none';
             
             showToast('Файл очищен', 'info');
         }
 
         // ============================================================
-        // 9. ИНИЦИАЛИЗАЦИЯ
+        // 9. АВТОРИЗАЦИЯ
         // ============================================================
 
-        document.addEventListener('DOMContentLoaded', function() {
-            loadTracks();
+        async function checkAuth() {
+            try {
+                const { data: { session } } = await supabase.auth.getSession();
+                if (!session) {
+                    window.location.href = '/login.html';
+                }
+            } catch (error) {
+                console.error('Ошибка авторизации:', error);
+                window.location.href = '/login.html';
+            }
+        }
+
+        // ============================================================
+        // 10. ИНИЦИАЛИЗАЦИЯ
+        // ============================================================
+
+        document.addEventListener('DOMContentLoaded', async function() {
+            await checkAuth();
+            
+            // Пытаемся загрузить из кэша
+            loadFromCache();
+            
+            // Подсчёт полей
+            document.getElementById('fieldCount').textContent = 
+                document.querySelectorAll('#fieldList code').length;
+            
             console.log('📇 Страница импорта контактов загружена');
-            console.log('📦 XLSX библиотека:', typeof XLSX !== 'undefined' ? '✅ Доступна' : '❌ Недоступна');
+            console.log('📦 XLSX:', typeof XLSX !== 'undefined' ? '✅' : '❌');
+            console.log('💾 Кэш:', localStorage.getItem(CACHE_KEY) ? '✅' : '❌');
         });
     </script>
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 </body>
 </html>
