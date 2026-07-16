@@ -873,15 +873,15 @@
                         <!-- ===== САМОЛЁТЫ В НЕБЕ ===== -->
                         <div class="status-item network-status" style="grid-column: span 2;"><div class="dot lime" style="box-shadow: 0 0 15px rgba(0, 255, 136, 0.3);"></div><div><div class="label">🛩️ Самолётов в небе</div><div class="value" id="planeCount"><span id="planeNumber">0</span><span class="sub" style="font-size: 9px; font-weight: 400; color: var(--vip-text-secondary); margin-left: 4px;"><span id="planeUpdateTime">загрузка...</span></span></div></div></div>
 
-                        <!-- ===== СЧЁТЧИК РАДИОСИГНАЛА (ИСПРАВЛЕННЫЙ) ===== -->
+                        <!-- ===== СЧЁТЧИК РАДИОСИГНАЛА ===== -->
                         <div class="status-item network-status" style="grid-column: span 2;">
                             <div class="dot lime" style="box-shadow: 0 0 15px rgba(0, 255, 136, 0.3);"></div>
                             <div style="display: flex; align-items: center; gap: 8px; flex-wrap: wrap; width: 100%;">
                                 <div style="color: var(--vip-text-secondary); font-size: 10px; font-weight: 400;">📡 Первый радиосигнал</div>
                                 <div style="color: var(--vip-lime); font-weight: 700; font-size: 13px; margin-left: auto; text-align: right;">
-                                    <span id="signalDistance2">0</span> <span style="font-weight: 400; font-size: 9px; color: var(--vip-text-secondary);">км</span>
+                                    <span id="signalDistance">0</span> <span style="font-weight: 400; font-size: 9px; color: var(--vip-text-secondary);">км</span>
                                     <span style="font-weight: 400; font-size: 9px; color: var(--vip-text-secondary); margin-left: 6px;">
-                                        (в пути <span id="signalTime2">00:00:00</span>)
+                                        (в пути <span id="signalTime">00:00:00</span>)
                                     </span>
                                 </div>
                             </div>
@@ -936,8 +936,8 @@
         // ============================================================
 
         // ⚠️ ЗАМЕНИТЕ НА СВОИ ДАННЫЕ ⚠️
-        const SUPABASE_URL = 'https://ваш-проект.supabase.co';
-        const SUPABASE_ANON_KEY = 'ваш-anon-ключ';
+        const SUPABASE_URL = 'https://hyjclbhebdrtljlemstv.supabase.co';
+        const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imh5amNsYmhlYmRydGxqbGVtc3R2Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODM0NzEyMDYsImV4cCI6MjA5OTA0NzIwNn0.hEc6K93MOe5q0U-hBdIk3rV1rO1m6d8zGsVezQ6i5aY';
         const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
         // ============================================================
@@ -1154,7 +1154,8 @@
                 }
             } catch (error) {
                 console.warn('Ошибка получения данных о самолётах:', error);
-                const fallbackNumber = Math.floor(Math.random() * 5000) + 11000;
+                // Используем реалистичное число с небольшой вариацией
+                const fallbackNumber = Math.floor(Math.random() * 8000) + 10000;
                 document.getElementById('planeNumber').textContent = fallbackNumber;
                 document.getElementById('planeUpdateTime').textContent = 
                     `по оценке · ${new Date().toLocaleTimeString('ru-RU', {hour:'2-digit', minute:'2-digit'})}`;
@@ -1196,12 +1197,12 @@
         }
 
         // ============================================================
-        // 9. СЧЁТЧИК РАДИОСИГНАЛА (ПРОСТОЕ РЕШЕНИЕ)
+        // 9. СЧЁТЧИК РАДИОСИГНАЛА (ИСПРАВЛЕННЫЙ)
         // ============================================================
         
         (function() {
-            // Дата старта: 7 мая 1895 года (первое радио)
-            const startDate = new Date(1895, 4, 7, 0, 0, 0);
+            // Дата первого радиосигнала: 7 мая 1895 года (Попов)
+            const signalStartDate = new Date(1895, 4, 7, 0, 0, 0);
             
             function padZero(num) {
                 return String(num).padStart(2, '0');
@@ -1211,32 +1212,32 @@
                 return Math.round(num).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ' ');
             }
             
-            function updateCounter() {
+            function updateSignalCounter() {
                 const now = new Date();
-                const diffMs = now.getTime() - startDate.getTime();
+                const diffMs = now.getTime() - signalStartDate.getTime();
                 
                 if (diffMs <= 0) {
-                    document.getElementById('signalDistance2').textContent = '0';
-                    document.getElementById('signalTime2').textContent = '--:--:--';
+                    document.getElementById('signalDistance').textContent = '0';
+                    document.getElementById('signalTime').textContent = '00:00:00';
                     return;
                 }
                 
-                // Время в пути
+                // Время в пути в секундах
                 const totalSec = Math.floor(diffMs / 1000);
                 const h = Math.floor(totalSec / 3600);
                 const m = Math.floor((totalSec % 3600) / 60);
                 const s = totalSec % 60;
-                document.getElementById('signalTime2').textContent = 
+                document.getElementById('signalTime').textContent = 
                     padZero(h) + ':' + padZero(m) + ':' + padZero(s);
                 
                 // Расстояние (скорость света 299792.458 км/с)
-                const dist = (totalSec * 299792.458);
-                document.getElementById('signalDistance2').textContent = formatNumber(dist);
+                const dist = totalSec * 299792.458;
+                document.getElementById('signalDistance').textContent = formatNumber(dist);
             }
             
             // Запускаем сразу
-            setTimeout(updateCounter, 100);
-            setInterval(updateCounter, 1000);
+            setTimeout(updateSignalCounter, 100);
+            setInterval(updateSignalCounter, 1000);
             
             console.log('📡 Счётчик радиосигнала запущен!');
         })();
