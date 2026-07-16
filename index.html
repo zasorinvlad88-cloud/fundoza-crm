@@ -802,7 +802,7 @@
             </div>
             <div class="header-actions">
                 <div class="badge-vip"><span class="pulse"></span> VIP</div>
-                <span class="user-email" id="userEmail">vip@fundoza.com</span>
+                <span class="user-email" id="userEmail">demo@fundoza.com</span>
                 <button class="btn-vip" onclick="refreshData()"><i class="bi bi-arrow-clockwise"></i> Синхр.</button>
                 <button class="btn-vip-danger" onclick="logout()"><i class="bi bi-box-arrow-right"></i> Выход</button>
             </div>
@@ -940,41 +940,42 @@
     <div id="toast"><div id="toastMessage"></div></div>
 
     <!-- ============================================================
-    СКРИПТЫ
+    СКРИПТЫ (БЕЗ АВТОРИЗАЦИИ)
     ============================================================ -->
     <script>
         // ============================================================
-        // 1. SUPABASE
+        // 1. SUPABASE (опционально, без авторизации)
         // ============================================================
 
-        // ⚠️ ЗАМЕНИТЕ НА СВОИ ДАННЫЕ ⚠️
+        // ⚠️ ЗАМЕНИТЕ НА СВОИ ДАННЫЕ (если нужен Supabase) ⚠️
         const SUPABASE_URL = 'https://hyjclbhebdrtljlemstv.supabase.co';
         const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imh5amNsYmhlYmRydGxqbGVtc3R2Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODM0NzEyMDYsImV4cCI6MjA5OTA0NzIwNn0.hEc6K93MOe5q0U-hBdIk3rV1rO1m6d8zGsVezQ6i5aY';
         
-        // Используем другое имя переменной, чтобы избежать конфликта
-        const supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+        // Создаем клиент, но НЕ используем авторизацию
+        let supabaseClient = null;
+        try {
+            if (window.supabase) {
+                supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+                console.log('✅ Supabase клиент создан');
+            }
+        } catch (e) {
+            console.warn('⚠️ Supabase не доступен, работаем без авторизации');
+        }
 
         // ============================================================
-        // 2. АВТОРИЗАЦИЯ
+        // 2. ОТКЛЮЧЕННАЯ АВТОРИЗАЦИЯ (всегда пропускаем)
         // ============================================================
 
         async function checkAuth() {
-            try {
-                const { data: { session } } = await supabaseClient.auth.getSession();
-                if (!session) {
-                    window.location.href = '/login.html';
-                    return;
-                }
-                document.getElementById('userEmail').textContent = session.user.email;
-            } catch (error) {
-                console.error('Ошибка авторизации:', error);
-                window.location.href = '/login.html';
-            }
+            // ПРОСТО ПРОПУСКАЕМ - НЕТ РЕДИРЕКТА
+            console.log('🔓 Авторизация отключена (демо-режим)');
+            return true;
         }
 
         window.logout = async function() {
-            await supabaseClient.auth.signOut();
-            window.location.href = '/login.html';
+            showToast('👋 Выход из демо-режима', 'info');
+            // Просто показываем сообщение, без редиректа
+            document.getElementById('userEmail').textContent = 'demo@fundoza.com';
         };
 
         // ============================================================
@@ -1005,16 +1006,25 @@
 
         async function loadStats() {
             try {
-                const response = await fetch('/api/stats');
-                const result = await response.json();
-                
-                if (result.success) {
-                    document.getElementById('statTracks').textContent = result.totalTracks || 0;
-                    document.getElementById('statContacts').textContent = result.totalContacts || 0;
-                    document.getElementById('statPlaylists').textContent = result.totalPlaylists || 0;
-                    document.getElementById('statSent').textContent = result.totalMailingsSent || 0;
-                    document.getElementById('statPlays').textContent = result.totalPlays || 0;
+                // Пробуем получить реальные данные, если есть API
+                const response = await fetch('/api/stats').catch(() => null);
+                if (response && response.ok) {
+                    const result = await response.json();
+                    if (result.success) {
+                        document.getElementById('statTracks').textContent = result.totalTracks || 0;
+                        document.getElementById('statContacts').textContent = result.totalContacts || 0;
+                        document.getElementById('statPlaylists').textContent = result.totalPlaylists || 0;
+                        document.getElementById('statSent').textContent = result.totalMailingsSent || 0;
+                        document.getElementById('statPlays').textContent = result.totalPlays || 0;
+                        return;
+                    }
                 }
+                // Если API нет - используем демо-данные
+                document.getElementById('statTracks').textContent = '24';
+                document.getElementById('statContacts').textContent = '156';
+                document.getElementById('statPlaylists').textContent = '6';
+                document.getElementById('statSent').textContent = '342';
+                document.getElementById('statPlays').textContent = '1.2K';
             } catch (error) {
                 console.error('Ошибка загрузки статистики:', error);
                 document.getElementById('statTracks').textContent = '24';
@@ -1175,7 +1185,6 @@
                 }
             } catch (error) {
                 console.warn('Ошибка получения данных о самолётах:', error);
-                // Используем реалистичное число с небольшой вариацией
                 const fallbackNumber = Math.floor(Math.random() * 8000) + 10000;
                 const planeEl = document.getElementById('planeNumber');
                 if (planeEl) {
@@ -1223,7 +1232,7 @@
         }
 
         // ============================================================
-        // 9. СЧЁТЧИК РАДИОСИГНАЛА (ОБНОВЛЯЕТСЯ ТОЛЬКО ПРИ ЗАГРУЗКЕ)
+        // 9. СЧЁТЧИК РАДИОСИГНАЛА (ОДИН РАЗ ПРИ ЗАГРУЗКЕ)
         // ============================================================
         
         function initRadioSignalCounter() {
@@ -1235,7 +1244,6 @@
                 return;
             }
             
-            // Дата первого радиосигнала: 7 мая 1895 года (Попов)
             const signalStartDate = new Date(1895, 4, 7, 0, 0, 0);
             
             function padZero(num) {
@@ -1256,7 +1264,6 @@
                     return;
                 }
                 
-                // Время в пути в секундах
                 const totalSec = Math.floor(diffMs / 1000);
                 const h = Math.floor(totalSec / 3600);
                 const m = Math.floor((totalSec % 3600) / 60);
@@ -1264,15 +1271,13 @@
                 timeEl.textContent = 
                     padZero(h) + ':' + padZero(m) + ':' + padZero(s);
                 
-                // Расстояние (скорость света 299792.458 км/с)
                 const dist = totalSec * 299792.458;
                 distanceEl.textContent = formatNumber(dist);
             }
             
-            // Обновляем ОДИН РАЗ при загрузке страницы
+            // Обновляем ОДИН РАЗ при загрузке
             updateSignalCounter();
-            
-            console.log('📡 Счётчик радиосигнала инициализирован (без автообновления)');
+            console.log('📡 Счётчик радиосигнала инициализирован');
         }
 
         // ============================================================
@@ -1285,7 +1290,6 @@
             fetchNetworkStatus();
             fetchRadioStats();
             fetchPlaneStats();
-            // Обновляем радиосигнал при ручной синхронизации
             initRadioSignalCounter();
             setTimeout(() => showToast('✅ Данные обновлены', 'success'), 1000);
         };
@@ -1295,15 +1299,17 @@
         // ============================================================
 
         document.addEventListener('DOMContentLoaded', async function() {
+            // Пропускаем авторизацию
             await checkAuth();
+            
+            // Загружаем все данные
             loadStats();
             fetchNetworkStatus();
             fetchRadioStats();
             fetchPlaneStats();
             initRadioSignalCounter();
             
-            console.log('🎛️ FUNDOZA Music CRM — VIP EXPERT EDITION загружена');
-            console.log('📡 Радиосигнал обновляется только при загрузке страницы или по кнопке "Синхр."');
+            console.log('🎛️ FUNDOZA Music CRM — VIP EXPERT EDITION загружена (демо-режим)');
             
             // Анимация счётчика стран
             const countryEl = document.getElementById('countryCount');
@@ -1320,7 +1326,7 @@
                 }, 50);
             }
             
-            // Обновление данных каждые 60 секунд (кроме радиосигнала)
+            // Обновление данных каждые 60 секунд
             setInterval(() => {
                 loadStats();
                 fetchNetworkStatus();
