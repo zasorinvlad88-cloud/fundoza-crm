@@ -12,7 +12,7 @@
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     
     <style>
-        /* ===== ВСЕ СТИЛИ (ОСТАВЛЯЕМ БЕЗ ИЗМЕНЕНИЙ) ===== */
+        /* ===== ВСЕ СТИЛИ ===== */
         :root {
             --vip-bg: #08080a;
             --vip-surface: #0f0f14;
@@ -871,7 +871,18 @@
                         <div class="status-item network-status"><div class="dot lime" style="box-shadow: 0 0 15px rgba(0, 255, 136, 0.3);"></div><div><div class="label">🎙️ Радиостанций</div><div class="value" id="radioStationCount"><span id="stationNumber">44 000</span><span class="sub" style="font-size: 9px; font-weight: 400; color: var(--vip-text-secondary); margin-left: 4px;"><span id="stationUpdateTime">онлайн</span></span></div></div></div>
 
                         <!-- ===== САМОЛЁТЫ В НЕБЕ ===== -->
-                        <div class="status-item network-status" style="grid-column: span 2;"><div class="dot lime" style="box-shadow: 0 0 15px rgba(0, 255, 136, 0.3);"></div><div><div class="label">🛩️ Самолётов в небе</div><div class="value" id="planeCount"><span id="planeNumber">0</span><span class="sub" style="font-size: 9px; font-weight: 400; color: var(--vip-text-secondary); margin-left: 4px;"><span id="planeUpdateTime">загрузка...</span></span></div></div></div>
+                        <div class="status-item network-status" style="grid-column: span 2;">
+                            <div class="dot lime" style="box-shadow: 0 0 15px rgba(0, 255, 136, 0.3);"></div>
+                            <div>
+                                <div class="label">🛩️ Самолётов в небе</div>
+                                <div class="value">
+                                    <span id="planeNumber">0</span>
+                                    <span class="sub" style="font-size: 9px; font-weight: 400; color: var(--vip-text-secondary); margin-left: 4px;">
+                                        <span id="planeUpdateTime">загрузка...</span>
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
 
                         <!-- ===== СЧЁТЧИК РАДИОСИГНАЛА ===== -->
                         <div class="status-item network-status" style="grid-column: span 2;">
@@ -879,7 +890,8 @@
                             <div style="display: flex; align-items: center; gap: 8px; flex-wrap: wrap; width: 100%;">
                                 <div style="color: var(--vip-text-secondary); font-size: 10px; font-weight: 400;">📡 Первый радиосигнал</div>
                                 <div style="color: var(--vip-lime); font-weight: 700; font-size: 13px; margin-left: auto; text-align: right;">
-                                    <span id="signalDistance">0</span> <span style="font-weight: 400; font-size: 9px; color: var(--vip-text-secondary);">км</span>
+                                    <span id="signalDistance">0</span> 
+                                    <span style="font-weight: 400; font-size: 9px; color: var(--vip-text-secondary);">км</span>
                                     <span style="font-weight: 400; font-size: 9px; color: var(--vip-text-secondary); margin-left: 6px;">
                                         (в пути <span id="signalTime">00:00:00</span>)
                                     </span>
@@ -938,7 +950,9 @@
         // ⚠️ ЗАМЕНИТЕ НА СВОИ ДАННЫЕ ⚠️
         const SUPABASE_URL = 'https://hyjclbhebdrtljlemstv.supabase.co';
         const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imh5amNsYmhlYmRydGxqbGVtc3R2Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODM0NzEyMDYsImV4cCI6MjA5OTA0NzIwNn0.hEc6K93MOe5q0U-hBdIk3rV1rO1m6d8zGsVezQ6i5aY';
-        const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+        
+        // Используем другое имя переменной, чтобы избежать конфликта
+        const supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
         // ============================================================
         // 2. АВТОРИЗАЦИЯ
@@ -946,7 +960,7 @@
 
         async function checkAuth() {
             try {
-                const { data: { session } } = await supabase.auth.getSession();
+                const { data: { session } } = await supabaseClient.auth.getSession();
                 if (!session) {
                     window.location.href = '/login.html';
                     return;
@@ -959,7 +973,7 @@
         }
 
         window.logout = async function() {
-            await supabase.auth.signOut();
+            await supabaseClient.auth.signOut();
             window.location.href = '/login.html';
         };
 
@@ -1120,7 +1134,7 @@
         }
 
         // ============================================================
-        // 7. СТАТИСТИКА САМОЛЁТОВ В НЕБЕ (OpenSky Network)
+        // 7. СТАТИСТИКА САМОЛЁТОВ В НЕБЕ (ИСПРАВЛЕННАЯ)
         // ============================================================
 
         async function fetchPlaneStats() {
@@ -1145,8 +1159,15 @@
                         second: '2-digit'
                     });
                     
-                    animateCounter('planeNumber', totalPlanes);
-                    document.getElementById('planeUpdateTime').textContent = `обновлено ${timestamp}`;
+                    const planeEl = document.getElementById('planeNumber');
+                    if (planeEl) {
+                        planeEl.textContent = totalPlanes.toLocaleString('ru-RU');
+                    }
+                    
+                    const timeEl = document.getElementById('planeUpdateTime');
+                    if (timeEl) {
+                        timeEl.textContent = `обновлено ${timestamp}`;
+                    }
                     
                     console.log(`🛩️ Самолётов в небе: ${totalPlanes}`);
                 } else {
@@ -1156,9 +1177,14 @@
                 console.warn('Ошибка получения данных о самолётах:', error);
                 // Используем реалистичное число с небольшой вариацией
                 const fallbackNumber = Math.floor(Math.random() * 8000) + 10000;
-                document.getElementById('planeNumber').textContent = fallbackNumber;
-                document.getElementById('planeUpdateTime').textContent = 
-                    `по оценке · ${new Date().toLocaleTimeString('ru-RU', {hour:'2-digit', minute:'2-digit'})}`;
+                const planeEl = document.getElementById('planeNumber');
+                if (planeEl) {
+                    planeEl.textContent = fallbackNumber.toLocaleString('ru-RU');
+                }
+                const timeEl = document.getElementById('planeUpdateTime');
+                if (timeEl) {
+                    timeEl.textContent = `по оценке · ${new Date().toLocaleTimeString('ru-RU', {hour:'2-digit', minute:'2-digit'})}`;
+                }
             }
         }
 
@@ -1200,7 +1226,15 @@
         // 9. СЧЁТЧИК РАДИОСИГНАЛА (ИСПРАВЛЕННЫЙ)
         // ============================================================
         
-        (function() {
+        function initRadioSignalCounter() {
+            const distanceEl = document.getElementById('signalDistance');
+            const timeEl = document.getElementById('signalTime');
+            
+            if (!distanceEl || !timeEl) {
+                console.error('❌ Элементы радиосигнала не найдены!');
+                return;
+            }
+            
             // Дата первого радиосигнала: 7 мая 1895 года (Попов)
             const signalStartDate = new Date(1895, 4, 7, 0, 0, 0);
             
@@ -1209,7 +1243,7 @@
             }
             
             function formatNumber(num) {
-                return Math.round(num).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ' ');
+                return Math.round(num).toLocaleString('ru-RU');
             }
             
             function updateSignalCounter() {
@@ -1217,8 +1251,8 @@
                 const diffMs = now.getTime() - signalStartDate.getTime();
                 
                 if (diffMs <= 0) {
-                    document.getElementById('signalDistance').textContent = '0';
-                    document.getElementById('signalTime').textContent = '00:00:00';
+                    distanceEl.textContent = '0';
+                    timeEl.textContent = '00:00:00';
                     return;
                 }
                 
@@ -1227,20 +1261,21 @@
                 const h = Math.floor(totalSec / 3600);
                 const m = Math.floor((totalSec % 3600) / 60);
                 const s = totalSec % 60;
-                document.getElementById('signalTime').textContent = 
+                timeEl.textContent = 
                     padZero(h) + ':' + padZero(m) + ':' + padZero(s);
                 
                 // Расстояние (скорость света 299792.458 км/с)
                 const dist = totalSec * 299792.458;
-                document.getElementById('signalDistance').textContent = formatNumber(dist);
+                distanceEl.textContent = formatNumber(dist);
             }
             
             // Запускаем сразу
             setTimeout(updateSignalCounter, 100);
+            // Обновляем каждую секунду
             setInterval(updateSignalCounter, 1000);
             
             console.log('📡 Счётчик радиосигнала запущен!');
-        })();
+        }
 
         // ============================================================
         // 10. ОБНОВЛЕНИЕ ДАННЫХ
@@ -1265,6 +1300,8 @@
             fetchNetworkStatus();
             fetchRadioStats();
             fetchPlaneStats();
+            initRadioSignalCounter();
+            
             console.log('🎛️ FUNDOZA Music CRM — VIP EXPERT EDITION загружена');
             
             // Анимация счётчика стран
